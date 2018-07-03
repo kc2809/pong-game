@@ -13,15 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.mygdx.game.util.Constants.SPACE_BETWEEN_SQUARE;
 import static com.mygdx.game.util.Constants.SQUARE_HEIGHT;
 import static com.mygdx.game.util.Constants.SQUARE_WIDTH;
 import static com.mygdx.game.util.Constants.VIEWPORT_WIDTH;
 
 public class Level extends Stage {
-    private static final int MAX_SQUARE_PER_ROW = 9;
+    private static final int MAX_SQUARE_PER_ROW = 7;
     World world;
 
-    int currentLevel = 0;
     List<int[]> listLevels;
 
     MainGameScreen screen;
@@ -110,7 +110,7 @@ public class Level extends Stage {
         int mask = 0b1;
         for (int i = 0; i < values.length; ++i) {
             int val = values[i];
-            for (int j = 0; j < 9; ++j) {
+            for (int j = 0; j < MAX_SQUARE_PER_ROW; ++j) {
                 //position
                 float x = -VIEWPORT_WIDTH / 2 + 0.1f + SQUARE_WIDTH * j + 0.1f * j;
                 float y = i * SQUARE_HEIGHT + 0.1f * i;
@@ -140,7 +140,7 @@ public class Level extends Stage {
         int mask = 0b1;
         float y = getPositionForGenerate();
         for (int i = 0; i < MAX_SQUARE_PER_ROW; ++i) {
-            float x = -VIEWPORT_WIDTH / 2 + 0.1f + SQUARE_WIDTH * i + 0.1f * i;
+            float x = -VIEWPORT_WIDTH / 2 + SPACE_BETWEEN_SQUARE + SQUARE_WIDTH * i + SPACE_BETWEEN_SQUARE * i;
             if ((value & mask) != 0) {
                 // add square if it is 1
                 Square s = new Square(screen, world, x, y);

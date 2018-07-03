@@ -63,7 +63,7 @@ public class EffectManager extends Actor {
         ParticleEffect pe = new ParticleEffect();
         pe.load(Assets.instance.effectFile, Assets.instance.imagesDir);
         pe.getEmitters().first().setPosition(x, y);
-        pe.scaleEffect(1.0f / 100f);
+        pe.scaleEffect(1.0f / 150f);
         pe.start();
         return pe;
     }

@@ -12,6 +12,7 @@ import com.mygdx.game.object.MoneyItem;
 import com.mygdx.game.object.Square;
 import com.mygdx.game.screens.MainGameScreen;
 
+import static com.mygdx.game.util.Constants.SPEED;
 import static com.mygdx.game.util.VectorUtil.reflectVector;
 
 public class WorldContactListener implements ContactListener {
@@ -36,6 +37,7 @@ public class WorldContactListener implements ContactListener {
             Item1 item1 = (Item1) ((fixA.getBody().getUserData() instanceof Item1
                     ? fixA.getBody().getUserData()
                     : fixB.getBody().getUserData()));
+            item1.addBallsToGame();
             item1.remove();
             return;
         }
@@ -46,6 +48,7 @@ public class WorldContactListener implements ContactListener {
             MoneyItem item1 = (MoneyItem) ((fixA.getBody().getUserData() instanceof MoneyItem
                     ? fixA.getBody().getUserData()
                     : fixB.getBody().getUserData()));
+            item1.increaseMoney();
             item1.remove();
             return;
         }
@@ -74,18 +77,38 @@ public class WorldContactListener implements ContactListener {
             return;
         }
 
+        // square and wall collisions
+
         Vector2 velocity = ball.getBody().getLinearVelocity();
-        Vector2 r = reflectVector(velocity, roundNormal).nor().scl(20f);
+        Vector2 r = reflectVector(velocity, roundNormal).nor().scl(SPEED);
+
+
+//        if (fixA.getBody().getUserData() instanceof Square || fixB.getBody().getUserData() instanceof Square) {
+//            System.out.println("BEGIN CONTACT WITH SQUARE");
+//            if (!ball.inContact) {
+//                ball.inContact = true;
+//                ball.fire(r.x, r.y);
+//                return;
+//            } else {
+//                return;
+//            }
+//        }
+
+        // reflect when collision with walls happened
         ball.fire(r.x, r.y);
-
-
-        if (fixA.getBody().getUserData() instanceof Square || fixB.getBody().getUserData() instanceof Square) {
-//            System.out.println("aaaa");
-        }
     }
 
     @Override
     public void endContact(Contact contact) {
+        Fixture fixA = contact.getFixtureA();
+        Fixture fixB = contact.getFixtureB();
+
+        Ball ball = fixA.getBody().getUserData() instanceof Ball ? (Ball) fixA.getBody().getUserData() : (Ball) fixB.getBody().getUserData();
+
+        if (fixA.getBody().getUserData() instanceof Square || fixB.getBody().getUserData() instanceof Square) {
+//            System.out.println("ENDDDDDDDDDD CONTACT WITH SQUARE");
+            ball.inContact = false;
+        }
     }
 
     @Override

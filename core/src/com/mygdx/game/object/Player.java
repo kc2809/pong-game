@@ -9,9 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.screens.MainGameScreen;
 
+import static com.mygdx.game.util.Constants.SPEED;
+
 public class Player extends Stage {
 
-    private static final float SPEED = 20;
     public Vector2 positionToFire;
     int countOnFire = 0;
     MainGameScreen mainGameScreen;
@@ -70,13 +71,13 @@ public class Player extends Stage {
     }
 
     private void nextStep() {
-        System.out.println("count on fire : " + countOnFire);
+//        System.out.println("count on fire : " + countOnFire);
 //        countOnFire++;
         if (++countOnFire == this.getActors().size) {
             countOnFire = 0;
             mainGameScreen.nextRow();
         }
-        System.out.println(" after count on fire : " + countOnFire);
+//        System.out.println(" after count on fire : " + countOnFire);
 
     }
 

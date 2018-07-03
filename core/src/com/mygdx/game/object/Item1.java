@@ -83,10 +83,13 @@ public class Item1 extends ObjectBox2d {
         return pe;
     }
 
-    @Override
-    public boolean remove() {
+    public void addBallsToGame() {
         Level levelStage = (Level) getStage();
         levelStage.increaseBallWillBeAddNextStep();
+    }
+
+    @Override
+    public boolean remove() {
         sprite = null;
         effect = null;
         return super.remove();

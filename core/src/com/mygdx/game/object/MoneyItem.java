@@ -55,8 +55,11 @@ public class MoneyItem extends ObjectBox2d {
 
     @Override
     public boolean remove() {
+        return super.remove();
+    }
+
+    public void increaseMoney() {
         Level level = (Level) this.getStage();
         level.screen.uiObject.increateMoney();
-        return super.remove();
     }
 }

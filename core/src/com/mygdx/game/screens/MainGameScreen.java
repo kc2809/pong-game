@@ -42,6 +42,8 @@ public class MainGameScreen implements Screen, InputProcessor {
     private WorldContactListener contactListener;
     private EffectManager effectManager;
 
+    public int currentLevel = 2;
+
     @Override
     public void show() {
 //        debugRenderer = new Box2DDebugRenderer();
@@ -84,6 +86,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     public void nextRow() {
 //        level.generateNextRow();
+        currentLevel++;
         System.out.println("NEXT ROWWWWW: " + player.getActors().size);
         level.moveOneRow();
 
@@ -126,7 +129,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     private void update(float delta) {
         if (fireFlag == 1) {
-            if ((System.currentTimeMillis() - timeAtFire) > 500) {
+            if ((System.currentTimeMillis() - timeAtFire) > 200) {
                 Ball b = (Ball) player.getActors().get(count);
                 count++;
 //                b.fire(40, 40);

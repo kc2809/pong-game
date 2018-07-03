@@ -13,8 +13,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.game.util.Constants;
-import com.sun.media.jfxmediaimpl.MediaDisposer.Disposable;
 
 public class Assets implements Disposable, AssetErrorListener {
     public static final String TAG = Assets.class.getName();
@@ -64,7 +64,7 @@ public class Assets implements Disposable, AssetErrorListener {
         money = createMoneyTexture();
 
         //File handler
-        effectFile = Gdx.files.internal("square.party");
+        effectFile = Gdx.files.internal("square5.party");
         imagesDir = Gdx.files.internal("");
 
         ballsAtlas = new TextureAtlas(Gdx.files.internal("circleeffect.atlas"));
@@ -84,7 +84,7 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
     private Texture createCircleTexture() {
-        Pixmap pixmap = new Pixmap(400, 400, Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(800, 800, Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fillCircle(pixmap.getWidth() / 2, pixmap.getHeight() / 2, pixmap.getWidth() / 2);
         Texture circle = new Texture(pixmap);
@@ -93,9 +93,9 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
     private Texture createSquareTexture() {
-        Pixmap pixmap = new Pixmap(1000, 1000, Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(2000, 2000, Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
-        pixmap.fillRectangle(0, 0, 1000, 1000);
+        pixmap.fillRectangle(0, 0, 2000, 2000);
         Texture square = new Texture(pixmap);
         pixmap.dispose();
         return square;

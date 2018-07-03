@@ -42,7 +42,8 @@ public class Square extends Actor {
     public Square(MainGameScreen screen, World world, float x, float y) {
         super();
         this.screen = screen;
-        value = r.nextInt(3) + 1;
+//        value = r.nextInt(3) + 1;
+        value = r.nextInt(screen.currentLevel) +1;
         this.world = world;
         sprite = new Sprite(Assets.instance.square);
         sprite.setSize(sprite.getWidth() / PPM, sprite.getHeight() / PPM);
@@ -50,6 +51,7 @@ public class Square extends Actor {
         createPhysics();
         font = Assets.instance.font;
         setPosition(x, y);
+
     }
 
     public Body getBody() {
