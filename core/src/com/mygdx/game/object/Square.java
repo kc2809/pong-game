@@ -2,35 +2,24 @@ package com.mygdx.game.object;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.box2d.Box2dManager;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.MainGameScreen;
 
 import java.util.Random;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
-import static com.mygdx.game.util.Constants.PPM;
 import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
 
-public class Square extends Actor {
+public class Square extends ObjectBox2d {
 
-
-    Sprite sprite;
-    Body body;
-    World world;
     MainGameScreen screen;
 
     int value;
-
-    boolean createPhysics = false;
     Random r = new Random();
 
     BitmapFont font;
@@ -40,41 +29,21 @@ public class Square extends Actor {
     }
 
     public Square(MainGameScreen screen, World world, float x, float y) {
-        super();
+        super(world, Assets.instance.square, x, y);
         this.screen = screen;
-//        value = r.nextInt(3) + 1;
         value = r.nextInt(screen.currentLevel) +1;
-        this.world = world;
-        sprite = new Sprite(Assets.instance.square);
-        sprite.setSize(sprite.getWidth() / PPM, sprite.getHeight() / PPM);
-        sprite.setPosition(getX(), getY());
-        createPhysics();
         font = Assets.instance.font;
-        setPosition(x, y);
+        sprite.setColor(getColorRandomValue(), getColorRandomValue(), getColorRandomValue(), 1);
 
-    }
-
-    public Body getBody() {
-        return body;
     }
 
     @Override
-    public void setPosition(float x, float y) {
-        super.setPosition(x, y);
-        sprite.setPosition(getX(), getY());
-        if (body != null)
-            body.setTransform(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2, 0);
-    }
-
-    private void createPhysics() {
+    public void createPhysics() {
+        if (isWorldLock()) return;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
         bodyDef.position.set(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
 
-        if (world.isLocked()) {
-            createPhysics = true;
-            return;
-        }
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
@@ -90,27 +59,17 @@ public class Square extends Actor {
         body.createFixture(fixtureDef);
         shape.dispose();
         body.setUserData(this);
-
-        createPhysics = false;
-
-//        sprite.setColor(Color.YELLOW);
-        sprite.setColor(getColorRandomValue(), getColorRandomValue(), getColorRandomValue(), 1);
-
     }
 
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        sprite.draw(batch);
-        setPosition(getX(), getY());
+        super.draw(batch, parentAlpha);
         font.draw(batch, value+"", sprite.getX(), sprite.getY() + sprite.getHeight());
-        if (createPhysics) createPhysics();
-
     }
 
     @Override
     public boolean remove() {
-        Box2dManager.getInstance().addBodyToDestroy(body);
         screen.uiObject.increaseScore();
         return super.remove();
     }
@@ -120,5 +79,4 @@ public class Square extends Actor {
         screen.setEffectAtPosition(body.getPosition());
         this.remove();
     }
-
 }
