@@ -17,7 +17,7 @@ public class PlayerCount extends Actor {
 
     public PlayerCount(MainGameScreen screen) {
         this.screen = screen;
-        font = Assets.instance.font;
+        font = Assets.instance.fontSmall;
         setPositionToDraw();
     }
 

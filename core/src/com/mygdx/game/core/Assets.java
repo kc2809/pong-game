@@ -19,7 +19,9 @@ import com.mygdx.game.util.Constants;
 public class Assets implements Disposable, AssetErrorListener {
     public static final String TAG = Assets.class.getName();
     public static final Assets instance = new Assets();
-    private static final float FONT_SCREEN_WIDTH_FRACTION = 1.0f / 20.f;
+    private static final float FONT_SCREEN_WIDTH_FRACTION = 1.0f / 25.f;
+    private static final float FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 15.0f;
+
     public AssetBunny bunny;
     public AssetRock rock;
     public Texture circle;
@@ -28,7 +30,8 @@ public class Assets implements Disposable, AssetErrorListener {
     public FileHandle effectFile;
     public FileHandle imagesDir;
     public TextureAtlas ballsAtlas;
-    public BitmapFont font;
+    public BitmapFont fontSmall;
+    public BitmapFont fontBig;
     private AssetManager assetManager;
 
     private Assets() {
@@ -69,7 +72,8 @@ public class Assets implements Disposable, AssetErrorListener {
 
         ballsAtlas = new TextureAtlas(Gdx.files.internal("circleeffect.atlas"));
 
-        font = createFont();
+        fontSmall = createFont(FONT_SCREEN_WIDTH_FRACTION);
+        fontBig = createFont(FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
     }
 
     @Override
@@ -81,6 +85,8 @@ public class Assets implements Disposable, AssetErrorListener {
     @Override
     public void dispose() {
         assetManager.dispose();
+        fontSmall.dispose();
+        fontBig.dispose();
     }
 
     private Texture createCircleTexture() {
@@ -113,13 +119,14 @@ public class Assets implements Disposable, AssetErrorListener {
         return money;
     }
 
-    private BitmapFont createFont() {
+    private BitmapFont createFont(float fraction) {
         BitmapFont font;
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("CaviarDreams.ttf"));
+//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("CaviarDreams.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSerif-Bold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        parameter.size = (int) (FONT_SCREEN_WIDTH_FRACTION * Gdx.graphics.getWidth());
+        parameter.size = (int) (fraction * Gdx.graphics.getWidth());
         parameter.color = Color.WHITE;
         font = generator.generateFont(parameter);
         font.setUseIntegerPositions(false);
@@ -128,6 +135,7 @@ public class Assets implements Disposable, AssetErrorListener {
         generator.dispose();
         return font;
     }
+
 
     public class AssetBunny {
         public final AtlasRegion head;

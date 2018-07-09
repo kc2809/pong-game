@@ -12,7 +12,7 @@ public class Box2dManager {
     private List<Body> bodiesWillBeDestroyed;
 
     private Box2dManager() {
-        bodiesWillBeDestroyed = new ArrayList<Body>();
+        bodiesWillBeDestroyed = new ArrayList<>();
     }
 
     public static Box2dManager getInstance() {
@@ -32,12 +32,7 @@ public class Box2dManager {
 
     public void destroyBody(World world) {
         if (!bodiesWillBeDestroyed.isEmpty())
-//        bodiesWillBeDestroyed.forEach(world::destroyBody);
-        {
-            for (Body body : bodiesWillBeDestroyed) {
-                world.destroyBody(body);
-            }
-        }
+            bodiesWillBeDestroyed.forEach(world::destroyBody);
         bodiesWillBeDestroyed.clear();
     }
 }

@@ -65,7 +65,8 @@ public class MoneyItem extends ObjectBox2d {
     public void increaseMoney() {
 //        Level level = (Level) this.getStage();
 //        level.screen.uiObject.increateMoney();
-        screen.uiObject.increateMoney();
+//        screen.uiObject.increateMoney();
+        screen.increaseMoeny();
         remove();
     }
 }

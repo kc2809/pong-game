@@ -29,6 +29,8 @@ public class Level extends Stage {
 
     Random random = new Random();
 
+    UIObjects uiObjects;
+
     public Level(MainGameScreen screen, Viewport viewport, World world) {
         super(viewport);
         this.screen = screen;
@@ -38,21 +40,16 @@ public class Level extends Stage {
         initLevel();
         generateNextStep();
         //  generateLevelByNumber(currentLevel);
+        uiObjects = new UIObjects(screen);
+        uiObjects.setPosition(0, this.getViewport().getWorldHeight() / 2);
+        addActor(uiObjects);
     }
 
-//    public void draw() {
-//        stage.draw();
-//    }
-
-//    public void update(float dentaTime) {
-//        stage.act(dentaTime);
-//    }
+    public void increaseScore() {
+        uiObjects.increaseScore();
+    }
 
     public void moveOneRow() {
-//        if (isLevelFinish()) generateLevelByNumber(++currentLevel);
-//        if (currentLevel > 0) currentLevel = 0;
-
-
         addActionToAllSquare();
     }
 
@@ -175,5 +172,9 @@ public class Level extends Stage {
 
     private float getPositionForGenerate() {
         return getCamera().viewportHeight * 5 / 12 - 1.0f;
+    }
+
+    public void increaseMoney() {
+        uiObjects.increaseMoney();
     }
 }

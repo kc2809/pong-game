@@ -2,6 +2,7 @@ package com.mygdx.game.object;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -26,6 +27,8 @@ public class Square extends ObjectBox2d {
     Random r = new Random();
 
     BitmapFont font;
+    GlyphLayout layout;
+    StringBuilder valueBuilder;
 
     private float getColorRandomValue(){
         return r.nextInt(255) / 255.0f;
@@ -36,8 +39,12 @@ public class Square extends ObjectBox2d {
         this.screen = screen;
 //        value = r.nextInt(screen.currentLevel) +1;
         value = generateValueByLevel(screen.currentLevel);
-        font = Assets.instance.font;
+        font = Assets.instance.fontSmall;
         sprite.setColor(getColorRandomValue(), getColorRandomValue(), getColorRandomValue(), 1);
+
+        valueBuilder = new StringBuilder();
+        layout = new GlyphLayout();
+        setValueBuilder();
     }
 
 
@@ -70,7 +77,8 @@ public class Square extends ObjectBox2d {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        font.draw(batch, value+"", sprite.getX(), sprite.getY() + sprite.getHeight());
+//        layout.setText(fontSmall, );
+        font.draw(batch, valueBuilder, getCenterPostionX() - layout.width / 2, getCenterPostionY() + layout.height / 2);
     }
 
     @Override
@@ -81,12 +89,15 @@ public class Square extends ObjectBox2d {
 
     @Override
     public boolean remove() {
-        screen.uiObject.increaseScore();
+//        screen.uiObject.increaseMoney();
+        screen.increaseScore();
         return super.remove();
     }
 
     public void descreaseValue() {
-        if (--value != 0) {
+        value--;
+        setValueBuilder();
+        if (value != 0) {
             addCollisionEffect();
             return;
         }
@@ -100,5 +111,11 @@ public class Square extends ObjectBox2d {
 
     public void addCollisionEffect(){
         this.addAction(Actions.sequence(Actions.scaleTo(1.05f,1.05f,0.005f), Actions.scaleTo(1.0f,1.0f,0.005f)));
+    }
+
+    private void setValueBuilder() {
+        valueBuilder.setLength(0);
+        valueBuilder.append(value);
+        layout.setText(font, valueBuilder);
     }
 }

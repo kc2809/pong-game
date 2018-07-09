@@ -19,14 +19,13 @@ import com.mygdx.game.object.Level;
 import com.mygdx.game.object.Player;
 import com.mygdx.game.object.PlayerCount;
 import com.mygdx.game.object.Trajectory;
-import com.mygdx.game.object.UIObject;
 import com.mygdx.game.object.Walls;
 import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.VectorUtil;
 import com.mygdx.game.world.WorldContactListener;
 
 public class MainGameScreen implements Screen, InputProcessor {
-    public UIObject uiObject;
+    //    public UIObject uiObject;
     public int ballBeAddedNextRow;
     World world;
 //    Box2DDebugRenderer debugRenderer;
@@ -50,6 +49,10 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     PlayerCount playerCount;
 
+    //UIObject
+    public int score;
+    public int money;
+
     @Override
     public void show() {
 //        debugRenderer = new Box2DDebugRenderer();
@@ -66,6 +69,8 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         ballBeAddedNextRow = 0;
 
+        score = 0;
+        money = 0;
     }
 
     private void initObject() {
@@ -86,7 +91,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         effectManager = new EffectManager();
         level.addActor(effectManager);
 
-        uiObject = new UIObject();
+//        uiObject = new UIObject();
 
         playerCount = new PlayerCount(this);
         level.addActor(playerCount);
@@ -141,7 +146,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         Box2dManager.getInstance().destroyBody(world);
 
-        uiObject.draw();
+//        uiObject.draw();
 
         frameRate.render();
     }
@@ -286,5 +291,13 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void increaseScore(){
+        level.increaseScore();
+    }
+
+    public void increaseMoeny(){
+        level.increaseMoney();
     }
 }

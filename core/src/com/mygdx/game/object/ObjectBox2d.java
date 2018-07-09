@@ -89,4 +89,12 @@ abstract class ObjectBox2d extends Actor {
         isCreatePhysics = false;
         return false;
     }
+
+    public float getCenterPostionX() {
+        return sprite.getX() + sprite.getWidth() / 2;
+    }
+
+    public float getCenterPostionY() {
+        return sprite.getY() + sprite.getHeight() / 2;
+    }
 }
