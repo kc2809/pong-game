@@ -65,7 +65,7 @@ public class Ball extends ObjectBox2d {
         super.act(delta);
         if (body.getLinearVelocity().len() > 0 && body.getLinearVelocity().len() < 5) {
             System.out.println("BOM SPEED VOOOOOOOOO");
-            body.setLinearVelocity(body.getLinearVelocity().nor().scl(SPEED));
+            body.setLinearVelocity(body.getLinearVelocity().nor().scl(SPEED*1.5f));
         }
     }
 

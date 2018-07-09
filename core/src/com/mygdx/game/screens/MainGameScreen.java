@@ -12,10 +12,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.box2d.Box2dManager;
+import com.mygdx.game.core.FrameRate;
 import com.mygdx.game.effect.EffectManager;
 import com.mygdx.game.object.Ball;
 import com.mygdx.game.object.Level;
 import com.mygdx.game.object.Player;
+import com.mygdx.game.object.PlayerCount;
 import com.mygdx.game.object.Trajectory;
 import com.mygdx.game.object.UIObject;
 import com.mygdx.game.object.Walls;
@@ -42,7 +44,11 @@ public class MainGameScreen implements Screen, InputProcessor {
     private WorldContactListener contactListener;
     private EffectManager effectManager;
 
-    public int currentLevel = 2;
+    public int currentLevel = 1;
+
+    FrameRate frameRate;
+
+    PlayerCount playerCount;
 
     @Override
     public void show() {
@@ -59,9 +65,13 @@ public class MainGameScreen implements Screen, InputProcessor {
         initObject();
 
         ballBeAddedNextRow = 0;
+
     }
 
     private void initObject() {
+        frameRate = new FrameRate();
+
+
         walls = new Walls(world, camera);
 
         player = new Player(viewport, this, world);
@@ -77,6 +87,9 @@ public class MainGameScreen implements Screen, InputProcessor {
         level.addActor(effectManager);
 
         uiObject = new UIObject();
+
+        playerCount = new PlayerCount(this);
+        level.addActor(playerCount);
 
     }
 
@@ -102,6 +115,10 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         //enable fire flag
         fireFlag = 0;
+
+        //enable player count
+        playerCount.setPositionToDraw();
+        playerCount.setVisible(true);
     }
 
     @Override
@@ -125,6 +142,8 @@ public class MainGameScreen implements Screen, InputProcessor {
         Box2dManager.getInstance().destroyBody(world);
 
         uiObject.draw();
+
+        frameRate.render();
     }
 
     private void update(float delta) {
@@ -137,12 +156,19 @@ public class MainGameScreen implements Screen, InputProcessor {
                 if (count == player.getActors().size) {
                     fireFlag = 2;
                     count = 0;
+                    playerCount.setVisible(false);
                 }
                 timeAtFire = System.currentTimeMillis();
             }
         }
 
+        frameRate.update();
 
+    }
+
+
+    public int getRemainBall() {
+        return player.getActors().size - count;
     }
 
     @Override
@@ -153,6 +179,8 @@ public class MainGameScreen implements Screen, InputProcessor {
         //set init position again
         player.setInitPositon();
         trajectory.projected(player.positionToFire, VectorUtil.VECTOR2_ZERO);
+
+        frameRate.resize(width, height);
 
     }
 
@@ -173,6 +201,10 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
+        level.dispose();
+        player.dispose();
+
+        frameRate.dispose();
     }
 
     @Override

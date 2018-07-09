@@ -18,6 +18,7 @@ import static com.mygdx.game.util.Constants.SQUARE_HEIGHT;
 import static com.mygdx.game.util.Constants.SQUARE_WIDTH;
 import static com.mygdx.game.util.Constants.VIEWPORT_WIDTH;
 
+
 public class Level extends Stage {
     private static final int MAX_SQUARE_PER_ROW = 7;
     World world;
@@ -75,7 +76,6 @@ public class Level extends Stage {
                     actor.addAction(Actions.sequence(moveToAction, Actions.run(getRunable())));
                 } else {
                     actor.addAction(Actions.moveTo(actor.getX(), actor.getY() - SQUARE_HEIGHT -0.1f, 1));
-
                 }
             }
         }
@@ -121,9 +121,9 @@ public class Level extends Stage {
                 } else {
                     // 5% generate Item1
                     if (belowPercent(5)) {
-                        this.addActor(new Item1(world, x, y));
+                        this.addActor(new Item1(world, screen, x, y));
                     } else {
-                        this.addActor(new MoneyItem(world, x, y));
+                        this.addActor(new MoneyItem(world, screen, x, y));
                     }
                 }
                 val = val >> 1;
@@ -133,7 +133,7 @@ public class Level extends Stage {
 
 
     private void generateNextStep() {
-        int value = random.nextInt(512);
+        int value = random.nextInt(64);
         //one value means one row
         // value from [0, 512]
         // generate 8 square based on binary value of it.
@@ -147,11 +147,11 @@ public class Level extends Stage {
                 this.addActor(s);
             } else {
                 // 5% generate Item1
-                if (belowPercent(20)) {
-                    this.addActor(new Item1(world, x, y));
+                if (belowPercent(30)) {
+                    this.addActor(new Item1(world, screen, x, y));
                 } else {
-                    if (belowPercent(20))
-                        this.addActor(new MoneyItem(world, x, y));
+                    if (belowPercent(10))
+                        this.addActor(new MoneyItem(world, screen, x, y));
                 }
             }
             value = value >> 1;

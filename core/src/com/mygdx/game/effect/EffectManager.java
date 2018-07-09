@@ -2,6 +2,7 @@ package com.mygdx.game.effect;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.core.Assets;
 
@@ -14,6 +15,9 @@ public class EffectManager extends Actor {
 
     public EffectManager() {
         this.effects = new ArrayList<ParticleEffect>();
+        for(int i=0;i<20;++i){
+            effects.add(particleEffectFactory());
+        }
     }
 
     @Override
@@ -52,20 +56,33 @@ public class EffectManager extends Actor {
         }
 
         if (optinalEffect != null) {
+            optinalEffect.reset(false);
             optinalEffect.setPosition(x, y);
-            optinalEffect.start();
+//            optinalEffect.start();
         } else {
             effects.add(newParticleEffectAtPosition(x, y));
         }
     }
 
     private ParticleEffect newParticleEffectAtPosition(float x, float y) {
-        ParticleEffect pe = new ParticleEffect();
-        pe.load(Assets.instance.effectFile, Assets.instance.imagesDir);
+//        ParticleEffect pe = new ParticleEffect();
+//        pe.load(Assets.instance.effectFile, Assets.instance.imagesDir);
+//        pe.getEmitters().first().setPosition(x, y);
+//        pe.scaleEffect(1.0f / 150f);
+//        pe.start();
+
+        ParticleEffect pe = particleEffectFactory();
         pe.getEmitters().first().setPosition(x, y);
         pe.scaleEffect(1.0f / 150f);
         pe.start();
         return pe;
     }
 
+    private ParticleEffect particleEffectFactory(){
+        ParticleEffect pe = new ParticleEffect();
+        pe.load(Assets.instance.effectFile, Assets.instance.imagesDir);
+        pe.scaleEffect(1.0f / 150f);
+
+        return pe;
+    }
 }

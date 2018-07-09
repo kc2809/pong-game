@@ -7,14 +7,18 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.core.Assets;
+import com.mygdx.game.screens.MainGameScreen;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
 import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
 
 public class MoneyItem extends ObjectBox2d {
 
-    public MoneyItem(World world, float x, float y) {
+    MainGameScreen screen;
+
+    public MoneyItem(World world, MainGameScreen screen, float x, float y) {
         super(world, Assets.instance.money, x, y);
+        this.screen = screen;
     }
 
     @Override
@@ -59,7 +63,9 @@ public class MoneyItem extends ObjectBox2d {
     }
 
     public void increaseMoney() {
-        Level level = (Level) this.getStage();
-        level.screen.uiObject.increateMoney();
+//        Level level = (Level) this.getStage();
+//        level.screen.uiObject.increateMoney();
+        screen.uiObject.increateMoney();
+        remove();
     }
 }

@@ -64,7 +64,7 @@ public class Assets implements Disposable, AssetErrorListener {
         money = createMoneyTexture();
 
         //File handler
-        effectFile = Gdx.files.internal("square5.party");
+        effectFile = Gdx.files.internal("square4.party");
         imagesDir = Gdx.files.internal("");
 
         ballsAtlas = new TextureAtlas(Gdx.files.internal("circleeffect.atlas"));

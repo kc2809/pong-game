@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.core.Assets;
+import com.mygdx.game.screens.MainGameScreen;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
 import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
@@ -17,9 +19,11 @@ import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
 public class Item1 extends ObjectBox2d {
 
     public ParticleEffect effect;
+    MainGameScreen screen;
 
-    public Item1(World world, float x, float y) {
+    public Item1(World world, MainGameScreen screen, float x, float y) {
         super(world, Assets.instance.circle, x, y);
+        this.screen = screen;
     }
 
     @Override
@@ -70,22 +74,29 @@ public class Item1 extends ObjectBox2d {
         super.act(delta);
         effect.update(delta);
         if (effect.isComplete()) {
-            effect.start();
+//            effect.reset(false);
+//            effect.start();
+            for (ParticleEmitter emitter : effect.getEmitters()) {
+                emitter.start();
+            }
         }
     }
 
     private ParticleEffect getTestEffect() {
         ParticleEffect pe = new ParticleEffect();
         pe.load(Gdx.files.internal("effect3.party"), Gdx.files.internal(""));
-        pe.getEmitters().first().setPosition(0, 0);
+//        pe.getEmitters().first().setPosition(0, 0);
         pe.scaleEffect(1.0f / 200f);
+        pe.allowCompletion();
         pe.start();
         return pe;
     }
 
     public void addBallsToGame() {
-        Level levelStage = (Level) getStage();
-        levelStage.increaseBallWillBeAddNextStep();
+//        Level levelStage = (Level) getStage();
+//        levelStage.increaseBallWillBeAddNextStep
+        ++screen.ballBeAddedNextRow;
+        remove();
     }
 
     @Override

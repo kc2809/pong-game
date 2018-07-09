@@ -38,7 +38,7 @@ public class WorldContactListener implements ContactListener {
                     ? fixA.getBody().getUserData()
                     : fixB.getBody().getUserData()));
             item1.addBallsToGame();
-            item1.remove();
+//            item1.remove();
             return;
         }
 
@@ -49,7 +49,7 @@ public class WorldContactListener implements ContactListener {
                     ? fixA.getBody().getUserData()
                     : fixB.getBody().getUserData()));
             item1.increaseMoney();
-            item1.remove();
+//            item1.remove();
             return;
         }
 

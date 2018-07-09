@@ -7,12 +7,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.MainGameScreen;
+import com.mygdx.game.util.MathUtils;
 
 import java.util.Random;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
+import static com.mygdx.game.util.Constants.RATIO_TO_DUPLICATE_VALUE;
 import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
 
 public class Square extends ObjectBox2d {
@@ -31,11 +34,13 @@ public class Square extends ObjectBox2d {
     public Square(MainGameScreen screen, World world, float x, float y) {
         super(world, Assets.instance.square, x, y);
         this.screen = screen;
-        value = r.nextInt(screen.currentLevel) +1;
+//        value = r.nextInt(screen.currentLevel) +1;
+        value = generateValueByLevel(screen.currentLevel);
         font = Assets.instance.font;
         sprite.setColor(getColorRandomValue(), getColorRandomValue(), getColorRandomValue(), 1);
-
     }
+
+
 
     @Override
     public void createPhysics() {
@@ -69,14 +74,31 @@ public class Square extends ObjectBox2d {
     }
 
     @Override
+    public void act(float delta) {
+        super.act(delta);
+        sprite.setSize(this.getScaleX(), this.getScaleY());
+    }
+
+    @Override
     public boolean remove() {
         screen.uiObject.increaseScore();
         return super.remove();
     }
 
     public void descreaseValue() {
-        if (--value != 0) return;
+        if (--value != 0) {
+            addCollisionEffect();
+            return;
+        }
         screen.setEffectAtPosition(body.getPosition());
         this.remove();
+    }
+
+    private int generateValueByLevel(int level) {
+        return MathUtils.instance.ratio(RATIO_TO_DUPLICATE_VALUE) ? level * 2 : level;
+    }
+
+    public void addCollisionEffect(){
+        this.addAction(Actions.sequence(Actions.scaleTo(1.05f,1.05f,0.005f), Actions.scaleTo(1.0f,1.0f,0.005f)));
     }
 }
