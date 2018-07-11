@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -23,6 +24,7 @@ import com.mygdx.game.object.Walls;
 import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.VectorUtil;
 import com.mygdx.game.world.WorldContactListener;
+
 
 public class MainGameScreen implements Screen, InputProcessor {
     //    public UIObject uiObject;
@@ -98,8 +100,8 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     }
 
-    public void setEffectAtPosition(Vector2 position) {
-        effectManager.setEffectAtPosition(position.x, position.y);
+    public void setEffectAtPosition(Vector2 position, Color color) {
+        effectManager.setEffectAtPosition(position.x, position.y, color);
     }
 
     public void nextRow() {
@@ -156,7 +158,6 @@ public class MainGameScreen implements Screen, InputProcessor {
             if ((System.currentTimeMillis() - timeAtFire) > 200) {
                 Ball b = (Ball) player.getActors().get(count);
                 count++;
-//                b.fire(40, 40);
                 b.fireWithVelocity(player.getVelocity());
                 if (count == player.getActors().size) {
                     fireFlag = 2;
@@ -181,12 +182,11 @@ public class MainGameScreen implements Screen, InputProcessor {
         viewport.update(width, height);
         camera.position.set(0, 0, 0);
         walls.setWallPositionByCamera(camera);
-        //set init position again
+        // set init position again.
         player.setInitPositon();
         trajectory.projected(player.positionToFire, VectorUtil.VECTOR2_ZERO);
 
         frameRate.resize(width, height);
-
     }
 
     @Override

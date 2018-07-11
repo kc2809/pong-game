@@ -11,8 +11,12 @@ import com.mygdx.game.object.Item1;
 import com.mygdx.game.object.MoneyItem;
 import com.mygdx.game.object.Square;
 import com.mygdx.game.screens.MainGameScreen;
+import com.mygdx.game.sound.SoundManager;
 
+import static com.mygdx.game.util.Constants.DEGREE_DECREASE;
+import static com.mygdx.game.util.Constants.LOWER_LIMIT;
 import static com.mygdx.game.util.Constants.SPEED;
+import static com.mygdx.game.util.Constants.UPPER_LIMIT;
 import static com.mygdx.game.util.VectorUtil.reflectVector;
 
 public class WorldContactListener implements ContactListener {
@@ -68,6 +72,9 @@ public class WorldContactListener implements ContactListener {
 //            s.remove();
             s.descreaseValue();
             //   return;
+//            Music hitSound = Gdx.audio.newMusic(Gdx.files.internal("music/toang.wav"));
+//            hitSound.play();
+            SoundManager.instance.playHitSound();
         }
 
         Ball ball = fixA.getBody().getUserData() instanceof Ball ? (Ball) fixA.getBody().getUserData() : (Ball) fixB.getBody().getUserData();
@@ -82,7 +89,14 @@ public class WorldContactListener implements ContactListener {
         Vector2 velocity = ball.getBody().getLinearVelocity();
         Vector2 r = reflectVector(velocity, roundNormal).nor().scl(SPEED);
 
-
+        if ("rightWall".equals(fixA.getBody().getUserData()) || "rightWall".equals(fixB.getBody().getUserData())) {
+            float angle = r.angle();
+            if (angle > LOWER_LIMIT && angle < UPPER_LIMIT) {
+                System.out.println("Decrease " + DEGREE_DECREASE + " degrees");
+                float newAngle = angle + DEGREE_DECREASE;
+                r = new Vector2(r.x, (float) (r.len() * Math.sin(Math.toRadians(newAngle))));
+            }
+        }
 //        if (fixA.getBody().getUserData() instanceof Square || fixB.getBody().getUserData() instanceof Square) {
 //            System.out.println("BEGIN CONTACT WITH SQUARE");
 //            if (!ball.inContact) {

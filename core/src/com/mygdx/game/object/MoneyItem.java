@@ -17,7 +17,7 @@ public class MoneyItem extends ObjectBox2d {
     MainGameScreen screen;
 
     public MoneyItem(World world, MainGameScreen screen, float x, float y) {
-        super(world, Assets.instance.money, x, y);
+        super(world, Assets.instance.assetMoenyItem.moneyItem, x, y);
         this.screen = screen;
     }
 
@@ -40,8 +40,8 @@ public class MoneyItem extends ObjectBox2d {
         fixtureDef.filter.maskBits = BALL_PHYSIC;
 
         body.createFixture(fixtureDef);
-        shape.dispose();
         body.setUserData(this);
+        shape.dispose();
     }
 
     @Override

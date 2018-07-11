@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -24,15 +25,21 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public AssetBunny bunny;
     public AssetRock rock;
-    public Texture circle;
-    public Texture square;
-    public Texture money;
+//    public Texture circle;
+//    public Texture square;
+//    public Texture money;
     public FileHandle effectFile;
     public FileHandle imagesDir;
     public TextureAtlas ballsAtlas;
     public BitmapFont fontSmall;
     public BitmapFont fontBig;
     private AssetManager assetManager;
+
+
+    public AssetCircle assetCircle;
+    public AssetSquare assetSquare;
+    public AssetMoenyItem assetMoenyItem;
+
 
     private Assets() {
     }
@@ -60,20 +67,26 @@ public class Assets implements Disposable, AssetErrorListener {
 
 
         // create game resource object
-        bunny = new AssetBunny(atlas);
-        rock = new AssetRock(atlas);
-        circle = createCircleTexture();
-        square = createSquareTexture();
-        money = createMoneyTexture();
+//        bunny = new AssetBunny(atlas);
+//        rock = new AssetRock(atlas);
+        assetCircle = new AssetCircle(atlas);
+        assetSquare = new AssetSquare(atlas);
+        assetMoenyItem = new AssetMoenyItem(atlas);
+
+//        circle = createCircleTexture();
+//        square = createSquareTexture();
+//        money = createMoneyTexture();
+
 
         //File handler
-        effectFile = Gdx.files.internal("square4.party");
+        effectFile = Gdx.files.internal("square5.party");
         imagesDir = Gdx.files.internal("");
 
         ballsAtlas = new TextureAtlas(Gdx.files.internal("circleeffect.atlas"));
 
         fontSmall = createFont(FONT_SCREEN_WIDTH_FRACTION);
         fontBig = createFont(FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
+
     }
 
     @Override
@@ -160,6 +173,30 @@ public class Assets implements Disposable, AssetErrorListener {
 
         public AssetNumber(TextureAtlas textureAtlas, int num) {
             this.number = textureAtlas.findRegion("num" + num);
+        }
+    }
+
+    public class AssetCircle {
+        public final AtlasRegion circle;
+
+        public AssetCircle(TextureAtlas textureAtlas) {
+            this.circle = textureAtlas.findRegion("circle85");
+        }
+    }
+
+    public class AssetSquare {
+        public final AtlasRegion square;
+
+        public AssetSquare(TextureAtlas textureAtlas) {
+            this.square = textureAtlas.findRegion("square13");
+        }
+    }
+
+    public class AssetMoenyItem {
+        public final AtlasRegion moneyItem;
+
+        public AssetMoenyItem(TextureAtlas textureAtlas) {
+            this.moneyItem = textureAtlas.findRegion("moneyItem1");
         }
     }
 }

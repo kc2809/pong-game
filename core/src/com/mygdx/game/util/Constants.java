@@ -3,11 +3,13 @@ package com.mygdx.game.util;
 public interface Constants {
     float VIEWPORT_WIDTH = 7.8f;
     float VIEWPORT_HEIGHT = 10.0f;
-    String TEXTURE_ATLAS_OBJECT = "canyonbunny.pack";
+    String TEXTURE_ATLAS_OBJECT = "resources2.atlas";
     String TEXTURE_ATLAS_NUMBER = "number.pack";
 
+    String HIT_SOUND_PATH = "music/glass1.wav";
+
     //Pixcel per meter
-    int PPM = 2000;
+    int PPM = 1000;
 
     short BALL_PHYSIC = 0x01;
     short WORLD_PHYSIC = 0x02;
@@ -22,4 +24,10 @@ public interface Constants {
 
     // speed of player
     float SPEED = 17.0f;
+
+    // value of degree will be decrease if refection vector is PERPENDICULAR or between (LOWER_LIMIT, UPPER_LIMIT)
+    // with RIGHT WALL.
+    float DEGREE_DECREASE = 5;
+    float LOWER_LIMIT = 175;
+    float UPPER_LIMIT = 190;
 }

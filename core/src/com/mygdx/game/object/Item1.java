@@ -1,10 +1,10 @@
 package com.mygdx.game.object;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -22,12 +22,12 @@ public class Item1 extends ObjectBox2d {
     MainGameScreen screen;
 
     public Item1(World world, MainGameScreen screen, float x, float y) {
-        super(world, Assets.instance.circle, x, y);
+        super(world, Assets.instance.assetCircle.circle, x, y);
         this.screen = screen;
     }
 
     @Override
-    public void initObjects(Texture texture) {
+    public void initObjects(TextureRegion texture) {
         super.initObjects(texture);
         effect = getTestEffect();
     }
@@ -50,8 +50,8 @@ public class Item1 extends ObjectBox2d {
         fixtureDef.filter.categoryBits = WORLD_PHYSIC;
 
         body.createFixture(fixtureDef);
-        shape.dispose();
         body.setUserData(this);
+        shape.dispose();
     }
 
     @Override

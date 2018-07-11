@@ -38,7 +38,7 @@ public class UIObjects extends Actor {
         layout = new GlyphLayout();
         layoutScore = new GlyphLayout();
 
-        moneyIcon = new Sprite(Assets.instance.money);
+        moneyIcon = new Sprite(Assets.instance.assetMoenyItem.moneyItem);
         moneyIcon.setSize(moneyIcon.getWidth() / PPM, moneyIcon.getHeight() / PPM);
         moneyText = new Text();
         scoreText = new Text();

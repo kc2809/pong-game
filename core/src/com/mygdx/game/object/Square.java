@@ -30,17 +30,19 @@ public class Square extends ObjectBox2d {
     GlyphLayout layout;
     StringBuilder valueBuilder;
 
+
+
     private float getColorRandomValue(){
         return r.nextInt(255) / 255.0f;
     }
 
     public Square(MainGameScreen screen, World world, float x, float y) {
-        super(world, Assets.instance.square, x, y);
+        super(world, Assets.instance.assetSquare.square, x, y);
         this.screen = screen;
 //        value = r.nextInt(screen.currentLevel) +1;
         value = generateValueByLevel(screen.currentLevel);
         font = Assets.instance.fontSmall;
-        sprite.setColor(getColorRandomValue(), getColorRandomValue(), getColorRandomValue(), 1);
+        sprite.setColor(getColorRandomValue(), getColorRandomValue(), getColorRandomValue(), 1.0f);
 
         valueBuilder = new StringBuilder();
         layout = new GlyphLayout();
@@ -69,8 +71,8 @@ public class Square extends ObjectBox2d {
         fixtureDef.filter.maskBits = BALL_PHYSIC;
 
         body.createFixture(fixtureDef);
-        shape.dispose();
         body.setUserData(this);
+        shape.dispose();
     }
 
 
@@ -101,7 +103,7 @@ public class Square extends ObjectBox2d {
             addCollisionEffect();
             return;
         }
-        screen.setEffectAtPosition(body.getPosition());
+        screen.setEffectAtPosition(body.getPosition(), sprite.getColor());
         this.remove();
     }
 

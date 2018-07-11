@@ -1,5 +1,6 @@
 package com.mygdx.game.effect;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -31,7 +32,7 @@ public class EffectManager extends Actor {
         effects.forEach(particleEffect -> particleEffect.update(delta));
     }
 
-    public void setEffectAtPosition(float x, float y) {
+    public void setEffectAtPosition(float x, float y, Color color) {
         Optional<ParticleEffect> optinalEffect = effects.stream().filter(ParticleEffect::isComplete).findAny();
         if (!optinalEffect.isPresent()) {
             effects.add(newParticleEffectAtPosition(x, y));
@@ -39,6 +40,7 @@ public class EffectManager extends Actor {
         }
         optinalEffect.ifPresent(particleEffect -> {
             optinalEffect.get().reset(false);
+            setColor(optinalEffect.get(), color);
             optinalEffect.get().setPosition(x, y);
 //            particleEffect.setPosition(x, y);
 //            particleEffect.start();
@@ -82,4 +84,12 @@ public class EffectManager extends Actor {
 
         return pe;
     }
+
+    private void setColor(ParticleEffect pe, Color color) {
+        for (int i = 0; i < pe.getEmitters().size; ++i) {
+            pe.getEmitters().get(i).getTint().setColors(new float[]{color.r, color.g, color.b, color.a});
+        }
+    }
+
+
 }

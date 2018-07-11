@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.core.Assets;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
 import static com.mygdx.game.util.Constants.SPEED;
@@ -24,7 +23,7 @@ public class Ball extends ObjectBox2d {
     public boolean inContact;
 
     public Ball(World world, Vector2 position, int name) {
-        super(world, Assets.instance.circle, position.x, position.y);
+        super(world, Assets.instance.assetCircle.circle, position.x, position.y);
         isProgress = false;
         updateByBody = true;
         this.name = name;
@@ -48,8 +47,8 @@ public class Ball extends ObjectBox2d {
         fixtureDef.filter.maskBits = WORLD_PHYSIC;
 
         body.createFixture(fixtureDef);
-        shape.dispose();
         body.setUserData(this);
+        shape.dispose();
     }
 
     public Body getBody() {
@@ -65,7 +64,7 @@ public class Ball extends ObjectBox2d {
         super.act(delta);
         if (body.getLinearVelocity().len() > 0 && body.getLinearVelocity().len() < 5) {
             System.out.println("BOM SPEED VOOOOOOOOO");
-            body.setLinearVelocity(body.getLinearVelocity().nor().scl(SPEED*1.5f));
+            body.setLinearVelocity(body.getLinearVelocity().nor().scl(SPEED * 4.0f));
         }
     }
 
@@ -82,7 +81,6 @@ public class Ball extends ObjectBox2d {
 
     public void stop() {
         if(!isProgress) return;
-//        System.out.println("STOP IS CALLL from ball :  " + name);
         body.setLinearVelocity(0, 0);
         sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
         setX(sprite.getX());

@@ -3,6 +3,7 @@ package com.mygdx.game.object;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -18,21 +19,21 @@ abstract class ObjectBox2d extends Actor {
     protected boolean isCreatePhysics;
     protected boolean updateByBody;
 
-    public ObjectBox2d(World world, Texture texture, float x, float y) {
+    public ObjectBox2d(World world, TextureRegion texture, float x, float y) {
         this.world = world;
         isCreatePhysics = false;
         updateByBody = false;
 
         initObjects(texture);
         setPosition(x, y);
+        createPhysics();
     }
 
     abstract void createPhysics();
 
-    public void initObjects(Texture texture) {
+    public void initObjects(TextureRegion texture) {
         sprite = new Sprite(texture);
         sprite.setSize(sprite.getWidth() / PPM, sprite.getHeight() / PPM);
-        createPhysics();
     }
 
     @Override
