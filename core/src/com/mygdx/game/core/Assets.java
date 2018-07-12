@@ -23,9 +23,7 @@ public class Assets implements Disposable, AssetErrorListener {
     private static final float FONT_SCREEN_WIDTH_FRACTION = 1.0f / 25.f;
     private static final float FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 15.0f;
 
-    public AssetBunny bunny;
-    public AssetRock rock;
-//    public Texture circle;
+    //    public Texture circle;
 //    public Texture square;
 //    public Texture money;
     public FileHandle effectFile;
@@ -147,33 +145,6 @@ public class Assets implements Disposable, AssetErrorListener {
 
         generator.dispose();
         return font;
-    }
-
-
-    public class AssetBunny {
-        public final AtlasRegion head;
-
-        public AssetBunny(TextureAtlas textureAtlas) {
-            this.head = textureAtlas.findRegion("bunny_head");
-        }
-    }
-
-    public class AssetRock {
-        public final AtlasRegion edge;
-        public final AtlasRegion middle;
-
-        public AssetRock(TextureAtlas textureAtlas) {
-            this.edge = textureAtlas.findRegion("rock_edge");
-            this.middle = textureAtlas.findRegion("rock_middle");
-        }
-    }
-
-    public class AssetNumber {
-        public final AtlasRegion number;
-
-        public AssetNumber(TextureAtlas textureAtlas, int num) {
-            this.number = textureAtlas.findRegion("num" + num);
-        }
     }
 
     public class AssetCircle {

@@ -64,7 +64,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         camera.position.set(0, 0, 0);
         world = new World(new Vector2(0, 0), true);
 
-        trajectory = new Trajectory(viewport, 80);
+        trajectory = new Trajectory(viewport, 240);
 
         Gdx.input.setInputProcessor(this);
         initObject();
@@ -116,7 +116,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         ballBeAddedNextRow = 0;
 
         //show trajectory again
-        trajectory.projected(player.positionToFire, VectorUtil.VECTOR2_ZERO);
+        trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH/2, Constants.BALL_HEIGHT/2)), VectorUtil.VECTOR2_ZERO);
         trajectory.setVisible();
         System.out.println(" after NEXT ROWWWWW: " + player.getActors().size);
 
@@ -184,7 +184,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         walls.setWallPositionByCamera(camera);
         // set init position again.
         player.setInitPositon();
-        trajectory.projected(player.positionToFire, VectorUtil.VECTOR2_ZERO);
+        trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH / 2, Constants.BALL_HEIGHT / 2)), VectorUtil.VECTOR2_ZERO);
 
         frameRate.resize(width, height);
     }
@@ -268,7 +268,8 @@ public class MainGameScreen implements Screen, InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         Vector3 worldCoordinate = camera.unproject(new Vector3(screenX, screenY, 0));
         Vector2 clickPint = new Vector2(worldCoordinate.x, worldCoordinate.y);
-        trajectory.projected(player.positionToFire.cpy().add(new Vector2(0.125f, 0.125f)), clickPint);
+//        trajectory.projected(player.positionToFire.cpy().add(new Vector2(0.125f, 0.125f)), clickPint);
+        trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH / 2, Constants.BALL_WIDTH / 2)), clickPint);
         return false;
     }
 

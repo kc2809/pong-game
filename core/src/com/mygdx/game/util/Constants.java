@@ -17,6 +17,9 @@ public interface Constants {
     int SQUARE_WIDTH = 1;
     int SQUARE_HEIGHT = 1;
 
+    float BALL_WIDTH = 0.4f;
+    float BALL_HEIGHT = 0.4f;
+
     float SPACE_BETWEEN_SQUARE = 0.1f;
 
     // In main game, this is a ratio for next row to generate multiple value

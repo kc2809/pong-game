@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.util.VectorUtil;
 
 public class Trajectory {
-    final float DENTAT = 0.5f;
+    final float DENTAT = 0.1f;
     float[] vertices;
     int count;
     ShapeRenderer renderer;
@@ -63,7 +63,11 @@ public class Trajectory {
         renderer.setProjectionMatrix(viewport.getCamera().combined);
         renderer.setColor(Color.WHITE);
         renderer.begin(ShapeType.Line);
-        renderer.polyline(vertices);
+//        renderer.polyline(vertices);
+
+        for (int i = 0; i < vertices.length; i += 4) {
+            renderer.line(vertices[i], vertices[i + 1], vertices[i + 2], vertices[i + 3]);
+        }
 
         renderer.end();
     }
