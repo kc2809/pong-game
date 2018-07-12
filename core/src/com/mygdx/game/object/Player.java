@@ -77,7 +77,8 @@ public class Player extends Stage {
 //        countOnFire++;
         if (++countOnFire == this.getActors().size) {
             countOnFire = 0;
-            mainGameScreen.nextRow();
+//            mainGameScreen.nextRow();
+            mainGameScreen.nextStep();
         }
 //        System.out.println(" after count on fire : " + countOnFire);
 

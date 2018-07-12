@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -30,7 +31,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     //    public UIObject uiObject;
     public int ballBeAddedNextRow;
     World world;
-//    Box2DDebugRenderer debugRenderer;
+    Box2DDebugRenderer debugRenderer;
     Viewport viewport;
     OrthographicCamera camera;
     Walls walls;
@@ -55,9 +56,11 @@ public class MainGameScreen implements Screen, InputProcessor {
     public int score;
     public int money;
 
+    //light effect test
+
     @Override
     public void show() {
-//        debugRenderer = new Box2DDebugRenderer();
+        debugRenderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
         viewport.apply();
@@ -104,11 +107,17 @@ public class MainGameScreen implements Screen, InputProcessor {
         effectManager.setEffectAtPosition(position.x, position.y, color);
     }
 
-    public void nextRow() {
-//        level.generateNextRow();
+    public void nextStep() {
         currentLevel++;
         System.out.println("NEXT ROWWWWW: " + player.getActors().size);
         level.moveOneRow();
+    }
+
+    public void nextRow() {
+//        level.generateNextRow();
+//        currentLevel++;
+//        System.out.println("NEXT ROWWWWW: " + player.getActors().size);
+//        level.moveOneRow();
 
         //   player.addNewBall();
         player.addBalls(ballBeAddedNextRow);
@@ -134,7 +143,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         camera.update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        debugRenderer.render(world, camera.combined);
+        debugRenderer.render(world, camera.combined);
 
         player.draw();
         player.act(delta);
