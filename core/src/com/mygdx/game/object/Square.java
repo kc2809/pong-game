@@ -36,8 +36,8 @@ public class Square extends ObjectBox2d {
         return r.nextInt(255) / 255.0f;
     }
 
-    public Square(MainGameScreen screen, World world, float x, float y) {
-        super(world, Assets.instance.assetSquare.square, x, y);
+    public Square(MainGameScreen screen, World world) {
+        super(world, Assets.instance.assetSquare.square);
         this.screen = screen;
 //        value = r.nextInt(screen.currentLevel) +1;
         value = generateValueByLevel(screen.currentLevel);
@@ -49,7 +49,10 @@ public class Square extends ObjectBox2d {
         setValueBuilder();
     }
 
+    @Override
+    void initComponent() {
 
+    }
 
     @Override
     public void createPhysics() {

@@ -1,10 +1,10 @@
 package com.mygdx.game.object;
 
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -21,14 +21,13 @@ public class Item1 extends ObjectBox2d {
     public ParticleEffect effect;
     MainGameScreen screen;
 
-    public Item1(World world, MainGameScreen screen, float x, float y) {
-        super(world, Assets.instance.assetCircle.circle, x, y);
+    public Item1(World world, MainGameScreen screen) {
+        super(world, Assets.instance.assetCircle.circle);
         this.screen = screen;
     }
 
     @Override
-    public void initObjects(TextureRegion texture) {
-        super.initObjects(texture);
+    void initComponent() {
         effect = getTestEffect();
     }
 

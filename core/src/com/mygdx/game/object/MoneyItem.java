@@ -16,9 +16,13 @@ public class MoneyItem extends ObjectBox2d {
 
     MainGameScreen screen;
 
-    public MoneyItem(World world, MainGameScreen screen, float x, float y) {
-        super(world, Assets.instance.assetMoenyItem.moneyItem, x, y);
+    public MoneyItem(World world, MainGameScreen screen) {
+        super(world, Assets.instance.assetMoenyItem.moneyItem);
         this.screen = screen;
+    }
+
+    @Override
+    void initComponent() {
     }
 
     @Override

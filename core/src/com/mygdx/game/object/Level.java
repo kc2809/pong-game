@@ -87,15 +87,15 @@ public class Level extends Stage {
             float x = -VIEWPORT_WIDTH / 2 + SPACE_BETWEEN_SQUARE + SQUARE_WIDTH * i + SPACE_BETWEEN_SQUARE * i;
             if ((value & mask) != 0) {
                 // add square if it is 1
-                Square s = new Square(screen, world, x, y);
+                Square s = (Square) (new Square(screen, world)).init(x, y);
                 this.addActor(s);
             } else {
                 // 5% generate Item1
-                if (belowPercent(15)) {
-                    this.addActor(new Item1(world, screen, x, y));
+                if (belowPercent(30)) {
+                    this.addActor((new Item1(world, screen)).init(x, y));
                 } else {
                     if (belowPercent(10))
-                        this.addActor(new MoneyItem(world, screen, x, y));
+                        this.addActor((new MoneyItem(world, screen)).init(x, y));
                 }
             }
             value = value >> 1;

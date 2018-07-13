@@ -1,6 +1,5 @@
 package com.mygdx.game.object;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,22 +18,29 @@ abstract class ObjectBox2d extends Actor {
     protected boolean isCreatePhysics;
     protected boolean updateByBody;
 
-    public ObjectBox2d(World world, TextureRegion texture, float x, float y) {
+    public ObjectBox2d(World world, TextureRegion texture) {
         this.world = world;
         isCreatePhysics = false;
         updateByBody = false;
 
-        initObjects(texture);
+        initTexture(texture);
+    }
+
+    public ObjectBox2d init(float x, float y) {
+        initComponent();
         setPosition(x, y);
         createPhysics();
+        return this;
     }
 
     abstract void createPhysics();
 
-    public void initObjects(TextureRegion texture) {
+    public void initTexture(TextureRegion texture) {
         sprite = new Sprite(texture);
         sprite.setSize(sprite.getWidth() / PPM, sprite.getHeight() / PPM);
     }
+
+    abstract void initComponent();
 
     @Override
     public void setPosition(float x, float y) {

@@ -33,28 +33,28 @@ public class Trajectory {
             vertices[i] = vertices[i - 2] + velocity.x * DENTAT;
             vertices[i + 1] = vertices[i - 1] + velocity.y * DENTAT;
 
-            if (vertices[i] > viewport.getCamera().viewportWidth / 2) {
-                normal = new Vector2(-1, 0);
-                isReflect = true;
-            }
-            if (vertices[i] < -viewport.getCamera().viewportWidth / 2) {
-                normal = new Vector2(1, 0);
-                isReflect = true;
-            }
-            if (vertices[i + 1] > viewport.getCamera().viewportHeight / 2) {
-                normal = new Vector2(0, -1);
-                isReflect = true;
-            }
-            if (vertices[i + 1] < -viewport.getCamera().viewportHeight / 2) {
-                normal = new Vector2(0, 1);
-                isReflect = true;
-            }
-            if (isReflect) {
-                velocity = VectorUtil.reflectVector(velocity, normal);
-                isReflect = false;
-            }
-            vertices[i] = vertices[i - 2] + velocity.x * DENTAT;
-            vertices[i + 1] = vertices[i - 1] + velocity.y * DENTAT;
+//            if (vertices[i] > viewport.getCamera().viewportWidth / 2) {
+//                normal = new Vector2(-1, 0);
+//                isReflect = true;
+//            }
+//            if (vertices[i] < -viewport.getCamera().viewportWidth / 2) {
+//                normal = new Vector2(1, 0);
+//                isReflect = true;
+//            }
+//            if (vertices[i + 1] > viewport.getCamera().viewportHeight / 2) {
+//                normal = new Vector2(0, -1);
+//                isReflect = true;
+//            }
+//            if (vertices[i + 1] < -viewport.getCamera().viewportHeight / 2) {
+//                normal = new Vector2(0, 1);
+//                isReflect = true;
+//            }
+//            if (isReflect) {
+//                velocity = VectorUtil.reflectVector(velocity, normal);
+//                isReflect = false;
+//            }
+//            vertices[i] = vertices[i - 2] + velocity.x * DENTAT;
+//            vertices[i + 1] = vertices[i - 1] + velocity.y * DENTAT;
         }
     }
 

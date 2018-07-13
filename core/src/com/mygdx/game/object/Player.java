@@ -1,5 +1,6 @@
 package com.mygdx.game.object;
 
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
@@ -21,11 +22,14 @@ public class Player extends Stage {
     World world;
     private Vector2 velocity;
 
-    public Player(Viewport viewport, Screen screen, World world) {
+    RayHandler handler;
+
+    public Player(Viewport viewport, Screen screen, World world, RayHandler handler) {
         super(viewport);
         this.mainGameScreen = (MainGameScreen) screen;
         this.world = world;
         setInitPositon();
+        this.handler = handler;
     }
 
     public Vector2 getVelocity() {
@@ -49,18 +53,19 @@ public class Player extends Stage {
     }
 
     //Actor is ball
-    public void eventBallTouchGround(Ball actor) {
+    public boolean eventBallTouchGround(Ball actor) {
         if (!isFirstBallTouchGround()) {
             //           actor.addAction(Actions.moveTo(positionToFire.x, positionToFire.y, 0.2f));
             Action moveToAction = Actions.moveTo(positionToFire.x, positionToFire.y, 0.3f);
             actor.addAction(Actions.sequence(moveToAction, Actions.run(getNextStep())));
 //            actor.addAction(moveToAction);
             //     nextStep();
+            return true;
         } else {
             positionToFire = new Vector2(actor.getSprite().getX(), actor.getSprite().getY());
             nextStep();
+            return false;
         }
-
     }
 
     private Runnable getNextStep() {
@@ -95,12 +100,12 @@ public class Player extends Stage {
     }
 
     public void addNewBall() {
-        this.addActor(new Ball(this.world, this.positionToFire, (this.getActors().size + 1)));
+        this.addActor((new Ball(this.world, (this.getActors().size + 1), handler)).init(this.positionToFire.x, this.positionToFire.y));
     }
 
     public void addBalls(int numberOfBall) {
         for (int i = 0; i < numberOfBall; ++i) {
-            this.addActor(new Ball(this.world, this.positionToFire, (this.getActors().size + 1)));
+            addNewBall();
         }
     }
 }
