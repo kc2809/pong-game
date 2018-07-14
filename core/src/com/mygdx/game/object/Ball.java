@@ -23,7 +23,7 @@ public class Ball extends ObjectBox2d {
     public boolean isProgress;
 
     int name;
-    public boolean inContact;
+//    public boolean inContact;
     PointLight pointLight;
     RayHandler handler;
 
@@ -32,7 +32,7 @@ public class Ball extends ObjectBox2d {
         isProgress = false;
         updateByBody = true;
         this.name = name;
-        inContact = false;
+//        inContact = false;
         this.handler = handler;
     }
 
@@ -76,7 +76,7 @@ public class Ball extends ObjectBox2d {
         super.act(delta);
         if (body.getLinearVelocity().len() > 0 && body.getLinearVelocity().len() < 5) {
             System.out.println("BOM SPEED VOOOOOOOOO");
-            body.setLinearVelocity(body.getLinearVelocity().nor().scl(SPEED * 4.0f));
+            body.setLinearVelocity(body.getLinearVelocity().nor().add(new Vector2(0.1f,0.1f)).scl(SPEED * 4.0f));
         }
 
         if (pointLight != null) pointLight.setPosition(getX() + BALL_WIDTH / 2, getY() + BALL_WIDTH / 2);

@@ -5,7 +5,6 @@ import com.badlogic.gdx.audio.Music;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.mygdx.game.util.Constants.HIT_SOUND_PATH;
 
@@ -19,13 +18,28 @@ public class SoundManager {
     }
 
     public void playHitSound() {
-        Optional<Music> optionalMusic = sounds.stream().filter(sound -> !sound.isPlaying()).findAny();
+//        Optional<Music> optionalMusic = sounds.stream().filter(sound -> !sound.isPlaying()).findAny();
+//        if(optionalMusic.isPresent()){
+//            optionalMusic.get().play();
+//        } else{
+//            addNewSound();
+//        }
 
-        if(optionalMusic.isPresent()){
-            optionalMusic.get().play();
-        } else{
+        Music optionalMusic = null;
+        for (Music music : sounds) {
+            if (!music.isPlaying()) {
+                optionalMusic = music;
+                break;
+            }
+        }
+
+        if (optionalMusic != null) {
+            optionalMusic.play();
+        } else {
             addNewSound();
         }
+
+
     }
 
     private void init() {

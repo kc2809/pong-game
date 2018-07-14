@@ -27,69 +27,44 @@ public class WorldContactListener implements ContactListener {
         this.screen = gameScreen;
     }
 
+    private <T> T getObjectByFixture(Fixture fixA, Fixture fixB, Class<T> neededClass) {
+        return neededClass.isInstance(fixA.getBody().getUserData()) ?
+                neededClass.cast(fixA.getBody().getUserData()) :
+                neededClass.cast(fixB.getBody().getUserData());
+    }
+
+    private boolean checkIsInstanceOf(Fixture fixtureA, Fixture fixtureB, Class neededClass) {
+        return neededClass.isInstance(fixtureA.getBody().getUserData()) ||
+                neededClass.isInstance(fixtureB.getBody().getUserData());
+    }
+
+    private boolean checkIsIntanceOfString(Fixture fixtureA, Fixture fixtureB, String str) {
+        return str.equals(fixtureA.getBody().getUserData()) || str.equals((fixtureB.getBody().getUserData()));
+    }
+
     @Override
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
-        Vector2 normal = contact.getWorldManifold().getNormal();
-        Vector2 roundNormal = new Vector2(Math.round(normal.x), Math.round(normal.y));
+        if (item1Contact(fixA, fixB) || moneyItemContact(fixA, fixB)) return;
 
-        if (fixA.getBody().getUserData() instanceof Item1 || fixB.getBody().getUserData() instanceof Item1) {
-//            System.out.println("dis me may");
-//            contact.setEnabled(false);
-            Item1 item1 = (Item1) ((fixA.getBody().getUserData() instanceof Item1
-                    ? fixA.getBody().getUserData()
-                    : fixB.getBody().getUserData()));
-            item1.addBallsToGame();
-//            item1.remove();
-            return;
-        }
+        squareContact(fixA, fixB);
 
-        if (fixA.getBody().getUserData() instanceof MoneyItem || fixB.getBody().getUserData() instanceof MoneyItem) {
-//            System.out.println("dis me may");
-//            contact.setEnabled(false);
-            MoneyItem item1 = (MoneyItem) ((fixA.getBody().getUserData() instanceof MoneyItem
-                    ? fixA.getBody().getUserData()
-                    : fixB.getBody().getUserData()));
-            item1.increaseMoney();
-//            item1.remove();
-            return;
-        }
+        // Ball contact
+        Ball ball = getObjectByFixture(fixA, fixB, Ball.class);
 
-
-        Square s = null;
-        if (fixA.getBody().getUserData() instanceof Square) {
-            s = (Square) fixA.getBody().getUserData();
-        }
-
-        if (fixB.getBody().getUserData() instanceof Square) {
-            s = (Square) fixB.getBody().getUserData();
-        }
-        if (s != null) {
-//            screen.getPlayer().addNewBall();
-//            screen.setEffectAtPosition(s.getBody().getPosition());
-//            s.remove();
-            s.descreaseValue();
-            //   return;
-//            Music hitSound = Gdx.audio.newMusic(Gdx.files.internal("music/toang.wav"));
-//            hitSound.play();
-            SoundManager.instance.playHitSound();
-        }
-
-        Ball ball = fixA.getBody().getUserData() instanceof Ball ? (Ball) fixA.getBody().getUserData() : (Ball) fixB.getBody().getUserData();
-
-        if ("botWall".equals(fixA.getBody().getUserData()) || "botWall".equals(fixB.getBody().getUserData())) {
+        if (checkIsIntanceOfString(fixA, fixB, "botWall")) {
             ball.stop();
             return;
         }
 
-        // square and wall collisions
-
+        Vector2 normal = contact.getWorldManifold().getNormal();
+        Vector2 roundNormal = new Vector2(Math.round(normal.x), Math.round(normal.y));
         Vector2 velocity = ball.getBody().getLinearVelocity();
         Vector2 r = reflectVector(velocity, roundNormal).nor().scl(SPEED);
 
-        if ("rightWall".equals(fixA.getBody().getUserData()) || "rightWall".equals(fixB.getBody().getUserData())) {
+        if (checkIsIntanceOfString(fixA, fixB, "rightWall")) {
             float angle = r.angle();
             if (angle > LOWER_LIMIT && angle < UPPER_LIMIT) {
                 System.out.println("Decrease " + DEGREE_DECREASE + " degrees");
@@ -97,32 +72,40 @@ public class WorldContactListener implements ContactListener {
                 r = new Vector2(r.x, (float) (r.len() * Math.sin(Math.toRadians(newAngle))));
             }
         }
-//        if (fixA.getBody().getUserData() instanceof Square || fixB.getBody().getUserData() instanceof Square) {
-//            System.out.println("BEGIN CONTACT WITH SQUARE");
-//            if (!ball.inContact) {
-//                ball.inContact = true;
-//                ball.fire(r.x, r.y);
-//                return;
-//            } else {
-//                return;
-//            }
-//        }
-
-        // reflect when collision with walls happened
+        // reflect when collision with walls and square happened
         ball.fire(r.x, r.y);
     }
 
     @Override
     public void endContact(Contact contact) {
-        Fixture fixA = contact.getFixtureA();
-        Fixture fixB = contact.getFixtureB();
+    }
 
-        Ball ball = fixA.getBody().getUserData() instanceof Ball ? (Ball) fixA.getBody().getUserData() : (Ball) fixB.getBody().getUserData();
-
-        if (fixA.getBody().getUserData() instanceof Square || fixB.getBody().getUserData() instanceof Square) {
-//            System.out.println("ENDDDDDDDDDD CONTACT WITH SQUARE");
-            ball.inContact = false;
+    private boolean item1Contact(Fixture fixtureA, Fixture fixtureB) {
+        if (checkIsInstanceOf(fixtureA, fixtureB, Item1.class)) {
+            Item1 item1 = getObjectByFixture(fixtureA, fixtureB, Item1.class);
+            item1.addBallsToGame();
+            return true;
         }
+        return false;
+    }
+
+    private boolean moneyItemContact(Fixture fixA, Fixture fixB) {
+        if (checkIsInstanceOf(fixA, fixB, MoneyItem.class)) {
+            MoneyItem moneyItem = getObjectByFixture(fixA, fixB, MoneyItem.class);
+            moneyItem.increaseMoney();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean squareContact(Fixture fixA, Fixture fixB) {
+        if (checkIsInstanceOf(fixA, fixB, Square.class)) {
+            Square square = getObjectByFixture(fixA, fixB, Square.class);
+            square.descreaseValue();
+            SoundManager.instance.playHitSound();
+            return true;
+        }
+        return false;
     }
 
     @Override

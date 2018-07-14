@@ -19,13 +19,10 @@ android {
     }
     defaultConfig {
         applicationId "com.mygdx.game"
-        minSdkVersion 24
+        minSdkVersion 9
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        jackOptions {
-            enabled true
-        }
     }
     buildTypes {
         release {
@@ -34,13 +31,10 @@ android {
         }
     }
 
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
         incremental false
     }
 }
@@ -102,8 +96,8 @@ eclipse {
     }
 
     jdt {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
     }
 
     classpath {

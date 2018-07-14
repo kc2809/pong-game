@@ -32,7 +32,10 @@ public class Box2dManager {
 
     public void destroyBody(World world) {
         if (!bodiesWillBeDestroyed.isEmpty())
-            bodiesWillBeDestroyed.forEach(world::destroyBody);
+//            bodiesWillBeDestroyed.forEach(world::destroyBody);
+            for (Body body : bodiesWillBeDestroyed) {
+                world.destroyBody(body);
+            }
         bodiesWillBeDestroyed.clear();
     }
 }

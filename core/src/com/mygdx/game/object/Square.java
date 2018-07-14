@@ -115,7 +115,7 @@ public class Square extends ObjectBox2d {
     }
 
     public void addCollisionEffect(){
-        this.addAction(Actions.sequence(Actions.scaleTo(1.05f,1.05f,0.005f), Actions.scaleTo(1.0f,1.0f,0.005f)));
+        this.addAction(Actions.sequence(Actions.scaleTo(1.1f,1.1f,0.005f), Actions.scaleTo(1.0f,1.0f,0.005f)));
     }
 
     private void setValueBuilder() {

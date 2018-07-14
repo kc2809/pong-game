@@ -1,7 +1,6 @@
 package com.mygdx.game.object;
 
 
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -32,6 +31,9 @@ public class Level extends Stage {
     int materialType = 0;
     int numberType = 0;
 
+    int ratioToGenerateItem1 = 30;
+    int ratioToGenerateMoneyItem = 10;
+
     public Level(MainGameScreen screen, Viewport viewport, World world) {
         super(viewport);
         this.screen = screen;
@@ -51,6 +53,9 @@ public class Level extends Stage {
         if (numberType++ == 5) {
             numberType = 0;
             materialType++;
+            if(ratioToGenerateItem1 >15){
+                ratioToGenerateItem1--;
+            }
             if (materialType == 5) {
                 materialType = 0;
             }
@@ -74,16 +79,22 @@ public class Level extends Stage {
             if (actor instanceof Square || actor instanceof Item1 || actor instanceof MoneyItem) {
                 if (i++ == 0) {
                     Action moveToAction = Actions.moveTo(actor.getX(), actor.getY() - SQUARE_HEIGHT - 0.1f, 0.3f);
-//                    actor.addAction(Actions.sequence(moveToAction, Actions.run(this::generateNextStep)));
-                    actor.addAction(Actions.sequence(moveToAction, Actions.run(() -> {
-                        generateNextStep();
-                        screen.nextRow();
-                    })));
+                    actor.addAction(Actions.sequence(moveToAction, Actions.run(getRunable())));
                 } else {
                     actor.addAction(Actions.moveTo(actor.getX(), actor.getY() - SQUARE_HEIGHT - 0.1f, 0.3f));
                 }
             }
         }
+    }
+
+    private Runnable getRunable() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                generateNextStep();
+                screen.nextRow();
+            }
+        };
     }
 
     private void generateNextStep() {
@@ -103,10 +114,10 @@ public class Level extends Stage {
                 this.addActor(s);
             } else {
                 // 5% generate Item1
-                if (belowPercent(30)) {
+                if (belowPercent(ratioToGenerateItem1)) {
                     this.addActor((new Item1(world, screen)).init(x, y));
                 } else {
-                    if (belowPercent(10))
+                    if (belowPercent(ratioToGenerateMoneyItem))
                         this.addActor((new MoneyItem(world, screen)).init(x, y));
                 }
             }
