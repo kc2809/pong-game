@@ -33,10 +33,10 @@ public class Item1 extends ObjectBox2d {
 
     @Override
     public void createPhysics() {
-        if (isWorldLock()) return;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
         bodyDef.position.set(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
+        if (isWorldLock()) return;
         body = world.createBody(bodyDef);
 
         CircleShape shape = new CircleShape();

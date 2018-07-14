@@ -27,10 +27,13 @@ public interface Constants {
 
     // speed of player
     float SPEED = 17.0f;
+//    float SPEED = 200.0f;
+
+
 
     // value of degree will be decrease if refection vector is PERPENDICULAR or between (LOWER_LIMIT, UPPER_LIMIT)
     // with RIGHT WALL.
     float DEGREE_DECREASE = 5;
-    float LOWER_LIMIT = 175;
+    float LOWER_LIMIT = 178;
     float UPPER_LIMIT = 190;
 }

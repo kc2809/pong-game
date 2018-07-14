@@ -1,6 +1,8 @@
 package com.mygdx.game.object;
 
 
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,8 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.screens.MainGameScreen;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static com.mygdx.game.util.Constants.SPACE_BETWEEN_SQUARE;
@@ -29,6 +29,9 @@ public class Level extends Stage {
 
     UIObjects uiObjects;
 
+    int materialType = 0;
+    int numberType = 0;
+
     public Level(MainGameScreen screen, Viewport viewport, World world) {
         super(viewport);
         this.screen = screen;
@@ -45,6 +48,13 @@ public class Level extends Stage {
     }
 
     public void moveOneRow() {
+        if (numberType++ == 5) {
+            numberType = 0;
+            materialType++;
+            if (materialType == 5) {
+                materialType = 0;
+            }
+        }
         addActionToAllSquare();
     }
 
@@ -83,11 +93,13 @@ public class Level extends Stage {
         // generate 8 square based on binary value of it.
         int mask = 0b1;
         float y = getPositionForGenerate();
+//        Color color = MaterialColor.getMaterialColors(random.nextInt(5));
+        Color color = MaterialColor.getMaterialColors(materialType);
         for (int i = 0; i < MAX_SQUARE_PER_ROW; ++i) {
             float x = -VIEWPORT_WIDTH / 2 + SPACE_BETWEEN_SQUARE + SQUARE_WIDTH * i + SPACE_BETWEEN_SQUARE * i;
             if ((value & mask) != 0) {
                 // add square if it is 1
-                Square s = (Square) (new Square(screen, world)).init(x, y);
+                Square s = (Square) (new Square(screen, world, color)).init(x, y);
                 this.addActor(s);
             } else {
                 // 5% generate Item1

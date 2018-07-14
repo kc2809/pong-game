@@ -2,14 +2,12 @@ package com.mygdx.game.object;
 
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.MainGameScreen;
 
 import static com.mygdx.game.util.Constants.SPEED;
@@ -90,7 +88,8 @@ public class Player extends Stage {
     }
 
     public void setInitPositon() {
-        positionToFire = new Vector2(0, -getCamera().viewportHeight / 2);
+//        positionToFire = new Vector2(0, -getCamera().viewportHeight / 2);
+        positionToFire = new Vector2(0, -getCamera().viewportHeight * 6 / 14);
         if (this.getActors().size > 0) {
             for (int i = 0; i < this.getActors().size; ++i) {
                 Ball b = (Ball) this.getActors().get(i);

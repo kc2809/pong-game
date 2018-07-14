@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -35,7 +36,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     //    public UIObject uiObject;
     public int ballBeAddedNextRow;
     World world;
-//    Box2DDebugRenderer debugRenderer;
+    Box2DDebugRenderer debugRenderer;
     Viewport viewport;
     OrthographicCamera camera;
     Walls walls;
@@ -64,7 +65,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     RayHandler handler;
     @Override
     public void show() {
-//        debugRenderer = new Box2DDebugRenderer();
+        debugRenderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
         viewport.apply();
@@ -163,7 +164,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         camera.update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        debugRenderer.render(world, camera.combined);
+        debugRenderer.render(world, camera.combined);
 
         player.draw();
         player.act(delta);
@@ -187,7 +188,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     private void update(float delta) {
         if (fireFlag == 1) {
-            if ((System.currentTimeMillis() - timeAtFire) > 200) {
+            if ((System.currentTimeMillis() - timeAtFire) > 100) {
                 Ball b = (Ball) player.getActors().get(count);
                 count++;
                 b.fireWithVelocity(player.getVelocity());

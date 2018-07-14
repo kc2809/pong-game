@@ -1,5 +1,6 @@
 package com.mygdx.game.object;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -36,14 +37,14 @@ public class Square extends ObjectBox2d {
         return r.nextInt(255) / 255.0f;
     }
 
-    public Square(MainGameScreen screen, World world) {
+    public Square(MainGameScreen screen, World world, Color color) {
         super(world, Assets.instance.assetSquare.square);
         this.screen = screen;
 //        value = r.nextInt(screen.currentLevel) +1;
         value = generateValueByLevel(screen.currentLevel);
         font = Assets.instance.fontSmall;
-        sprite.setColor(getColorRandomValue(), getColorRandomValue(), getColorRandomValue(), 1.0f);
-
+//        sprite.setColor(getColorRandomValue(), getColorRandomValue(), getColorRandomValue(), 1.0f);
+        sprite.setColor(color);
         valueBuilder = new StringBuilder();
         layout = new GlyphLayout();
         setValueBuilder();
@@ -56,11 +57,10 @@ public class Square extends ObjectBox2d {
 
     @Override
     public void createPhysics() {
-        if (isWorldLock()) return;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
         bodyDef.position.set(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
-
+        if (isWorldLock()) return;
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();

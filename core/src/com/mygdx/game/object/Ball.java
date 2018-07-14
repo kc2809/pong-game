@@ -38,10 +38,10 @@ public class Ball extends ObjectBox2d {
 
     @Override
     public void createPhysics() {
-        if (isWorldLock()) return;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;
         bodyDef.position.set(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
+        if (isWorldLock()) return;
         body = world.createBody(bodyDef);
 
         CircleShape shape = new CircleShape();
@@ -59,7 +59,7 @@ public class Ball extends ObjectBox2d {
 
     @Override
     void initComponent() {
-        pointLight = new PointLight(handler, 4, Color.LIGHT_GRAY, 2, getX(), getY());
+        pointLight = new PointLight(handler, 5, Color.PURPLE, 2, getX(), getY());
         pointLight.setActive(false);
     }
 
