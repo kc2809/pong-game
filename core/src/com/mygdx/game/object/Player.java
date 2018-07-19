@@ -22,12 +22,16 @@ public class Player extends Stage {
 
     RayHandler handler;
 
+    BallPool pool;
+
     public Player(Viewport viewport, Screen screen, World world, RayHandler handler) {
         super(viewport);
         this.mainGameScreen = (MainGameScreen) screen;
         this.world = world;
         setInitPositon();
         this.handler = handler;
+
+        pool = new BallPool(world, handler);
     }
 
     public Vector2 getVelocity() {
@@ -99,7 +103,10 @@ public class Player extends Stage {
     }
 
     public void addNewBall() {
-        this.addActor((new Ball(this.world, (this.getActors().size + 1), handler)).init(this.positionToFire.x, this.positionToFire.y));
+        Ball ball = pool.obtain();
+        ball.setPosition(this.positionToFire.x, this.positionToFire.y);
+//        this.addActor((new Ball(this.world, handler)).init(this.positionToFire.x, this.positionToFire.y));
+        this.addActor(ball);
     }
 
     public void addBalls(int numberOfBall) {

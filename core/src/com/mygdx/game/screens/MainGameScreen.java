@@ -1,6 +1,5 @@
 package com.mygdx.game.screens;
 
-import box2dLight.ChainLight;
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
@@ -41,7 +40,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     OrthographicCamera camera;
     Walls walls;
     //    Stage player;
-    Level level;
+    public Level level;
     Player player;
     int fireFlag = 0;
     int count = 0;
@@ -63,6 +62,9 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     //light effect test
     RayHandler handler;
+
+    public boolean flagNextRow = false;
+
     @Override
     public void show() {
         debugRenderer = new Box2DDebugRenderer();
@@ -70,7 +72,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
         viewport.apply();
         camera.position.set(0, 0, 0);
-        world = new World(new Vector2(0, 0), true);
 
         trajectory = new Trajectory(viewport, 240);
 
@@ -84,6 +85,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     }
 
     private void initObject() {
+        world = new World(new Vector2(0, 0), true);
         frameRate = new FrameRate();
 
         handler = new RayHandler(world);
@@ -102,6 +104,9 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         player = new Player(viewport, this, world, handler);
         player.addNewBall();
+//        for(int i=0;i<50;++i){
+//            player.addNewBall();
+//        }
 //        player.addActor(new Ball(world));
 
         level = new Level(this, viewport, world);
@@ -176,7 +181,9 @@ public class MainGameScreen implements Screen, InputProcessor {
         trajectory.draw();
 
 
-        Box2dManager.getInstance().destroyBody(world);
+//        Box2dManager.getInstance().destroyBody(world);
+        Box2dManager.getInstance().inActiveBodies(world);
+        Box2dManager.getInstance().activeBodies(world);
 
 //        uiObject.draw();
 
@@ -203,6 +210,11 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         frameRate.update();
 
+        if (flagNextRow) {
+            level.generateNextStep();
+            nextRow();
+            flagNextRow = false;
+        }
     }
 
 
@@ -319,10 +331,6 @@ public class MainGameScreen implements Screen, InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
-    }
-
-    public void test() {
-        System.out.println("bach bach");
     }
 
     public Player getPlayer() {

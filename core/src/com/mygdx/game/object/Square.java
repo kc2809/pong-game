@@ -10,17 +10,17 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Pool.Poolable;
+import com.mygdx.game.box2d.Box2dManager;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.MainGameScreen;
-import com.mygdx.game.util.MathUtils;
 
 import java.util.Random;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
-import static com.mygdx.game.util.Constants.RATIO_TO_DUPLICATE_VALUE;
 import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
 
-public class Square extends ObjectBox2d {
+public class Square extends ObjectBox2d implements Poolable {
 
     MainGameScreen screen;
 
@@ -31,23 +31,26 @@ public class Square extends ObjectBox2d {
     GlyphLayout layout;
     StringBuilder valueBuilder;
 
-
-
     private float getColorRandomValue(){
         return r.nextInt(255) / 255.0f;
     }
 
-    public Square(MainGameScreen screen, World world, Color color) {
+    public Square(World world, MainGameScreen screen) {
         super(world, Assets.instance.assetSquare.square);
         this.screen = screen;
-//        value = r.nextInt(screen.currentLevel) +1;
-        value = generateValueByLevel(screen.currentLevel);
         font = Assets.instance.fontSmall;
-//        sprite.setColor(getColorRandomValue(), getColorRandomValue(), getColorRandomValue(), 1.0f);
-        sprite.setColor(color);
         valueBuilder = new StringBuilder();
         layout = new GlyphLayout();
+    }
+
+    public Square setValue(int val) {
+        value = val;
         setValueBuilder();
+        return this;
+    }
+
+    public void setColor(Color color) {
+        sprite.setColor(color);
     }
 
     @Override
@@ -64,7 +67,7 @@ public class Square extends ObjectBox2d {
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        //  shape.setAsBox(sprite.getWidth()/2 , sprite.getHeight() /2 );
+        shape.setAsBox(sprite.getWidth() / 2, sprite.getHeight() / 2);
         shape.setAsBox(sprite.getWidth() / 2, sprite.getHeight() / 2);
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -76,13 +79,16 @@ public class Square extends ObjectBox2d {
         body.createFixture(fixtureDef);
         body.setUserData(this);
         shape.dispose();
+        reset();
     }
 
-
+    public Square active() {
+        Box2dManager.getInstance().addActiveBodyToQueue(body);
+        return this;
+    }
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-//        layout.setText(fontSmall, );
         font.draw(batch, valueBuilder, getCenterPostionX() - layout.width / 2, getCenterPostionY() + layout.height / 2);
     }
 
@@ -94,9 +100,13 @@ public class Square extends ObjectBox2d {
 
     @Override
     public boolean remove() {
-//        screen.uiObject.increaseMoney();
         screen.increaseScore();
+        screen.level.freeSquare(this);
         return super.remove();
+    }
+
+    private Level getLevelStage() {
+        return (Level) getStage();
     }
 
     public void descreaseValue() {
@@ -106,12 +116,8 @@ public class Square extends ObjectBox2d {
             addCollisionEffect();
             return;
         }
-        screen.setEffectAtPosition(body.getPosition(), sprite.getColor());
+        getLevelStage().screen.setEffectAtPosition(body.getPosition(), sprite.getColor());
         this.remove();
-    }
-
-    private int generateValueByLevel(int level) {
-        return MathUtils.instance.ratio(RATIO_TO_DUPLICATE_VALUE) ? level * 2 : level;
     }
 
     public void addCollisionEffect(){
@@ -122,5 +128,10 @@ public class Square extends ObjectBox2d {
         valueBuilder.setLength(0);
         valueBuilder.append(value);
         layout.setText(font, valueBuilder);
+    }
+
+    @Override
+    public void reset() {
+        Box2dManager.getInstance().addInActiveBodyToQueue(body);
     }
 }

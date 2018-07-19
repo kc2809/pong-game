@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Pool.Poolable;
 import com.mygdx.game.core.Assets;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
@@ -18,21 +19,18 @@ import static com.mygdx.game.util.Constants.BALL_WIDTH;
 import static com.mygdx.game.util.Constants.SPEED;
 import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
 
-public class Ball extends ObjectBox2d {
+public class Ball extends ObjectBox2d  implements Poolable{
 
     public boolean isProgress;
 
-    int name;
 //    public boolean inContact;
     PointLight pointLight;
     RayHandler handler;
 
-    public Ball(World world, int name, RayHandler handler) {
+    public Ball(World world, RayHandler handler) {
         super(world, Assets.instance.assetCircle.circle);
         isProgress = false;
         updateByBody = true;
-        this.name = name;
-//        inContact = false;
         this.handler = handler;
     }
 
@@ -55,6 +53,7 @@ public class Ball extends ObjectBox2d {
         body.createFixture(fixtureDef);
         body.setUserData(this);
         shape.dispose();
+//        this.setVisible(false);
     }
 
     @Override
@@ -74,10 +73,11 @@ public class Ball extends ObjectBox2d {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (body.getLinearVelocity().len() > 0 && body.getLinearVelocity().len() < 5) {
-            System.out.println("BOM SPEED VOOOOOOOOO");
-            body.setLinearVelocity(body.getLinearVelocity().nor().add(new Vector2(0.1f,0.1f)).scl(SPEED * 4.0f));
-        }
+        if (body != null)
+            if (body.getLinearVelocity().len() > 0 && body.getLinearVelocity().len() < 5) {
+                System.out.println("BOM SPEED VOOOOOOOOO");
+                body.setLinearVelocity(body.getLinearVelocity().nor().add(new Vector2(0.1f, 0.1f)).scl(SPEED * 4.0f));
+            }
 
         if (pointLight != null) pointLight.setPosition(getX() + BALL_WIDTH / 2, getY() + BALL_WIDTH / 2);
     }
@@ -88,14 +88,16 @@ public class Ball extends ObjectBox2d {
     }
 
     public void fire(float x, float y) {
-        body.setLinearVelocity(x, y);
+        if (body != null)
+            body.setLinearVelocity(x, y);
         pointLight.setActive(true);
     }
 
     public void fireWithVelocity(Vector2 velocity) {
         isProgress = true;
         updateByBody = true;
-        body.setLinearVelocity(velocity);
+        if (body != null)
+            body.setLinearVelocity(velocity);
         pointLight.setActive(true);
     }
 
@@ -111,5 +113,12 @@ public class Ball extends ObjectBox2d {
         Player player = (Player) getStage();
         player.eventBallTouchGround(this);
         isProgress = false;
+    }
+
+
+    @Override
+    public void reset() {
+        //this.setPosition(-10,0);
+        this.body.setActive(false);
     }
 }

@@ -9,9 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.screens.MainGameScreen;
+import com.mygdx.game.util.MathUtils;
 
 import java.util.Random;
 
+import static com.mygdx.game.util.Constants.RATIO_TO_DUPLICATE_VALUE;
 import static com.mygdx.game.util.Constants.SPACE_BETWEEN_SQUARE;
 import static com.mygdx.game.util.Constants.SQUARE_HEIGHT;
 import static com.mygdx.game.util.Constants.SQUARE_WIDTH;
@@ -34,8 +36,16 @@ public class Level extends Stage {
     int ratioToGenerateItem1 = 30;
     int ratioToGenerateMoneyItem = 10;
 
+    SquarePool squarePool;
+    MoneyItemPool moneyItemPool;
+    Item1Pool item1Pool;
+
     public Level(MainGameScreen screen, Viewport viewport, World world) {
         super(viewport);
+        squarePool = new SquarePool(world, screen);
+        moneyItemPool = new MoneyItemPool(world, screen);
+        item1Pool = new Item1Pool(world, screen);
+
         this.screen = screen;
 //        stage = new Stage(viewport);
         this.world = world;
@@ -43,6 +53,11 @@ public class Level extends Stage {
         uiObjects = new UIObjects(screen);
         uiObjects.setPosition(0, this.getViewport().getWorldHeight() / 2);
         addActor(uiObjects);
+
+    }
+
+    public int getCurrentLevel() {
+        return screen.currentLevel;
     }
 
     public void increaseScore() {
@@ -91,13 +106,14 @@ public class Level extends Stage {
         return new Runnable() {
             @Override
             public void run() {
-                generateNextStep();
-                screen.nextRow();
+//                generateNextStep();
+//                screen.nextRow();
+                screen.flagNextRow = true;
             }
         };
     }
 
-    private void generateNextStep() {
+    public void generateNextStep() {
         int value = random.nextInt(64);
         //one value means one row
         // value from [0, 512]
@@ -106,19 +122,34 @@ public class Level extends Stage {
         float y = getPositionForGenerate();
 //        Color color = MaterialColor.getMaterialColors(random.nextInt(5));
         Color color = MaterialColor.getMaterialColors(materialType);
+        int squareValue = MathUtils.instance.ratio(RATIO_TO_DUPLICATE_VALUE) ? screen.currentLevel * 2 : screen.currentLevel;
         for (int i = 0; i < MAX_SQUARE_PER_ROW; ++i) {
             float x = -VIEWPORT_WIDTH / 2 + SPACE_BETWEEN_SQUARE + SQUARE_WIDTH * i + SPACE_BETWEEN_SQUARE * i;
             if ((value & mask) != 0) {
                 // add square if it is 1
-                Square s = (Square) (new Square(screen, world, color)).init(x, y);
+//                Square s = (Square) (new Square(screen, world, color)).init(x, y);
+//                Square s = (Square) (new Square(world)).init(x, y);
+                Square s = squarePool.obtain();
+                s.setPosition(x, y);
+                s.active().setColor(color);
                 this.addActor(s);
+                s.setValue(squareValue);
             } else {
                 // 5% generate Item1
                 if (belowPercent(ratioToGenerateItem1)) {
-                    this.addActor((new Item1(world, screen)).init(x, y));
+//                    this.addActor((new Item1(world)).init(x, y));
+                    Item1 item1 = item1Pool.obtain();
+                    item1.active();
+                    item1.setPosition(x, y);
+                    this.addActor(item1);
                 } else {
-                    if (belowPercent(ratioToGenerateMoneyItem))
-                        this.addActor((new MoneyItem(world, screen)).init(x, y));
+                    if (belowPercent(ratioToGenerateMoneyItem)) {
+                        MoneyItem moneyItem = moneyItemPool.obtain();
+                        moneyItem.setActive();
+                        moneyItem.setPosition(x, y);
+                        this.addActor(moneyItem);
+                    }
+//                        this.addActor((new MoneyItem(world)).init(x, y));
                 }
             }
             value = value >> 1;
@@ -138,5 +169,17 @@ public class Level extends Stage {
 
     public void increaseMoney() {
         uiObjects.increaseMoney();
+    }
+
+    public void freeSquare(Square square) {
+        squarePool.free(square);
+    }
+
+    public void freeMoneyItem(MoneyItem moneyItem) {
+        moneyItemPool.free(moneyItem);
+    }
+
+    public void freeItem1(Item1 item1) {
+        item1Pool.free(item1);
     }
 }

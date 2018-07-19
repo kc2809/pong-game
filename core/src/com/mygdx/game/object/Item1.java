@@ -1,7 +1,7 @@
 package com.mygdx.game.object;
 
-import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
@@ -10,13 +10,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Pool.Poolable;
+import com.mygdx.game.box2d.Box2dManager;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.MainGameScreen;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
 import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
 
-public class Item1 extends ObjectBox2d {
+public class Item1 extends ObjectBox2d implements Poolable {
 
     public ParticleEffect effect;
     MainGameScreen screen;
@@ -26,9 +28,17 @@ public class Item1 extends ObjectBox2d {
         this.screen = screen;
     }
 
+//    private Level getLevelStage() {
+//        return (Level) this.getStage();
+//    }
+
+    public void active() {
+        Box2dManager.getInstance().addActiveBodyToQueue(body);
+    }
+
     @Override
     void initComponent() {
-        effect = getTestEffect();
+//        effect = getTestEffect();
     }
 
     @Override
@@ -57,7 +67,7 @@ public class Item1 extends ObjectBox2d {
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
         sprite.setPosition(x + 0.5f - sprite.getWidth() / 2, y + 0.5f - sprite.getHeight() / 2);
-        effect.setPosition(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
+//        effect.setPosition(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
         if (body != null)
             body.setTransform(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2, 0);
     }
@@ -65,12 +75,14 @@ public class Item1 extends ObjectBox2d {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+        if(effect==null) return;
         effect.draw(batch);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
+        if(effect==null) return;
         effect.update(delta);
         if (effect.isComplete()) {
 //            effect.reset(false);
@@ -94,14 +106,20 @@ public class Item1 extends ObjectBox2d {
     public void addBallsToGame() {
 //        Level levelStage = (Level) getStage();
 //        levelStage.increaseBallWillBeAddNextStep
-        ++screen.ballBeAddedNextRow;
+        ++this.screen.ballBeAddedNextRow;
         remove();
     }
 
     @Override
     public boolean remove() {
-        sprite = null;
-        effect = null;
+//        sprite = null;
+//        effect = null;
+        screen.level.freeItem1(this);
         return super.remove();
+    }
+
+    @Override
+    public void reset() {
+        Box2dManager.getInstance().addInActiveBodyToQueue(body);
     }
 }

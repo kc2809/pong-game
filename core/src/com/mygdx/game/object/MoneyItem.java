@@ -6,13 +6,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Pool.Poolable;
+import com.mygdx.game.box2d.Box2dManager;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.MainGameScreen;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
 import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
 
-public class MoneyItem extends ObjectBox2d {
+public class MoneyItem extends ObjectBox2d implements Poolable {
 
     MainGameScreen screen;
 
@@ -23,6 +25,10 @@ public class MoneyItem extends ObjectBox2d {
 
     @Override
     void initComponent() {
+    }
+
+    private Level getLevelStage() {
+        return (Level) this.getStage();
     }
 
     @Override
@@ -48,6 +54,11 @@ public class MoneyItem extends ObjectBox2d {
         shape.dispose();
     }
 
+    public MoneyItem setActive() {
+        Box2dManager.getInstance().addActiveBodyToQueue(body);
+        return this;
+    }
+
     @Override
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
@@ -63,6 +74,7 @@ public class MoneyItem extends ObjectBox2d {
 
     @Override
     public boolean remove() {
+        getLevelStage().freeMoneyItem(this);
         return super.remove();
     }
 
@@ -72,5 +84,10 @@ public class MoneyItem extends ObjectBox2d {
 //        screen.uiObject.increateMoney();
         screen.increaseMoeny();
         remove();
+    }
+
+    @Override
+    public void reset() {
+        Box2dManager.getInstance().addInActiveBodyToQueue(body);
     }
 }

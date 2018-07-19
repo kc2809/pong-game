@@ -4,7 +4,6 @@ public interface Constants {
     float VIEWPORT_WIDTH = 7.8f;
     float VIEWPORT_HEIGHT = 10.0f;
     String TEXTURE_ATLAS_OBJECT = "resources2.atlas";
-    String TEXTURE_ATLAS_NUMBER = "number.pack";
 
     String HIT_SOUND_PATH = "music/glass1.wav";
 
@@ -23,7 +22,7 @@ public interface Constants {
     float SPACE_BETWEEN_SQUARE = 0.1f;
 
     // In main game, this is a ratio for next row to generate multiple value
-    int RATIO_TO_DUPLICATE_VALUE = 35;
+    int RATIO_TO_DUPLICATE_VALUE = 50;
 
     // speed of player
     float SPEED = 17.0f;

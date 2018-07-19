@@ -11,8 +11,51 @@ public class Box2dManager {
 
     private List<Body> bodiesWillBeDestroyed;
 
+    List<Body> tempAcive;
+    List<Body> tempInActive;
+
+    private List<Body> bodiesWillBeActive;
+    private List<Body> bodiesWillBeInActive;
+
+
     private Box2dManager() {
         bodiesWillBeDestroyed = new ArrayList<>();
+
+        tempAcive = new ArrayList<>();
+        tempInActive = new ArrayList<>();
+
+        bodiesWillBeInActive = new ArrayList<>();
+        bodiesWillBeActive = new ArrayList<>();
+    }
+
+    public void addActiveBodyToQueue(Body body) {
+        tempAcive.add(body);
+    }
+
+    public void addInActiveBodyToQueue(Body body) {
+        tempInActive.add(body);
+    }
+
+    public void activeBodies(World world) {
+        bodiesWillBeActive.addAll(tempAcive);
+        if (!bodiesWillBeActive.isEmpty()) {
+            for (Body body : bodiesWillBeActive) {
+                body.setActive(true);
+            }
+        }
+        bodiesWillBeActive.clear();
+        tempAcive.clear();
+    }
+
+    public void inActiveBodies(World world) {
+        bodiesWillBeInActive.addAll(tempInActive);
+        if (!bodiesWillBeInActive.isEmpty()) {
+            for (Body body : bodiesWillBeInActive) {
+                body.setActive(false);
+            }
+        }
+        bodiesWillBeInActive.clear();
+        tempInActive.clear();
     }
 
     public static Box2dManager getInstance() {

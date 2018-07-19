@@ -49,7 +49,7 @@ abstract class ObjectBox2d extends Actor {
     }
 
     private void setAttibutesPosition(float x, float y) {
-        sprite.setPosition(x, y);
+        if(sprite!=null) sprite.setPosition(x, y);
         if (body != null)
             body.setTransform(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2, 0);
     }
@@ -77,14 +77,15 @@ abstract class ObjectBox2d extends Actor {
     }
 
     public void setPosByBodyPos() {
-        sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
+        if (body != null)
+            sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
         setX(sprite.getX());
         setY(sprite.getY());
     }
 
     @Override
     public boolean remove() {
-        Box2dManager.getInstance().addBodyToDestroy(body);
+//        Box2dManager.getInstance().addBodyToDestroy(body);
         return super.remove();
     }
 
@@ -104,4 +105,5 @@ abstract class ObjectBox2d extends Actor {
     public float getCenterPostionY() {
         return sprite.getY() + sprite.getHeight() / 2;
     }
+
 }
