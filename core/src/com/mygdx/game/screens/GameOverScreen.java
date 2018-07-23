@@ -1,6 +1,5 @@
 package com.mygdx.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,15 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
-import sun.applet.Main;
 
-public class MenuScreen implements Screen {
+public class GameOverScreen implements Screen {
     MyGdxGame game;
     Button button;
     Stage stage;
     BitmapFont font;
 
-    public MenuScreen(MyGdxGame game) {
+    public GameOverScreen(MyGdxGame game) {
         this.game = game;
     }
 
@@ -36,7 +34,7 @@ public class MenuScreen implements Screen {
         textButtonStyle.font = font;
         textButtonStyle.up = skin.getDrawable("num0");
         textButtonStyle.down = skin.getDrawable("num1");
-        button = new TextButton("Button1", textButtonStyle);
+        button = new TextButton("Button2", textButtonStyle);
 
         button.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
@@ -44,7 +42,6 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("cllicked");
             }
 
             @Override
@@ -55,8 +52,8 @@ public class MenuScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
                 game.changeMainGameScreen();
+
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -71,8 +68,8 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-    }
 
+    }
 
     @Override
     public void pause() {

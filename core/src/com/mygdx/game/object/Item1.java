@@ -1,10 +1,8 @@
 package com.mygdx.game.object;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -13,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.mygdx.game.box2d.Box2dManager;
 import com.mygdx.game.core.Assets;
+import com.mygdx.game.effect.CircleEffectPool;
 import com.mygdx.game.screens.MainGameScreen;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
@@ -20,7 +19,7 @@ import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
 
 public class Item1 extends ObjectBox2d implements Poolable {
 
-    public ParticleEffect effect;
+    public PooledEffect effect;
     MainGameScreen screen;
 
     public Item1(World world, MainGameScreen screen) {
@@ -39,6 +38,7 @@ public class Item1 extends ObjectBox2d implements Poolable {
     @Override
     void initComponent() {
 //        effect = getTestEffect();
+        effect = CircleEffectPool.getInstance().getCircleEffect();
     }
 
     @Override
@@ -67,8 +67,8 @@ public class Item1 extends ObjectBox2d implements Poolable {
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
         sprite.setPosition(x + 0.5f - sprite.getWidth() / 2, y + 0.5f - sprite.getHeight() / 2);
-//        effect.setPosition(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
-        if (body != null)
+        effect.setPosition(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
+        if (body != null && !world.isLocked())
             body.setTransform(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2, 0);
     }
 
@@ -76,44 +76,22 @@ public class Item1 extends ObjectBox2d implements Poolable {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         if(effect==null) return;
-        effect.draw(batch);
+        effect.draw(batch, Gdx.graphics.getDeltaTime());
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        if(effect==null) return;
         effect.update(delta);
-        if (effect.isComplete()) {
-//            effect.reset(false);
-//            effect.start();
-            for (ParticleEmitter emitter : effect.getEmitters()) {
-                emitter.start();
-            }
-        }
-    }
-
-    private ParticleEffect getTestEffect() {
-        ParticleEffect pe = new ParticleEffect();
-        pe.load(Gdx.files.internal("effect3.party"), Gdx.files.internal(""));
-//        pe.getEmitters().first().setPosition(0, 0);
-        pe.scaleEffect(1.0f / 200f);
-        pe.allowCompletion();
-        pe.start();
-        return pe;
     }
 
     public void addBallsToGame() {
-//        Level levelStage = (Level) getStage();
-//        levelStage.increaseBallWillBeAddNextStep
         ++this.screen.ballBeAddedNextRow;
         remove();
     }
 
     @Override
     public boolean remove() {
-//        sprite = null;
-//        effect = null;
         screen.level.freeItem1(this);
         return super.remove();
     }

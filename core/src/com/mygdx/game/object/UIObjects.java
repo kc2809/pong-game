@@ -72,12 +72,12 @@ public class UIObjects extends Actor {
         setScoreText(++screen.score);
     }
 
-    private void setMoneyText(int money) {
+    public void setMoneyText(int money) {
         moneyText.setText(money);
         layout.setText(fontBig, moneyText.getText());
     }
 
-    private void setScoreText(int score) {
+    public void setScoreText(int score) {
         scoreText.setText(score);
         layoutScore.setText(fontBig, scoreText.getText());
     }

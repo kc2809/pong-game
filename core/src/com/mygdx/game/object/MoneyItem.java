@@ -63,7 +63,7 @@ public class MoneyItem extends ObjectBox2d implements Poolable {
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
         sprite.setPosition(x + 0.5f - sprite.getWidth() / 2, y + 0.5f - sprite.getHeight() / 2);
-        if (body != null)
+        if (body != null && !world.isLocked())
             body.setTransform(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2, 0);
     }
 
@@ -74,7 +74,7 @@ public class MoneyItem extends ObjectBox2d implements Poolable {
 
     @Override
     public boolean remove() {
-        getLevelStage().freeMoneyItem(this);
+        screen.level.freeMoneyItem(this);
         return super.remove();
     }
 

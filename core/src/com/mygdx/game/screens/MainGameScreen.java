@@ -1,6 +1,5 @@
 package com.mygdx.game.screens;
 
-import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
@@ -17,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.box2d.Box2dManager;
 import com.mygdx.game.core.FrameRate;
 import com.mygdx.game.effect.EffectManager;
@@ -33,13 +33,13 @@ import com.mygdx.game.world.WorldContactListener;
 
 public class MainGameScreen implements Screen, InputProcessor {
     //    public UIObject uiObject;
+    MyGdxGame game;
     public int ballBeAddedNextRow;
     World world;
     Box2DDebugRenderer debugRenderer;
     Viewport viewport;
     OrthographicCamera camera;
     Walls walls;
-    //    Stage player;
     public Level level;
     Player player;
     int fireFlag = 0;
@@ -63,11 +63,8 @@ public class MainGameScreen implements Screen, InputProcessor {
     //light effect test
     RayHandler handler;
 
-    public boolean flagNextRow = false;
-
-    @Override
-    public void show() {
-        debugRenderer = new Box2DDebugRenderer();
+    public MainGameScreen(MyGdxGame game) {
+        this.game = game;
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
         viewport.apply();
@@ -75,7 +72,6 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         trajectory = new Trajectory(viewport, 240);
 
-        Gdx.input.setInputProcessor(this);
         initObject();
 
         ballBeAddedNextRow = 0;
@@ -84,12 +80,20 @@ public class MainGameScreen implements Screen, InputProcessor {
         money = 0;
     }
 
+    @Override
+    public void show() {
+        debugRenderer = new Box2DDebugRenderer();
+        Gdx.input.setInputProcessor(this);
+
+    }
+
     private void initObject() {
         world = new World(new Vector2(0, 0), true);
         frameRate = new FrameRate();
 
         handler = new RayHandler(world);
-        handler.setCombinedMatrix(camera.combined);
+        handler.setCombinedMatrix(camera);
+//        handler.setCombinedMatrix(camera.combined, camera.viewportWidth/2,camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight/2);
         handler.setShadows(false);
 
         Filter filter = new Filter();
@@ -104,11 +108,6 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         player = new Player(viewport, this, world, handler);
         player.addNewBall();
-//        for(int i=0;i<50;++i){
-//            player.addNewBall();
-//        }
-//        player.addActor(new Ball(world));
-
         level = new Level(this, viewport, world);
 
         contactListener = new WorldContactListener(this);
@@ -117,16 +116,8 @@ public class MainGameScreen implements Screen, InputProcessor {
         effectManager = new EffectManager();
         level.addActor(effectManager);
 
-//        uiObject = new UIObject();
-
         playerCount = new PlayerCount(this);
         level.addActor(playerCount);
-
-//        new ConeLight()
-    }
-
-    public void testConLine(float x, float y){
-        new ConeLight(handler, 20, Color.WHITE,5, x, y, 0,360 );
     }
 
     public void setEffectAtPosition(Vector2 position, Color color) {
@@ -140,11 +131,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     }
 
     public void nextRow() {
-//        level.generateNextRow();
-//        currentLevel++;
-//        System.out.println("NEXT ROWWWWW: " + player.getActors().size);
-//        level.moveOneRow();
-
+        level.increaseScore();
         //   player.addNewBall();
         player.addBalls(ballBeAddedNextRow);
         // then reset it
@@ -161,6 +148,9 @@ public class MainGameScreen implements Screen, InputProcessor {
         //enable player count
         playerCount.setPositionToDraw();
         playerCount.setVisible(true);
+        if(level.checkGameOver()){
+            gameOver();
+        }
     }
 
     @Override
@@ -195,7 +185,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     private void update(float delta) {
         if (fireFlag == 1) {
-            if ((System.currentTimeMillis() - timeAtFire) > 100) {
+            if ((System.currentTimeMillis() - timeAtFire) > 80) {
                 Ball b = (Ball) player.getActors().get(count);
                 count++;
                 b.fireWithVelocity(player.getVelocity());
@@ -210,11 +200,6 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         frameRate.update();
 
-        if (flagNextRow) {
-            level.generateNextStep();
-            nextRow();
-            flagNextRow = false;
-        }
     }
 
 
@@ -233,7 +218,9 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         frameRate.resize(width, height);
 
-        handler.setCombinedMatrix(camera.combined);
+        handler.setCombinedMatrix(camera);
+//        handler.setCombinedMatrix(camera.combined, camera.viewportWidth/2,camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight/2);
+
     }
 
     @Override
@@ -277,9 +264,10 @@ public class MainGameScreen implements Screen, InputProcessor {
         }
 
         if (keycode == Keys.C) {
-//            level.generateNextRow();
+            level.reset();
         }
         if (keycode == Keys.D) {
+            gameOver();
         }
 
         return false;
@@ -292,6 +280,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
         return false;
     }
 
@@ -338,10 +327,27 @@ public class MainGameScreen implements Screen, InputProcessor {
     }
 
     public void increaseScore(){
-        level.increaseScore();
+//        level.increaseScore();
     }
 
     public void increaseMoeny(){
         level.increaseMoney();
+    }
+
+    public void setColorPlayer(Color color) {
+        player.setColorBalls(color);
+    }
+
+    public void gameOver(){
+//        level.reset();
+//        player.reset();
+//        level.generateNextStep();
+        game.changeGameOverScreen();
+    }
+
+    public void reset(){
+        level.reset();
+        player.reset();
+        level.generateNextStep();
     }
 }

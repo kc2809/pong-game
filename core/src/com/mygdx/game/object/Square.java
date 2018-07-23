@@ -31,10 +31,6 @@ public class Square extends ObjectBox2d implements Poolable {
     GlyphLayout layout;
     StringBuilder valueBuilder;
 
-    private float getColorRandomValue(){
-        return r.nextInt(255) / 255.0f;
-    }
-
     public Square(World world, MainGameScreen screen) {
         super(world, Assets.instance.assetSquare.square);
         this.screen = screen;
@@ -57,6 +53,7 @@ public class Square extends ObjectBox2d implements Poolable {
     void initComponent() {
 
     }
+
 
     @Override
     public void createPhysics() {
@@ -113,10 +110,10 @@ public class Square extends ObjectBox2d implements Poolable {
         value--;
         setValueBuilder();
         if (value != 0) {
-            addCollisionEffect();
+//            addCollisionEffect();
             return;
         }
-        getLevelStage().screen.setEffectAtPosition(body.getPosition(), sprite.getColor());
+        screen.setEffectAtPosition(body.getPosition(), sprite.getColor());
         this.remove();
     }
 
@@ -134,4 +131,6 @@ public class Square extends ObjectBox2d implements Poolable {
     public void reset() {
         Box2dManager.getInstance().addInActiveBodyToQueue(body);
     }
+
+
 }

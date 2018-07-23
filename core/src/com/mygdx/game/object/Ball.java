@@ -12,7 +12,9 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Pool.Poolable;
+import com.mygdx.game.box2d.Box2dManager;
 import com.mygdx.game.core.Assets;
+import com.mygdx.game.screens.MainGameScreen;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
 import static com.mygdx.game.util.Constants.BALL_WIDTH;
@@ -22,16 +24,22 @@ import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
 public class Ball extends ObjectBox2d  implements Poolable{
 
     public boolean isProgress;
-
-//    public boolean inContact;
     PointLight pointLight;
     RayHandler handler;
+    MainGameScreen screen;
 
-    public Ball(World world, RayHandler handler) {
+    public Ball(World world, RayHandler handler, MainGameScreen screen) {
         super(world, Assets.instance.assetCircle.circle);
         isProgress = false;
         updateByBody = true;
         this.handler = handler;
+        this.screen = screen;
+    }
+
+    public Ball active() {
+        Box2dManager.getInstance().addActiveBodyToQueue(body);
+        pointLight.setActive(true);
+        return this;
     }
 
     @Override
@@ -58,7 +66,7 @@ public class Ball extends ObjectBox2d  implements Poolable{
 
     @Override
     void initComponent() {
-        pointLight = new PointLight(handler, 5, Color.PURPLE, 2, getX(), getY());
+        pointLight = new PointLight(handler, 7, Color.PURPLE, 2, getX(), getY());
         pointLight.setActive(false);
     }
 
@@ -70,13 +78,17 @@ public class Ball extends ObjectBox2d  implements Poolable{
         return sprite;
     }
 
+    public void setPointLightColor(Color color) {
+        pointLight.setColor(color);
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (body != null)
+        if (body != null && !world.isLocked())
             if (body.getLinearVelocity().len() > 0 && body.getLinearVelocity().len() < 5) {
                 System.out.println("BOM SPEED VOOOOOOOOO");
-                body.setLinearVelocity(body.getLinearVelocity().nor().add(new Vector2(0.1f, 0.1f)).scl(SPEED * 4.0f));
+                body.setLinearVelocity(body.getLinearVelocity().nor().add(new Vector2(0.1f, 0.1f)).scl(SPEED * 2.0f));
             }
 
         if (pointLight != null) pointLight.setPosition(getX() + BALL_WIDTH / 2, getY() + BALL_WIDTH / 2);
@@ -119,6 +131,13 @@ public class Ball extends ObjectBox2d  implements Poolable{
     @Override
     public void reset() {
         //this.setPosition(-10,0);
-        this.body.setActive(false);
+        Box2dManager.getInstance().addInActiveBodyToQueue(body);
+    }
+
+    @Override
+    public boolean remove() {
+        screen.getPlayer().freeBall(this);
+        pointLight.setActive(false);
+        return super.remove();
     }
 }

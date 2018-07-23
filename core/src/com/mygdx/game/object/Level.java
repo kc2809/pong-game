@@ -40,6 +40,7 @@ public class Level extends Stage {
     MoneyItemPool moneyItemPool;
     Item1Pool item1Pool;
 
+
     public Level(MainGameScreen screen, Viewport viewport, World world) {
         super(viewport);
         squarePool = new SquarePool(world, screen);
@@ -49,11 +50,28 @@ public class Level extends Stage {
         this.screen = screen;
 //        stage = new Stage(viewport);
         this.world = world;
-        generateNextStep();
+//        generateNextStep();
         uiObjects = new UIObjects(screen);
         uiObjects.setPosition(0, this.getViewport().getWorldHeight() / 2);
         addActor(uiObjects);
+    }
 
+    public void reset() {
+        for (Actor actor : getActors()) {
+            if (actor instanceof Square || actor instanceof Item1 || actor instanceof MoneyItem)
+                actor.addAction(Actions.removeActor());
+        }
+        uiObjects.setScoreText(0);
+        uiObjects.setMoneyText(0);
+    }
+
+
+    public void oneMoreTime() {
+        for (Actor actor : getActors()) {
+            if (actor.getY() < 0) {
+                actor.addAction(Actions.removeActor());
+            }
+        }
     }
 
     public int getCurrentLevel() {
@@ -65,6 +83,9 @@ public class Level extends Stage {
     }
 
     public void moveOneRow() {
+        if (screen.currentLevel == 10) {
+            screen.setColorPlayer(Color.CYAN);
+        }
         if (numberType++ == 5) {
             numberType = 0;
             materialType++;
@@ -89,7 +110,9 @@ public class Level extends Stage {
 
     private void addActionToAllSquare() {
         int i = 0;
-        if(isLevelFinish()) generateNextStep();
+        if (isLevelFinish()) {
+            generateNextStep();
+        }
         for (Actor actor : this.getActors()) {
             if (actor instanceof Square || actor instanceof Item1 || actor instanceof MoneyItem) {
                 if (i++ == 0) {
@@ -106,11 +129,19 @@ public class Level extends Stage {
         return new Runnable() {
             @Override
             public void run() {
-//                generateNextStep();
-//                screen.nextRow();
-                screen.flagNextRow = true;
+                generateNextStep();
+                screen.nextRow();
             }
         };
+    }
+
+    public boolean checkGameOver() {
+        for (Actor actor : this.getActors()) {
+            if (actor instanceof Square)
+                if (actor.getY() < -getCamera().viewportHeight * 6 / 14 + 0.4f)
+                    return true;
+        }
+        return false;
     }
 
     public void generateNextStep() {
@@ -127,8 +158,6 @@ public class Level extends Stage {
             float x = -VIEWPORT_WIDTH / 2 + SPACE_BETWEEN_SQUARE + SQUARE_WIDTH * i + SPACE_BETWEEN_SQUARE * i;
             if ((value & mask) != 0) {
                 // add square if it is 1
-//                Square s = (Square) (new Square(screen, world, color)).init(x, y);
-//                Square s = (Square) (new Square(world)).init(x, y);
                 Square s = squarePool.obtain();
                 s.setPosition(x, y);
                 s.active().setColor(color);
@@ -136,30 +165,24 @@ public class Level extends Stage {
                 s.setValue(squareValue);
             } else {
                 // 5% generate Item1
-                if (belowPercent(ratioToGenerateItem1)) {
+                if (MathUtils.instance.ratio(ratioToGenerateItem1)) {
 //                    this.addActor((new Item1(world)).init(x, y));
                     Item1 item1 = item1Pool.obtain();
                     item1.active();
                     item1.setPosition(x, y);
                     this.addActor(item1);
                 } else {
-                    if (belowPercent(ratioToGenerateMoneyItem)) {
+                    if (MathUtils.instance.ratio(ratioToGenerateMoneyItem)) {
                         MoneyItem moneyItem = moneyItemPool.obtain();
                         moneyItem.setActive();
                         moneyItem.setPosition(x, y);
                         this.addActor(moneyItem);
                     }
-//                        this.addActor((new MoneyItem(world)).init(x, y));
                 }
             }
             value = value >> 1;
         }
 
-    }
-
-    private boolean belowPercent(int percent) {
-        if (random.nextInt(100) > percent) return false;
-        return true;
     }
 
 

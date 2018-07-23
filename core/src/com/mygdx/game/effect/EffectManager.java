@@ -20,6 +20,7 @@ public class EffectManager extends Actor {
     private ParticleEffectPool pool;
     private Array<PooledEffect> poolEffects;
 
+
     public EffectManager() {
 
         prototype = new ParticleEffect();
@@ -28,16 +29,21 @@ public class EffectManager extends Actor {
 
         prototype.start();
 
-        pool = new ParticleEffectPool(prototype, 1, 500);
+        pool = new ParticleEffectPool(prototype, 1, 30);
         poolEffects = new Array<>();
+
+        setupCirclePool();
+    }
+
+    private void setupCirclePool() {
+        ParticleEffect ciclePrototype = new ParticleEffect();
+        ciclePrototype.load(Gdx.files.internal("effect4.party"), Gdx.files.internal(""));
+        ciclePrototype.scaleEffect(1.0f / 250f);
+        ciclePrototype.start();
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        effects.forEach(effect -> effect.draw(batch));
-//        for (ParticleEffect effect : effects) {
-//               if(!effect.isComplete()) effect.draw(batch);
-//        }
         for (PooledEffect effect : poolEffects) {
             effect.draw(batch, Gdx.graphics.getDeltaTime());
             if (effect.isComplete()) {
@@ -47,49 +53,7 @@ public class EffectManager extends Actor {
         }
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-//        effects.forEach(particleEffect -> particleEffect.update(delta));
-//        for (ParticleEffect effect : effects) {
-//            effect.update(delta);
-//        }
-
-//        for(PooledEffect effect: poolEffects){
-//            effect.update(delta);
-//        }
-    }
-
     public void setEffectAtPosition(float x, float y, Color color) {
-//        Optional<ParticleEffect> optinalEffect = effects.stream().filter(ParticleEffect::isComplete).findAny();
-//        if (!optinalEffect.isPresent()) {
-//            effects.add(newParticleEffectAtPosition(x, y));
-//            return;
-//        }
-//        optinalEffect.ifPresent(particleEffect -> {
-//            optinalEffect.get().reset(false);
-//            setColor(optinalEffect.get(), color);
-//            optinalEffect.get().setPosition(x, y);
-////            particleEffect.setPosition(x, y);
-////            particleEffect.start();
-//        });
-
-//        ParticleEffect optinalEffect = null;
-//        for (ParticleEffect effect : effects) {
-//            if (effect.isComplete()) {
-//                optinalEffect = effect;
-//                break;
-//            }
-//        }
-////
-//        if (optinalEffect != null) {
-////            optinalEffect.reset(false);
-//          //  setColor(optinalEffect, color);
-//            optinalEffect.setPosition(x, y);
-//            optinalEffect.start();
-//        } else {
-//            effects.add(newParticleEffectAtPosition(x, y));
-//        }
 
         PooledEffect effect = pool.obtain();
         prototype.getEmitters().first().setPosition(x, y);
@@ -98,27 +62,6 @@ public class EffectManager extends Actor {
         poolEffects.add(effect);
         setColor(effect, color);
         effect.start();
-    }
-
-    private ParticleEffect newParticleEffectAtPosition(float x, float y) {
-        ParticleEffect pe = new ParticleEffect();
-        pe.load(Assets.instance.effectFile, Assets.instance.imagesDir);
-        pe.scaleEffect(1.0f / 150f);
-        pe.start();
-
-//        ParticleEffect pe = particleEffectFactory();
-//        pe.getEmitters().first().setPosition(x, y);
-//        pe.scaleEffect(1.0f / 150f);
-//        pe.start();
-        return pe;
-    }
-
-    private ParticleEffect particleEffectFactory(){
-        ParticleEffect pe = new ParticleEffect();
-        pe.load(Assets.instance.effectFile, Assets.instance.imagesDir);
-        pe.scaleEffect(1.0f / 150f);
-
-        return pe;
     }
 
     private void setColor(ParticleEffect pe, Color color) {

@@ -2,9 +2,11 @@ package com.mygdx.game.object;
 
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -24,6 +26,8 @@ public class Player extends Stage {
 
     BallPool pool;
 
+    Color color;
+
     public Player(Viewport viewport, Screen screen, World world, RayHandler handler) {
         super(viewport);
         this.mainGameScreen = (MainGameScreen) screen;
@@ -31,7 +35,8 @@ public class Player extends Stage {
         setInitPositon();
         this.handler = handler;
 
-        pool = new BallPool(world, handler);
+        pool = new BallPool(world, handler, mainGameScreen);
+        this.color = Color.PINK;
     }
 
     public Vector2 getVelocity() {
@@ -105,7 +110,9 @@ public class Player extends Stage {
     public void addNewBall() {
         Ball ball = pool.obtain();
         ball.setPosition(this.positionToFire.x, this.positionToFire.y);
+        ball.active();
 //        this.addActor((new Ball(this.world, handler)).init(this.positionToFire.x, this.positionToFire.y));
+        ball.setPointLightColor(color);
         this.addActor(ball);
     }
 
@@ -113,5 +120,24 @@ public class Player extends Stage {
         for (int i = 0; i < numberOfBall; ++i) {
             addNewBall();
         }
+    }
+
+    public void setColorBalls(Color color) {
+        this.color = color;
+        for (Actor actor : this.getActors()) {
+            Ball b = (Ball) actor;
+            b.setPointLightColor(this.color);
+        }
+    }
+
+    public void reset() {
+        if (this.getActors().size < 2) return;
+        for (int i = 1; i < this.getActors().size; ++i) {
+            this.getActors().get(i).addAction(Actions.removeActor());
+        }
+    }
+
+    public void freeBall(Ball ball) {
+        pool.free(ball);
     }
 }
