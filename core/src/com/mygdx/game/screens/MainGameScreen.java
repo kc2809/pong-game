@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -26,44 +25,43 @@ import com.mygdx.game.object.Player;
 import com.mygdx.game.object.PlayerCount;
 import com.mygdx.game.object.Trajectory;
 import com.mygdx.game.object.Walls;
+import com.mygdx.game.sound.SoundManager;
 import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.VectorUtil;
 import com.mygdx.game.world.WorldContactListener;
 
 
 public class MainGameScreen implements Screen, InputProcessor {
-    //    public UIObject uiObject;
     MyGdxGame game;
     public int ballBeAddedNextRow;
     World world;
-    Box2DDebugRenderer debugRenderer;
-    Viewport viewport;
+    public int currentLevel;
     OrthographicCamera camera;
     Walls walls;
     public Level level;
     Player player;
-    int fireFlag = 0;
-    int count = 0;
+    public int power;
+    //    Box2DDebugRenderer debugRenderer;
+    Viewport viewport;
     long timeAtFire;
     Trajectory trajectory;
     //
     private WorldContactListener contactListener;
     private EffectManager effectManager;
-
-    public int currentLevel = 1;
-
-    FrameRate frameRate;
-
+    int fireFlag;
     PlayerCount playerCount;
 
     //UIObject
     public int score;
     public int money;
-
-    //light effect test
+    int count;
+    //light effect
     RayHandler handler;
+    FrameRate frameRate;
+    private int powerTimes;
 
     public MainGameScreen(MyGdxGame game) {
+        initGameState();
         this.game = game;
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
@@ -76,13 +74,20 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         ballBeAddedNextRow = 0;
 
+    }
+
+    private void initGameState() {
+        fireFlag = 0;
+        count = 0;
+        currentLevel = 1;
         score = 0;
         money = 0;
+        power = 1;
     }
 
     @Override
     public void show() {
-        debugRenderer = new Box2DDebugRenderer();
+//        debugRenderer = new Box2DDebugRenderer();
         Gdx.input.setInputProcessor(this);
 
     }
@@ -93,14 +98,12 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         handler = new RayHandler(world);
         handler.setCombinedMatrix(camera);
-//        handler.setCombinedMatrix(camera.combined, camera.viewportWidth/2,camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight/2);
         handler.setShadows(false);
 
         Filter filter = new Filter();
         filter.groupIndex = 1;
         filter.categoryBits = Constants.WORLD_PHYSIC;
         filter.categoryBits = Constants.BALL_PHYSIC;
-
 
         PointLight.setGlobalContactFilter(filter);
 
@@ -127,10 +130,12 @@ public class MainGameScreen implements Screen, InputProcessor {
     public void nextStep() {
         currentLevel++;
         System.out.println("NEXT ROWWWWW: " + player.getActors().size);
+        setPowerPlayer();
         level.moveOneRow();
     }
 
     public void nextRow() {
+        SoundManager.instance.playLevelUpSound();
         level.increaseScore();
         //   player.addNewBall();
         player.addBalls(ballBeAddedNextRow);
@@ -159,7 +164,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         camera.update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        debugRenderer.render(world, camera.combined);
+//        debugRenderer.render(world, camera.combined);
 
         player.draw();
         player.act(delta);
@@ -219,8 +224,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         frameRate.resize(width, height);
 
         handler.setCombinedMatrix(camera);
-//        handler.setCombinedMatrix(camera.combined, camera.viewportWidth/2,camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight/2);
-
     }
 
     @Override
@@ -311,9 +314,6 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-//        Vector3 worldCoordinate = camera.unproject(new Vector3(screenX, screenY, 0));
-//        Vector2 clickPint = new Vector2(worldCoordinate.x, worldCoordinate.y);
-//        trajectory.projected(player.positionToFire.cpy().add(new Vector2(0.25f, 0.25f)), clickPint);
         return false;
     }
 
@@ -338,16 +338,32 @@ public class MainGameScreen implements Screen, InputProcessor {
         player.setColorBalls(color);
     }
 
-    public void gameOver(){
-//        level.reset();
-//        player.reset();
-//        level.generateNextStep();
+    public void setPowerPlayer() {
+        if (power == 2) {
+            if (--powerTimes == 0) {
+                power = 1;
+                player.setDistance(power);
+            }
+        }
+
+        if (currentLevel % 10 == 0) {
+            power = 2;
+            powerTimes = 2;
+            setColorPlayer(Color.PURPLE);
+            player.setDistance(power);
+        }
+    }
+
+
+    private void gameOver() {
         game.changeGameOverScreen();
     }
 
     public void reset(){
         level.reset();
         player.reset();
+        playerCount.setPositionToDraw();
+        initGameState();
         level.generateNextStep();
     }
 }

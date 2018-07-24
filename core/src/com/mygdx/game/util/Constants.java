@@ -6,6 +6,7 @@ public interface Constants {
     String TEXTURE_ATLAS_OBJECT = "resources2.atlas";
 
     String HIT_SOUND_PATH = "music/glass1.wav";
+    String LEVEL_SOUND_PATH = "music/levelup.wav";
 
     //Pixcel per meter
     int PPM = 1000;
@@ -27,8 +28,6 @@ public interface Constants {
     // speed of player
     float SPEED = 17.0f;
 //    float SPEED = 200.0f;
-
-
 
     // value of degree will be decrease if refection vector is PERPENDICULAR or between (LOWER_LIMIT, UPPER_LIMIT)
     // with RIGHT WALL.

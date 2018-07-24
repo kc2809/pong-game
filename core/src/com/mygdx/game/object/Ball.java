@@ -38,7 +38,7 @@ public class Ball extends ObjectBox2d  implements Poolable{
 
     public Ball active() {
         Box2dManager.getInstance().addActiveBodyToQueue(body);
-        pointLight.setActive(true);
+//        pointLight.setActive(true);
         return this;
     }
 
@@ -66,7 +66,7 @@ public class Ball extends ObjectBox2d  implements Poolable{
 
     @Override
     void initComponent() {
-        pointLight = new PointLight(handler, 7, Color.PURPLE, 2, getX(), getY());
+        pointLight = new PointLight(handler, 7, Color.PURPLE, 1, getX(), getY());
         pointLight.setActive(false);
     }
 
@@ -78,8 +78,9 @@ public class Ball extends ObjectBox2d  implements Poolable{
         return sprite;
     }
 
-    public void setPointLightColor(Color color) {
+    public void setPointLightColor(Color color, int distance) {
         pointLight.setColor(color);
+        pointLight.setDistance(distance);
     }
 
     @Override
@@ -130,7 +131,6 @@ public class Ball extends ObjectBox2d  implements Poolable{
 
     @Override
     public void reset() {
-        //this.setPosition(-10,0);
         Box2dManager.getInstance().addInActiveBodyToQueue(body);
     }
 

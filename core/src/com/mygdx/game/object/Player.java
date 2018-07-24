@@ -27,6 +27,7 @@ public class Player extends Stage {
     BallPool pool;
 
     Color color;
+    int distanceColor;
 
     public Player(Viewport viewport, Screen screen, World world, RayHandler handler) {
         super(viewport);
@@ -37,6 +38,15 @@ public class Player extends Stage {
 
         pool = new BallPool(world, handler, mainGameScreen);
         this.color = Color.PINK;
+        distanceColor = 1;
+    }
+
+    public void setDistance(int distance){
+        this.distanceColor = distance;
+        for (Actor actor : this.getActors()) {
+            Ball b = (Ball) actor;
+            b.setPointLightColor(this.color, distanceColor);
+        }
     }
 
     public Vector2 getVelocity() {
@@ -45,14 +55,6 @@ public class Player extends Stage {
 
     public void setVelocityWithClickPoint(Vector2 clickPoint) {
         velocity = clickPoint.cpy().sub(positionToFire).nor().scl(SPEED);
-    }
-
-    public void increteCountOnFire() {
-        countOnFire++;
-    }
-
-    public void resetWhenFireEventFinish() {
-        countOnFire = 0;
     }
 
     public boolean isFirstBallTouchGround() {
@@ -85,15 +87,10 @@ public class Player extends Stage {
     }
 
     private void nextStep() {
-//        System.out.println("count on fire : " + countOnFire);
-//        countOnFire++;
         if (++countOnFire == this.getActors().size) {
             countOnFire = 0;
-//            mainGameScreen.nextRow();
             mainGameScreen.nextStep();
         }
-//        System.out.println(" after count on fire : " + countOnFire);
-
     }
 
     public void setInitPositon() {
@@ -110,10 +107,10 @@ public class Player extends Stage {
     public void addNewBall() {
         Ball ball = pool.obtain();
         ball.setPosition(this.positionToFire.x, this.positionToFire.y);
-        ball.active();
 //        this.addActor((new Ball(this.world, handler)).init(this.positionToFire.x, this.positionToFire.y));
-        ball.setPointLightColor(color);
+        ball.setPointLightColor(color, distanceColor);
         this.addActor(ball);
+        ball.active();
     }
 
     public void addBalls(int numberOfBall) {
@@ -126,11 +123,12 @@ public class Player extends Stage {
         this.color = color;
         for (Actor actor : this.getActors()) {
             Ball b = (Ball) actor;
-            b.setPointLightColor(this.color);
+            b.setPointLightColor(this.color, distanceColor);
         }
     }
 
     public void reset() {
+        setInitPositon();
         if (this.getActors().size < 2) return;
         for (int i = 1; i < this.getActors().size; ++i) {
             this.getActors().get(i).addAction(Actions.removeActor());

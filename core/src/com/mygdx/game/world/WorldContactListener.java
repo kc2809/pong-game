@@ -13,6 +13,8 @@ import com.mygdx.game.object.Square;
 import com.mygdx.game.screens.MainGameScreen;
 import com.mygdx.game.sound.SoundManager;
 
+import java.awt.Color;
+
 import static com.mygdx.game.util.Constants.DEGREE_DECREASE;
 import static com.mygdx.game.util.Constants.LOWER_LIMIT;
 import static com.mygdx.game.util.Constants.SPEED;
@@ -78,6 +80,10 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
+        if(checkIsInstanceOf(contact.getFixtureA(), contact.getFixtureB(), Square.class)){
+            Square square = getObjectByFixture(contact.getFixtureA(), contact.getFixtureB(), Square.class);
+            square.resetColor();
+        }
     }
 
     private boolean item1Contact(Fixture fixtureA, Fixture fixtureB) {

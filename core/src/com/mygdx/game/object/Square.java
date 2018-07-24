@@ -1,5 +1,6 @@
 package com.mygdx.game.object;
 
+import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -25,11 +26,11 @@ public class Square extends ObjectBox2d implements Poolable {
     MainGameScreen screen;
 
     int value;
-    Random r = new Random();
 
     BitmapFont font;
     GlyphLayout layout;
     StringBuilder valueBuilder;
+    Color color;
 
     public Square(World world, MainGameScreen screen) {
         super(world, Assets.instance.assetSquare.square);
@@ -46,14 +47,13 @@ public class Square extends ObjectBox2d implements Poolable {
     }
 
     public void setColor(Color color) {
+        this.color = color;
         sprite.setColor(color);
     }
 
     @Override
     void initComponent() {
-
     }
-
 
     @Override
     public void createPhysics() {
@@ -92,7 +92,7 @@ public class Square extends ObjectBox2d implements Poolable {
     @Override
     public void act(float delta) {
         super.act(delta);
-        sprite.setSize(this.getScaleX(), this.getScaleY());
+//        sprite.setSize(this.getScaleX(), this.getScaleY());
     }
 
     @Override
@@ -102,23 +102,22 @@ public class Square extends ObjectBox2d implements Poolable {
         return super.remove();
     }
 
-    private Level getLevelStage() {
-        return (Level) getStage();
-    }
-
     public void descreaseValue() {
-        value--;
+        if(screen.power ==1)
+            value--;
+        else
+            value-=2;
+        sprite.setColor(Color.RED);
         setValueBuilder();
-        if (value != 0) {
-//            addCollisionEffect();
+        if (value > 0) {
             return;
         }
-        screen.setEffectAtPosition(body.getPosition(), sprite.getColor());
+        screen.setEffectAtPosition(body.getPosition(), color);
         this.remove();
     }
 
-    public void addCollisionEffect(){
-        this.addAction(Actions.sequence(Actions.scaleTo(1.1f,1.1f,0.005f), Actions.scaleTo(1.0f,1.0f,0.005f)));
+    public void resetColor() {
+        sprite.setColor(color);
     }
 
     private void setValueBuilder() {
@@ -131,6 +130,4 @@ public class Square extends ObjectBox2d implements Poolable {
     public void reset() {
         Box2dManager.getInstance().addInActiveBodyToQueue(body);
     }
-
-
 }

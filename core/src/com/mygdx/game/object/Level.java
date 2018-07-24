@@ -40,7 +40,6 @@ public class Level extends Stage {
     MoneyItemPool moneyItemPool;
     Item1Pool item1Pool;
 
-
     public Level(MainGameScreen screen, Viewport viewport, World world) {
         super(viewport);
         squarePool = new SquarePool(world, screen);
@@ -63,6 +62,7 @@ public class Level extends Stage {
         }
         uiObjects.setScoreText(0);
         uiObjects.setMoneyText(0);
+        ratioToGenerateItem1 = 30;
     }
 
 
@@ -83,9 +83,6 @@ public class Level extends Stage {
     }
 
     public void moveOneRow() {
-        if (screen.currentLevel == 10) {
-            screen.setColorPlayer(Color.CYAN);
-        }
         if (numberType++ == 5) {
             numberType = 0;
             materialType++;
@@ -168,8 +165,8 @@ public class Level extends Stage {
                 if (MathUtils.instance.ratio(ratioToGenerateItem1)) {
 //                    this.addActor((new Item1(world)).init(x, y));
                     Item1 item1 = item1Pool.obtain();
-                    item1.active();
                     item1.setPosition(x, y);
+                    item1.active();
                     this.addActor(item1);
                 } else {
                     if (MathUtils.instance.ratio(ratioToGenerateMoneyItem)) {
