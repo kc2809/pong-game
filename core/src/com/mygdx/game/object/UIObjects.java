@@ -28,7 +28,7 @@ public class UIObjects extends Actor {
     public UIObjects(MainGameScreen screen) {
         this.screen = screen;
         initObjects();
-        setMoneyText(0);
+        setMoneyText(screen.money);
         setScoreText(0);
     }
 

@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.mygdx.game.box2d.Box2dManager;
 
 import static com.mygdx.game.util.Constants.PPM;
 
@@ -107,4 +105,7 @@ abstract class ObjectBox2d extends Actor {
         return sprite.getY() + sprite.getHeight() / 2;
     }
 
+    public void setUpdateByBody(boolean b) {
+        updateByBody = b;
+    }
 }

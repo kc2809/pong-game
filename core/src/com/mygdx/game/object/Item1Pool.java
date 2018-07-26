@@ -10,7 +10,7 @@ public class Item1Pool extends Pool<Item1> {
     MainGameScreen screen;
 
     public Item1Pool(World world, MainGameScreen screen) {
-//        super(10);
+        super(10);
         this.world = world;
         this.screen = screen;
     }

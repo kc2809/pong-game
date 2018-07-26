@@ -1,0 +1,35 @@
+package com.mygdx.game.object;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import static com.mygdx.game.util.Constants.PPM;
+
+public class Object2D extends Actor {
+
+    protected Sprite sprite;
+
+    public Object2D() {
+    }
+
+    public void initTexture(Texture texture) {
+        sprite = new Sprite(texture);
+        sprite.setSize(sprite.getWidth() * 2 / PPM, sprite.getHeight() * 2 / PPM);
+    }
+
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        sprite.setPosition(x, y);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        sprite.draw(batch);
+    }
+
+
+}

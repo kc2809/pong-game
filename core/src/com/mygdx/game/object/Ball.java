@@ -42,6 +42,10 @@ public class Ball extends ObjectBox2d  implements Poolable{
         return this;
     }
 
+    public PointLight getPointLight() {
+        return pointLight;
+    }
+
     @Override
     public void createPhysics() {
         BodyDef bodyDef = new BodyDef();
@@ -81,6 +85,10 @@ public class Ball extends ObjectBox2d  implements Poolable{
     public void setPointLightColor(Color color, int distance) {
         pointLight.setColor(color);
         pointLight.setDistance(distance);
+    }
+
+    public void setScale(float scale){
+        sprite.setSize(sprite.getWidth()* scale, sprite.getHeight() * scale);
     }
 
     @Override

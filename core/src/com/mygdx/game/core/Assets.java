@@ -31,6 +31,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public TextureAtlas ballsAtlas;
     public BitmapFont fontSmall;
     public BitmapFont fontBig;
+    public BitmapFont titleFont;
     private AssetManager assetManager;
 
 
@@ -84,7 +85,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
         fontSmall = createFont(FONT_SCREEN_WIDTH_FRACTION);
         fontBig = createFont(FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
-
+        titleFont = createFont(1.0f/10.0f);
     }
 
     @Override

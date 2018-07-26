@@ -10,6 +10,7 @@ public class MoneyItemPool extends Pool<MoneyItem> {
     MainGameScreen screen;
 
     public MoneyItemPool(World world, MainGameScreen screen) {
+        super(20);
         this.world = world;
         this.screen = screen;
     }

@@ -13,7 +13,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.box2d.Box2dManager;
@@ -21,6 +20,7 @@ import com.mygdx.game.core.FrameRate;
 import com.mygdx.game.effect.EffectManager;
 import com.mygdx.game.object.Ball;
 import com.mygdx.game.object.Level;
+import com.mygdx.game.object.MyPreference;
 import com.mygdx.game.object.Player;
 import com.mygdx.game.object.PlayerCount;
 import com.mygdx.game.object.Trajectory;
@@ -60,11 +60,14 @@ public class MainGameScreen implements Screen, InputProcessor {
     FrameRate frameRate;
     private int powerTimes;
 
-    public MainGameScreen(MyGdxGame game) {
+    public MainGameScreen(MyGdxGame game, OrthographicCamera camera, Viewport viewport) {
         initGameState();
         this.game = game;
-        camera = new OrthographicCamera();
-        viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
+//        camera = new OrthographicCamera();
+//        viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
+        this.camera = camera;
+        this.viewport = viewport;
+
         viewport.apply();
         camera.position.set(0, 0, 0);
 
@@ -73,7 +76,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         initObject();
 
         ballBeAddedNextRow = 0;
-
     }
 
     private void initGameState() {
@@ -81,7 +83,8 @@ public class MainGameScreen implements Screen, InputProcessor {
         count = 0;
         currentLevel = 1;
         score = 0;
-        money = 0;
+//        money = 0;
+        money = MyPreference.getInstance().getMoney();
         power = 1;
     }
 
@@ -356,6 +359,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
 
     private void gameOver() {
+        MyPreference.getInstance().setMoney(money);
         game.changeGameOverScreen();
     }
 

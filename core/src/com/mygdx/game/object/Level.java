@@ -61,7 +61,7 @@ public class Level extends Stage {
                 actor.addAction(Actions.removeActor());
         }
         uiObjects.setScoreText(0);
-        uiObjects.setMoneyText(0);
+//        uiObjects.setMoneyText(0);
         ratioToGenerateItem1 = 30;
     }
 
