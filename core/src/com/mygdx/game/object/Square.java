@@ -1,6 +1,5 @@
 package com.mygdx.game.object;
 
-import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,13 +9,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.mygdx.game.box2d.Box2dManager;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.MainGameScreen;
-
-import java.util.Random;
+import com.mygdx.game.sound.SoundManager;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
 import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
@@ -33,7 +30,7 @@ public class Square extends ObjectBox2d implements Poolable {
     Color color;
 
     public Square(World world, MainGameScreen screen) {
-        super(world, Assets.instance.assetSquare.square);
+        super(world, Assets.instance.getAsset(Assets.SQUARE));
         this.screen = screen;
         font = Assets.instance.fontSmall;
         valueBuilder = new StringBuilder();
@@ -103,6 +100,8 @@ public class Square extends ObjectBox2d implements Poolable {
     }
 
     public void descreaseValue() {
+        if (screen.isSoundOn)
+            SoundManager.instance.playHitSound();
         if(screen.power ==1)
             value--;
         else

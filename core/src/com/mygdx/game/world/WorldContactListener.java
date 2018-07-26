@@ -108,7 +108,6 @@ public class WorldContactListener implements ContactListener {
         if (checkIsInstanceOf(fixA, fixB, Square.class)) {
             Square square = getObjectByFixture(fixA, fixB, Square.class);
             square.descreaseValue();
-            SoundManager.instance.playHitSound();
             return true;
         }
         return false;

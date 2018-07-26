@@ -5,11 +5,17 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.core.Text;
 import com.mygdx.game.screens.MainGameScreen;
+import com.mygdx.game.util.CommonUI;
 import com.mygdx.game.util.Constants;
 
+import static com.mygdx.game.core.Assets.MONEY_ITEM;
+import static com.mygdx.game.core.Assets.PAUSE_ICON;
 import static com.mygdx.game.util.Constants.PPM;
 
 public class UIObjects extends Actor {
@@ -25,6 +31,7 @@ public class UIObjects extends Actor {
     GlyphLayout layout;
     GlyphLayout layoutScore;
 
+
     public UIObjects(MainGameScreen screen) {
         this.screen = screen;
         initObjects();
@@ -38,8 +45,8 @@ public class UIObjects extends Actor {
         layout = new GlyphLayout();
         layoutScore = new GlyphLayout();
 
-        moneyIcon = new Sprite(Assets.instance.assetMoenyItem.moneyItem);
-        moneyIcon.setSize(moneyIcon.getWidth() / PPM, moneyIcon.getHeight() / PPM);
+        moneyIcon = new Sprite(Assets.instance.getAsset(MONEY_ITEM));
+        moneyIcon.setSize(moneyIcon.getWidth() / (2 * PPM), moneyIcon.getHeight() / (2 * PPM));
         moneyText = new Text();
         scoreText = new Text();
     }
@@ -47,7 +54,7 @@ public class UIObjects extends Actor {
     @Override
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
-        moneyIcon.setPosition(getX() + Constants.VIEWPORT_WIDTH * 8 / 20, getY() - 0.5f);
+        moneyIcon.setPosition(getX() + Constants.VIEWPORT_WIDTH * 8 / 20, getY() - moneyIcon.getHeight() * 1.2f);
         moneyText.setPosition(getX() + Constants.VIEWPORT_WIDTH * 7 / 20, getY());
         scoreText.setPosition(getX(), getY());
     }

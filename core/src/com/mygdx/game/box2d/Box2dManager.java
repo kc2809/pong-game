@@ -40,7 +40,7 @@ public class Box2dManager {
         bodiesWillBeActive.addAll(tempAcive);
         if (!bodiesWillBeActive.isEmpty()) {
             for (Body body : bodiesWillBeActive) {
-                body.setActive(true);
+                if (body != null) body.setActive(true);
             }
         }
         bodiesWillBeActive.clear();
@@ -51,7 +51,7 @@ public class Box2dManager {
         bodiesWillBeInActive.addAll(tempInActive);
         if (!bodiesWillBeInActive.isEmpty()) {
             for (Body body : bodiesWillBeInActive) {
-                body.setActive(false);
+                if (body != null) body.setActive(false);
             }
         }
         bodiesWillBeInActive.clear();

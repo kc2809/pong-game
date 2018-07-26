@@ -3,7 +3,7 @@ package com.mygdx.game.util;
 public interface Constants {
     float VIEWPORT_WIDTH = 7.8f;
     float VIEWPORT_HEIGHT = 10.0f;
-    String TEXTURE_ATLAS_OBJECT = "resources2.atlas";
+    String TEXTURE_ATLAS_OBJECT = "resources730";
 
     String HIT_SOUND_PATH = "music/glass1.wav";
     String LEVEL_SOUND_PATH = "music/levelup.wav";

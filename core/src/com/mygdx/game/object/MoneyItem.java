@@ -19,7 +19,7 @@ public class MoneyItem extends ObjectBox2d implements Poolable {
     MainGameScreen screen;
 
     public MoneyItem(World world, MainGameScreen screen) {
-        super(world, Assets.instance.assetMoenyItem.moneyItem);
+        super(world, Assets.instance.getAsset(Assets.MONEY_ITEM));
         this.screen = screen;
     }
 
@@ -79,9 +79,6 @@ public class MoneyItem extends ObjectBox2d implements Poolable {
     }
 
     public void increaseMoney() {
-//        Level level = (Level) this.getStage();
-//        level.screen.uiObject.increateMoney();
-//        screen.uiObject.increateMoney();
         screen.increaseMoeny();
         remove();
     }

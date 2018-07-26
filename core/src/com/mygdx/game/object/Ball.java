@@ -29,7 +29,7 @@ public class Ball extends ObjectBox2d  implements Poolable{
     MainGameScreen screen;
 
     public Ball(World world, RayHandler handler, MainGameScreen screen) {
-        super(world, Assets.instance.assetCircle.circle);
+        super(world, Assets.instance.getAsset(Assets.BALL));
         isProgress = false;
         updateByBody = true;
         this.handler = handler;

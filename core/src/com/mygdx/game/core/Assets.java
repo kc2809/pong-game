@@ -4,11 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -17,7 +14,24 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.game.util.Constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.badlogic.gdx.graphics.Texture.TextureFilter.Nearest;
+import static com.badlogic.gdx.graphics.Texture.TextureWrap.ClampToEdge;
+
 public class Assets implements Disposable, AssetErrorListener {
+
+    public static String BALL = "ball";
+    public static String SQUARE = "square";
+    public static String MONEY_ITEM = "money_item";
+    public static String PLAY_ICON = "play_btn";
+    public static String VOLUMNE_ACTIVE_ICON = "sound_active";
+    public static String VOLUMNE_INACTIVE_ICON = "sound_inactive";
+    public static String STORE_ICON = "store";
+    public static String STAR_ICON = "star";
+    public static String PAUSE_ICON = "pause_btn";
+
     public static final String TAG = Assets.class.getName();
     public static final Assets instance = new Assets();
     private static final float FONT_SCREEN_WIDTH_FRACTION = 1.0f / 25.f;
@@ -34,13 +48,10 @@ public class Assets implements Disposable, AssetErrorListener {
     public BitmapFont titleFont;
     private AssetManager assetManager;
 
-
-    public AssetCircle assetCircle;
-    public AssetSquare assetSquare;
-    public AssetMoenyItem assetMoenyItem;
-
+    public Map<String, AtlasRegion> resources;
 
     private Assets() {
+        resources = new HashMap<>();
     }
 
     public void init(AssetManager assetManager) {
@@ -57,26 +68,14 @@ public class Assets implements Disposable, AssetErrorListener {
 
         TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_OBJECT);
 
-//        TextureAtlas atlasNumber = assetManager.get(Constants.TEXTURE_ATLAS_NUMBER);
 
-        //enable texture filtering for pixel smoothing
-//        for (Texture t : atlas.getTextures()) {
-//            t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-//        }
+        for (Texture t : atlas.getTextures()) {
+//            t.setFilter(Nearest, Nearest);
+            t.setFilter(Nearest, Nearest);
+            t.setWrap(ClampToEdge, ClampToEdge);
+        }
 
-
-        // create game resource object
-//        bunny = new AssetBunny(atlas);
-//        rock = new AssetRock(atlas);
-        assetCircle = new AssetCircle(atlas);
-        assetSquare = new AssetSquare(atlas);
-        assetMoenyItem = new AssetMoenyItem(atlas);
-
-//        circle = createCircleTexture();
-//        square = createSquareTexture();
-//        money = createMoneyTexture();
-
-
+        initAssets(atlas);
         //File handler
         effectFile = Gdx.files.internal("square5.party");
         imagesDir = Gdx.files.internal("");
@@ -86,6 +85,19 @@ public class Assets implements Disposable, AssetErrorListener {
         fontSmall = createFont(FONT_SCREEN_WIDTH_FRACTION);
         fontBig = createFont(FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
         titleFont = createFont(1.0f/10.0f);
+    }
+
+    //Add resources to map
+    private void initAssets(TextureAtlas atlas) {
+        putAtlasRegionToMap(atlas, BALL);
+        putAtlasRegionToMap(atlas, SQUARE);
+        putAtlasRegionToMap(atlas, MONEY_ITEM);
+        putAtlasRegionToMap(atlas, PLAY_ICON);
+        putAtlasRegionToMap(atlas, VOLUMNE_ACTIVE_ICON);
+        putAtlasRegionToMap(atlas, VOLUMNE_INACTIVE_ICON);
+        putAtlasRegionToMap(atlas, STAR_ICON);
+        putAtlasRegionToMap(atlas, STORE_ICON);
+        putAtlasRegionToMap(atlas, PAUSE_ICON);
     }
 
     @Override
@@ -99,36 +111,6 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.dispose();
         fontSmall.dispose();
         fontBig.dispose();
-    }
-
-    private Texture createCircleTexture() {
-        Pixmap pixmap = new Pixmap(800, 800, Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fillCircle(pixmap.getWidth() / 2, pixmap.getHeight() / 2, pixmap.getWidth() / 2);
-        Texture circle = new Texture(pixmap);
-        pixmap.dispose();
-        return circle;
-    }
-
-    private Texture createSquareTexture() {
-        Pixmap pixmap = new Pixmap(2000, 2000, Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fillRectangle(0, 0, 2000, 2000);
-        Texture square = new Texture(pixmap);
-        pixmap.dispose();
-        return square;
-    }
-
-    private Texture createMoneyTexture() {
-        Pixmap pixmap = new Pixmap(500, 500, Format.RGBA8888);
-        pixmap.setColor(Color.GREEN);
-        pixmap.drawCircle(pixmap.getWidth() / 2, pixmap.getHeight() / 2, pixmap.getWidth() / 2);
-        pixmap.fillCircle(pixmap.getWidth() / 2, pixmap.getHeight() / 2, pixmap.getWidth() / 2);
-        pixmap.setColor(Color.BLACK);
-        pixmap.fillCircle(pixmap.getWidth() / 2, pixmap.getHeight() / 2, pixmap.getWidth() * 3 / 8);
-        Texture money = new Texture(pixmap);
-        pixmap.dispose();
-        return money;
     }
 
     private BitmapFont createFont(float fraction) {
@@ -148,27 +130,12 @@ public class Assets implements Disposable, AssetErrorListener {
         return font;
     }
 
-    public class AssetCircle {
-        public final AtlasRegion circle;
 
-        public AssetCircle(TextureAtlas textureAtlas) {
-            this.circle = textureAtlas.findRegion("circle85");
-        }
+    private void putAtlasRegionToMap(TextureAtlas atlas, String regionName) {
+        resources.put(regionName, atlas.findRegion(regionName));
     }
 
-    public class AssetSquare {
-        public final AtlasRegion square;
-
-        public AssetSquare(TextureAtlas textureAtlas) {
-            this.square = textureAtlas.findRegion("square13");
-        }
-    }
-
-    public class AssetMoenyItem {
-        public final AtlasRegion moneyItem;
-
-        public AssetMoenyItem(TextureAtlas textureAtlas) {
-            this.moneyItem = textureAtlas.findRegion("moneyItem1");
-        }
+    public AtlasRegion getAsset(String name) {
+        return resources.get(name);
     }
 }

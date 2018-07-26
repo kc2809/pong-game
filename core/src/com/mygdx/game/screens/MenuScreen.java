@@ -7,32 +7,34 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.core.Assets;
+import com.mygdx.game.object.MyPreference;
+import com.mygdx.game.util.CommonUI;
 
+import static com.mygdx.game.core.Assets.PLAY_ICON;
+import static com.mygdx.game.core.Assets.VOLUMNE_ACTIVE_ICON;
+import static com.mygdx.game.core.Assets.VOLUMNE_INACTIVE_ICON;
 import static com.mygdx.game.util.Constants.PPM;
 import static com.mygdx.game.util.Constants.VIEWPORT_WIDTH;
 
 public class MenuScreen implements Screen {
     private static String TITLE = "K BALL";
     MyGdxGame game;
-    Button button;
+    Button playBtn;
+    Button volumeBtn;
+
     Stage stage;
     BitmapFont font;
 
@@ -69,10 +71,6 @@ public class MenuScreen implements Screen {
         setupLabel();
         setupButton();
 
-//        Object2D object2D = new Object2D();
-//        object2D.initTexture(new Texture(Gdx.files.internal("playbtn1k.png")));
-//        object2D.setPosition(camera.viewportWidth /4, -camera.viewportHeight * 3 /8);
-//        stage.addActor(object2D);
     }
 
     private void setupLabel() {
@@ -84,57 +82,43 @@ public class MenuScreen implements Screen {
     }
 
     private void setupButton() {
-        Texture playTexture = new Texture(Gdx.files.internal("playbtn1k.png"));
-        Drawable drawable = new TextureRegionDrawable(new TextureRegion(playTexture));
-        button = new ImageButton(drawable);
-        button.setSize(playTexture.getWidth() * 2/ PPM, playTexture.getHeight() * 2/ PPM);
-        stage.addActor(button);
-        button.setPosition(camera.viewportWidth /4, -camera.viewportHeight * 3 /8);
-        button.addListener(new ClickListener(){
+        createPlayButton();
+        createVolumeButton();
+    }
+
+    private void createPlayButton() {
+        playBtn = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(PLAY_ICON), null, null, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 game.changeMainGameScreen();
             }
         });
+        playBtn.setSize(playBtn.getWidth() * 4 / PPM, playBtn.getHeight() * 4 / PPM);
+        playBtn.setPosition(camera.viewportWidth / 4, -camera.viewportHeight * 3 / 8);
+        stage.addActor(playBtn);
+    }
+
+    private void createVolumeButton() {
+        volumeBtn = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(VOLUMNE_INACTIVE_ICON)
+                , null
+                , Assets.instance.getAsset(VOLUMNE_ACTIVE_ICON)
+                , new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        MyPreference.getInstance().toggleSound();
+                        volumeBtn.setChecked(MyPreference.getInstance().isSoundOn());
+                    }
+                });
+        volumeBtn.setSize(volumeBtn.getWidth() * 4 / PPM, volumeBtn.getHeight() * 4 / PPM);
+        volumeBtn.setPosition(-camera.viewportWidth / 2, -camera.viewportHeight * 3 / 8);
+        volumeBtn.setChecked(MyPreference.getInstance().isSoundOn());
+        stage.addActor(volumeBtn);
     }
 
     @Override
     public void show() {
-//        stage = new Stage();
-//        Skin skin = new Skin();
-//        font = new BitmapFont();
-//        TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.internal("number.pack"));
-//        skin.addRegions(buttonAtlas);
-//        TextButtonStyle textButtonStyle = new TextButtonStyle();
-//        textButtonStyle.font = font;
-//        textButtonStyle.up = skin.getDrawable("num0");
-//        textButtonStyle.down = skin.getDrawable("num1");
-//        button = new TextButton("Button1", textButtonStyle);
-//
-//        button.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-//
-//        button.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                super.clicked(event, x, y);
-//                System.out.println("cllicked");
-//            }
-//
-//            @Override
-//            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//
-//                return super.touchDown(event, x, y, pointer, button);
-//            }
-//
-//            @Override
-//            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-//
-//                game.changeMainGameScreen();
-//                super.touchUp(event, x, y, pointer, button);
-//            }
-//        });
-//        stage.addActor(button);
         Gdx.input.setInputProcessor(stage);
 
         init();

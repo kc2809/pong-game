@@ -60,6 +60,8 @@ public class MainGameScreen implements Screen, InputProcessor {
     FrameRate frameRate;
     private int powerTimes;
 
+    public boolean isSoundOn;
+
     public MainGameScreen(MyGdxGame game, OrthographicCamera camera, Viewport viewport) {
         initGameState();
         this.game = game;
@@ -85,6 +87,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         score = 0;
 //        money = 0;
         money = MyPreference.getInstance().getMoney();
+        isSoundOn = MyPreference.getInstance().isSoundOn();
         power = 1;
     }
 
@@ -92,7 +95,6 @@ public class MainGameScreen implements Screen, InputProcessor {
     public void show() {
 //        debugRenderer = new Box2DDebugRenderer();
         Gdx.input.setInputProcessor(this);
-
     }
 
     private void initObject() {
@@ -138,7 +140,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     }
 
     public void nextRow() {
-        SoundManager.instance.playLevelUpSound();
+        if (isSoundOn) SoundManager.instance.playLevelUpSound();
         level.increaseScore();
         //   player.addNewBall();
         player.addBalls(ballBeAddedNextRow);

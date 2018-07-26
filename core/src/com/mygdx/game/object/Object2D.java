@@ -3,6 +3,7 @@ package com.mygdx.game.object;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import static com.mygdx.game.util.Constants.PPM;
@@ -14,8 +15,8 @@ public class Object2D extends Actor {
     public Object2D() {
     }
 
-    public void initTexture(Texture texture) {
-        sprite = new Sprite(texture);
+    public void initTexture(TextureRegion region) {
+        sprite = new Sprite(region);
         sprite.setSize(sprite.getWidth() * 2 / PPM, sprite.getHeight() * 2 / PPM);
     }
 

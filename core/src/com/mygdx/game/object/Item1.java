@@ -23,7 +23,7 @@ public class Item1 extends ObjectBox2d implements Poolable {
     MainGameScreen screen;
 
     public Item1(World world, MainGameScreen screen) {
-        super(world, Assets.instance.assetCircle.circle);
+        super(world, Assets.instance.getAsset(Assets.BALL));
         this.screen = screen;
     }
 

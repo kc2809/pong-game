@@ -5,14 +5,20 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.MainGameScreen;
+import com.mygdx.game.util.CommonUI;
 import com.mygdx.game.util.MathUtils;
 
 import java.util.Random;
 
+import static com.mygdx.game.core.Assets.PAUSE_ICON;
 import static com.mygdx.game.util.Constants.RATIO_TO_DUPLICATE_VALUE;
 import static com.mygdx.game.util.Constants.SPACE_BETWEEN_SQUARE;
 import static com.mygdx.game.util.Constants.SQUARE_HEIGHT;
@@ -29,6 +35,7 @@ public class Level extends Stage {
     Random random = new Random();
 
     UIObjects uiObjects;
+    Button pauseBtn;
 
     int materialType = 0;
     int numberType = 0;
@@ -53,6 +60,7 @@ public class Level extends Stage {
         uiObjects = new UIObjects(screen);
         uiObjects.setPosition(0, this.getViewport().getWorldHeight() / 2);
         addActor(uiObjects);
+        createPauseButton();
     }
 
     public void reset() {
@@ -182,7 +190,18 @@ public class Level extends Stage {
 
     }
 
+    private void createPauseButton() {
+        pauseBtn = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(PAUSE_ICON), null, null, new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
 
+            }
+        });
+        pauseBtn.setSize(1,1);
+        pauseBtn.setPosition(-VIEWPORT_WIDTH/2 + 0.1f,getCamera().viewportHeight/2 - pauseBtn.getHeight());
+        addActor(pauseBtn);
+    }
     private float getPositionForGenerate() {
         return getCamera().viewportHeight * 5 / 12 - 1.0f;
     }

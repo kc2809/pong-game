@@ -26,6 +26,7 @@ public class MyPreference {
         preferences.putBoolean("notFirstLaunch", true).flush();
         preferences.putInteger("score", 0).flush();
         preferences.putInteger("money", 0).flush();
+        preferences.putBoolean("isSoundOn", true).flush();
     }
 
     private void loadPreferences() {
@@ -42,4 +43,11 @@ public class MyPreference {
         preferences.putInteger("money", money).flush();
     }
 
+    public boolean isSoundOn() {
+        return preferences.getBoolean("isSoundOn");
+    }
+
+    public void toggleSound() {
+        preferences.putBoolean("isSoundOn", !preferences.getBoolean("isSoundOn")).flush();
+    }
 }
