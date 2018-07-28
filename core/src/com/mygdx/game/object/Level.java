@@ -19,6 +19,7 @@ import com.mygdx.game.util.MathUtils;
 import java.util.Random;
 
 import static com.mygdx.game.core.Assets.PAUSE_ICON;
+import static com.mygdx.game.util.Constants.BOTTOM_WALLS_POSITION;
 import static com.mygdx.game.util.Constants.RATIO_TO_DUPLICATE_VALUE;
 import static com.mygdx.game.util.Constants.SPACE_BETWEEN_SQUARE;
 import static com.mygdx.game.util.Constants.SQUARE_HEIGHT;
@@ -40,8 +41,8 @@ public class Level extends Stage {
     int materialType = 0;
     int numberType = 0;
 
-    int ratioToGenerateItem1 = 30;
-    int ratioToGenerateMoneyItem = 10;
+    private static int RATIO_GENERATE_ITEM1 = 30;
+    private static int RATIO_GENERATE_MONEY_ITEM = 20;
 
     SquarePool squarePool;
     MoneyItemPool moneyItemPool;
@@ -70,7 +71,7 @@ public class Level extends Stage {
         }
         uiObjects.setScoreText(0);
 //        uiObjects.setMoneyText(0);
-        ratioToGenerateItem1 = 30;
+//        ratioToGenerateItem1 = 30;
     }
 
 
@@ -94,9 +95,9 @@ public class Level extends Stage {
         if (numberType++ == 5) {
             numberType = 0;
             materialType++;
-            if(ratioToGenerateItem1 >15){
-                ratioToGenerateItem1--;
-            }
+//            if(ratioToGenerateItem1 >15){
+//                ratioToGenerateItem1--;
+//            }
             if (materialType == 5) {
                 materialType = 0;
             }
@@ -143,13 +144,14 @@ public class Level extends Stage {
     public boolean checkGameOver() {
         for (Actor actor : this.getActors()) {
             if (actor instanceof Square)
-                if (actor.getY() < -getCamera().viewportHeight * 6 / 14 + 0.4f)
+                if (actor.getY() < -getCamera().viewportHeight * BOTTOM_WALLS_POSITION + 0.4f)
                     return true;
         }
         return false;
     }
 
     public void generateNextStep() {
+        boolean item1Exits = false;
         int value = random.nextInt(64);
         //one value means one row
         // value from [0, 512]
@@ -161,33 +163,42 @@ public class Level extends Stage {
         int squareValue = MathUtils.instance.ratio(RATIO_TO_DUPLICATE_VALUE) ? screen.currentLevel * 2 : screen.currentLevel;
         for (int i = 0; i < MAX_SQUARE_PER_ROW; ++i) {
             float x = -VIEWPORT_WIDTH / 2 + SPACE_BETWEEN_SQUARE + SQUARE_WIDTH * i + SPACE_BETWEEN_SQUARE * i;
-            if ((value & mask) != 0) {
+            if ((value & mask) != 0)
                 // add square if it is 1
-                Square s = squarePool.obtain();
-                s.setPosition(x, y);
-                s.active().setColor(color);
-                this.addActor(s);
-                s.setValue(squareValue);
-            } else {
+                this.addActor(createNewSquare(x, y, squareValue, color));
+            else
                 // 5% generate Item1
-                if (MathUtils.instance.ratio(ratioToGenerateItem1)) {
-//                    this.addActor((new Item1(world)).init(x, y));
-                    Item1 item1 = item1Pool.obtain();
-                    item1.setPosition(x, y);
-                    item1.active();
-                    this.addActor(item1);
-                } else {
-                    if (MathUtils.instance.ratio(ratioToGenerateMoneyItem)) {
-                        MoneyItem moneyItem = moneyItemPool.obtain();
-                        moneyItem.setActive();
-                        moneyItem.setPosition(x, y);
-                        this.addActor(moneyItem);
+                if (MathUtils.instance.ratio(RATIO_GENERATE_ITEM1)) {
+                    if (!item1Exits) {
+                        this.addActor(createNewItem1(x, y));
+                        item1Exits = true;
                     }
-                }
-            }
+                } else if (MathUtils.instance.ratio(RATIO_GENERATE_MONEY_ITEM))
+                    this.addActor(createNewMoneyItem(x, y));
             value = value >> 1;
         }
+    }
 
+    private MoneyItem createNewMoneyItem(float x, float y) {
+        MoneyItem moneyItem = moneyItemPool.obtain();
+        moneyItem.setActive();
+        moneyItem.setPosition(x, y);
+        return moneyItem;
+    }
+
+    private Item1 createNewItem1(float x, float y) {
+        Item1 item1 = item1Pool.obtain();
+        item1.setPosition(x, y);
+        item1.active();
+        return item1;
+    }
+
+    private Square createNewSquare(float x, float y, int value, Color color) {
+        Square square = squarePool.obtain();
+        square.setPosition(x, y);
+        square.active().setColor(color);
+        square.setValue(value);
+        return square;
     }
 
     private void createPauseButton() {
@@ -203,7 +214,7 @@ public class Level extends Stage {
         addActor(pauseBtn);
     }
     private float getPositionForGenerate() {
-        return getCamera().viewportHeight * 5 / 12 - 1.0f;
+        return getCamera().viewportHeight * 5 / 12 - 1.5f;
     }
 
     public void increaseMoney() {

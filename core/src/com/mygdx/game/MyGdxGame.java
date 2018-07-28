@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.core.Assets;
-import com.mygdx.game.object.MyPreference;
 import com.mygdx.game.screens.GameOverScreen;
 import com.mygdx.game.screens.MainGameScreen;
 import com.mygdx.game.screens.MenuScreen;
+import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.Constants;
 
 public class MyGdxGame extends Game {
@@ -28,17 +28,17 @@ public class MyGdxGame extends Game {
 		MyPreference.getInstance();
 //		setScreen(new MainGameScreen());
 //		setScreen(menuScreen);
-		gameOverScreen = new GameOverScreen(this);
+		gameOverScreen = new GameOverScreen(this, camera, viewport);
 		menuScreen = new MenuScreen(this, camera, viewport);
 		mainGameScreen = new MainGameScreen(this, camera, viewport);
 		changeMenuScreen();
 //		changeMainGameScreen();
+//		setScreen(gameOverScreen);
 	}
 
 	private void init() {
 		camera = new OrthographicCamera();
 		viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
-
 	}
 
 	@Override
@@ -49,6 +49,8 @@ public class MyGdxGame extends Game {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
+		viewport.update(width, height);
+		camera.position.set(0, 0, 0);
 	}
 
 	@Override

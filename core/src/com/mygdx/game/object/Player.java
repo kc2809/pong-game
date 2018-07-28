@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.screens.MainGameScreen;
 
+import static com.mygdx.game.util.Constants.BOTTOM_WALLS_POSITION;
 import static com.mygdx.game.util.Constants.SPEED;
 
 public class Player extends Stage {
@@ -95,7 +96,7 @@ public class Player extends Stage {
 
     public void setInitPositon() {
 //        positionToFire = new Vector2(0, -getCamera().viewportHeight / 2);
-        positionToFire = new Vector2(0, -getCamera().viewportHeight * 6 / 14);
+        positionToFire = new Vector2(0, -getCamera().viewportHeight * BOTTOM_WALLS_POSITION);
         if (this.getActors().size > 0) {
             for (int i = 0; i < this.getActors().size; ++i) {
                 Ball b = (Ball) this.getActors().get(i);

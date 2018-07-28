@@ -17,6 +17,8 @@ import com.mygdx.game.util.Constants;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.badlogic.gdx.graphics.Texture.TextureFilter.Linear;
+import static com.badlogic.gdx.graphics.Texture.TextureFilter.MipMapLinearLinear;
 import static com.badlogic.gdx.graphics.Texture.TextureFilter.Nearest;
 import static com.badlogic.gdx.graphics.Texture.TextureWrap.ClampToEdge;
 
@@ -34,8 +36,10 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public static final String TAG = Assets.class.getName();
     public static final Assets instance = new Assets();
-    private static final float FONT_SCREEN_WIDTH_FRACTION = 1.0f / 25.f;
-    private static final float FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 15.0f;
+    private static final float SMALL_FONT_SCREEN_WIDTH_FRACTION = 1.0f / 25.f;
+    private static final float BIG_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 10.0f;
+    private static final float MEDIUM_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 15.0f;
+
 
     //    public Texture circle;
 //    public Texture square;
@@ -45,6 +49,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public TextureAtlas ballsAtlas;
     public BitmapFont fontSmall;
     public BitmapFont fontBig;
+    public BitmapFont fontMedium;
     public BitmapFont titleFont;
     private AssetManager assetManager;
 
@@ -71,8 +76,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
         for (Texture t : atlas.getTextures()) {
 //            t.setFilter(Nearest, Nearest);
-            t.setFilter(Nearest, Nearest);
-            t.setWrap(ClampToEdge, ClampToEdge);
+            t.setFilter(Linear, Linear);
         }
 
         initAssets(atlas);
@@ -82,8 +86,9 @@ public class Assets implements Disposable, AssetErrorListener {
 
         ballsAtlas = new TextureAtlas(Gdx.files.internal("circleeffect.atlas"));
 
-        fontSmall = createFont(FONT_SCREEN_WIDTH_FRACTION);
-        fontBig = createFont(FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
+        fontSmall = createFont(SMALL_FONT_SCREEN_WIDTH_FRACTION);
+        fontBig = createFont(BIG_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
+        fontMedium = createFont(MEDIUM_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
         titleFont = createFont(1.0f/10.0f);
     }
 

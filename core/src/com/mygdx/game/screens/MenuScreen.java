@@ -20,17 +20,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.core.Assets;
-import com.mygdx.game.object.MyPreference;
+import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.CommonUI;
 
 import static com.mygdx.game.core.Assets.PLAY_ICON;
 import static com.mygdx.game.core.Assets.VOLUMNE_ACTIVE_ICON;
 import static com.mygdx.game.core.Assets.VOLUMNE_INACTIVE_ICON;
 import static com.mygdx.game.util.Constants.PPM;
-import static com.mygdx.game.util.Constants.VIEWPORT_WIDTH;
 
 public class MenuScreen implements Screen {
-    private static String TITLE = "K BALL";
+    private static String TITLE = "OK BALL";
     MyGdxGame game;
     Button playBtn;
     Button volumeBtn;
@@ -57,7 +56,6 @@ public class MenuScreen implements Screen {
         layout = new GlyphLayout();
         font = Assets.instance.titleFont;
         initComponent();
-
     }
 
     private void initComponent() {
@@ -70,14 +68,13 @@ public class MenuScreen implements Screen {
         pointLight = new PointLight(handler, 1000, Color.SKY, 6, 0, 0);
         setupLabel();
         setupButton();
-
     }
 
     private void setupLabel() {
         layout.setText(font, TITLE);
         LabelStyle labelStyle = new LabelStyle(font, Color.WHITE);
         label = new Label(TITLE, labelStyle);
-        label.setPosition(-VIEWPORT_WIDTH / 2 + layout.width, camera.viewportHeight / 2 - 1.0f);
+        label.setPosition(-layout.width / 2, camera.viewportHeight / 2 - 1.0f);
         stage.addActor(label);
     }
 

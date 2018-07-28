@@ -1,4 +1,4 @@
-package com.mygdx.game.object;
+package com.mygdx.game.storage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -27,12 +27,21 @@ public class MyPreference {
         preferences.putInteger("score", 0).flush();
         preferences.putInteger("money", 0).flush();
         preferences.putBoolean("isSoundOn", true).flush();
+        preferences.putInteger("highestScore", 0).flush();
     }
 
     private void loadPreferences() {
         if (!preferences.getBoolean("notFirstLaunch")) {
             generatePreferences();
         }
+    }
+
+    public int getHighestScore() {
+        return preferences.getInteger("highestScore");
+    }
+
+    public void setHighestScore(int score) {
+        preferences.putInteger("highestScore", score).flush();
     }
 
     public int getMoney() {

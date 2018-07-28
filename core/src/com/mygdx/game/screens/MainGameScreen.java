@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -20,12 +21,12 @@ import com.mygdx.game.core.FrameRate;
 import com.mygdx.game.effect.EffectManager;
 import com.mygdx.game.object.Ball;
 import com.mygdx.game.object.Level;
-import com.mygdx.game.object.MyPreference;
 import com.mygdx.game.object.Player;
 import com.mygdx.game.object.PlayerCount;
 import com.mygdx.game.object.Trajectory;
 import com.mygdx.game.object.Walls;
 import com.mygdx.game.sound.SoundManager;
+import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.VectorUtil;
 import com.mygdx.game.world.WorldContactListener;
@@ -41,7 +42,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     public Level level;
     Player player;
     public int power;
-    //    Box2DDebugRenderer debugRenderer;
+    Box2DDebugRenderer debugRenderer;
     Viewport viewport;
     long timeAtFire;
     Trajectory trajectory;
@@ -64,6 +65,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     public MainGameScreen(MyGdxGame game, OrthographicCamera camera, Viewport viewport) {
         initGameState();
+        debugRenderer = new Box2DDebugRenderer();
         this.game = game;
 //        camera = new OrthographicCamera();
 //        viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
@@ -93,7 +95,6 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-//        debugRenderer = new Box2DDebugRenderer();
         Gdx.input.setInputProcessor(this);
     }
 
@@ -169,7 +170,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         camera.update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        debugRenderer.render(world, camera.combined);
+        debugRenderer.render(world, camera.combined);
 
         player.draw();
         player.act(delta);
@@ -233,12 +234,10 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
@@ -362,6 +361,9 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     private void gameOver() {
         MyPreference.getInstance().setMoney(money);
+        if (score > MyPreference.getInstance().getHighestScore()) {
+            MyPreference.getInstance().setHighestScore(score);
+        }
         game.changeGameOverScreen();
     }
 

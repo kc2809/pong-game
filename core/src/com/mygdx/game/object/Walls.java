@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.util.Constants;
 
 import static com.mygdx.game.util.Constants.BALL_PHYSIC;
 import static com.mygdx.game.util.Constants.WORLD_PHYSIC;
@@ -48,7 +49,7 @@ public class Walls {
         left.setTransform(new Vector2(-camera.viewportWidth / 2, 0), 0);
         right.setTransform(new Vector2(camera.viewportWidth / 2, 0), 0);
 //        bottom.setTransform(new Vector2(0, -camera.viewportHeight / 2), 0);
-        bottom.setTransform(new Vector2(0, -camera.viewportHeight * 6 / 14), 0);
+        bottom.setTransform(new Vector2(0, -camera.viewportHeight * Constants.BOTTOM_WALLS_POSITION), 0);
 //        top.setTransform(new Vector2(0, camera.viewportHeight / 2), 0);
         top.setTransform(new Vector2(0, camera.viewportHeight * 5 / 12), 0);
     }

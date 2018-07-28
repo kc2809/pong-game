@@ -22,6 +22,9 @@ public interface Constants {
 
     float SPACE_BETWEEN_SQUARE = 0.1f;
 
+    // position relative to screen's height
+    float BOTTOM_WALLS_POSITION = 5.0f / 14.0f;
+
     // In main game, this is a ratio for next row to generate multiple value
     int RATIO_TO_DUPLICATE_VALUE = 50;
 

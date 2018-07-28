@@ -14,11 +14,11 @@ public class MaterialColor {
 
 
     public static Color[][] materialColors = {
+            {Color.YELLOW, Color.GOLD, Color.GOLDENROD, Color.ORANGE},
             {Color.ROYAL, Color.CYAN, Color.SKY},
-            { Color.PINK, Color.SCARLET, Color.CORAL},
-            {Color.GREEN, Color.CHARTREUSE, Color.LIME, Color.FOREST},
-            {Color.BROWN, Color.PURPLE, Color.VIOLET, Color.MAROON, Color.MAGENTA},
-            {Color.YELLOW, Color.GOLD, Color.GOLDENROD, Color.ORANGE}
+            {Color.PINK, Color.CORAL},
+            {Color.BROWN, Color.MAROON, Color.VIOLET, Color.PURPLE, Color.MAGENTA},
+            {Color.FOREST, Color.GREEN, Color.CHARTREUSE, Color.LIME}
     };
 
     /*
