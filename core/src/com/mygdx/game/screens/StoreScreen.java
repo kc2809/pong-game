@@ -11,18 +11,29 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.core.Assets;
 import com.mygdx.game.object.ItemLight;
 
+
 public class StoreScreen implements Screen {
-    private static float WIDTH = 9;
+    private static float WIDTH = 10.0f;
 
     OrthographicCamera camera;
     Viewport viewport;
     World world;
     RayHandler handler;
     Stage stage;
+
+    Color[] colors = {Color.CYAN, Color.PURPLE, Color.YELLOW
+            , Color.FIREBRICK, Color.MAGENTA, Color.ORANGE, Color.SKY,
+            Color.LIME, Color.WHITE};
+
+    Button btn;
 
     public StoreScreen() {
         init();
@@ -37,9 +48,39 @@ public class StoreScreen implements Screen {
         handler.setCombinedMatrix(camera);
         handler.setShadows(false);
 
-        ItemLight s = new ItemLight(handler, Color.RED);
-        s.setPosition(0,0);
-        stage.addActor(s);
+
+        new PointLight(handler, 1000, Color.WHITE, 4, -2.0f, camera.viewportHeight * 2 / 5);
+//        ItemLight s = new ItemLight(handler, Color.RED);
+//        s.setPosition(-0.5f,0);
+//        ItemLight s1 = new ItemLight(handler, Color.CYAN);
+//        s1.setPosition(-4.5f,0);
+//        ItemLight s2 = new ItemLight(handler, Color.YELLOW);
+//        s2.setPosition(3.0f,0);
+
+        float x, y;
+        for (int i = 0; i < 3; ++i) {
+            y = camera.viewportHeight * 1 / 10 - 3.0f * i;
+            for (int j = 0; j < 3; ++j) {
+                x = -4.3f + 3.7f * j;
+                ItemLight s11 = new ItemLight(handler, colors[i * 3 + j]);
+                s11.setPosition(x, y);
+                stage.addActor(s11);
+            }
+        }
+
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.font = Assets.instance.fontMedium;
+        Label label = new Label("fuck", style);
+        label.setPosition(camera.viewportWidth/2 -3.0f,  camera.viewportHeight/2 - 1.5f);
+        stage.addActor(label);
+
+        Image image = new Image(Assets.instance.getAsset(Assets.MONEY_ITEM));
+        image.setSize(2.0f, 2.0f);
+        image.setPosition(camera.viewportWidth/2 -2.0f,  camera.viewportHeight/2 - 2.0f);
+        stage.addActor(image);
+//        stage.addActor(s);
+//        stage.addActor(s1);
+//        stage.addActor(s2);
     }
 
     public void show() {

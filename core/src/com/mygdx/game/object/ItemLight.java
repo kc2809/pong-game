@@ -19,19 +19,22 @@ public class ItemLight extends Actor {
     BitmapFont font;
     Sprite sprite;
 
+    boolean isSold;
+
     public ItemLight(RayHandler handler, Color color) {
         super();
+        isSold = false;
         font = Assets.instance.fontSmall;
         sprite = new Sprite(Assets.instance.getAsset(Assets.MONEY_ITEM));
         sprite.setSize(sprite.getWidth() / (2 * PPM), sprite.getHeight() / (2 * PPM));
 
-        pointLight = new box2dLight.PointLight(handler, 1000, color, 3, 0, 0);
+        pointLight = new box2dLight.PointLight(handler, 1000, color, 2, 0, 0);
         setSize(1, 1);
         addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("fuckkk");
+                isSold = true;
             }
         });
     }
@@ -45,7 +48,11 @@ public class ItemLight extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        font.draw(batch, "200", getX() + 0.25f, getY() + 0.5f);
-        sprite.draw(batch);
+      if(!isSold){
+          font.draw(batch, "200", getX() + 0.25f, getY() + 0.5f);
+          sprite.draw(batch);
+      } else {
+          font.draw(batch, "active", getX() + 0.25f, getY() + 0.5f);
+      }
     }
 }
