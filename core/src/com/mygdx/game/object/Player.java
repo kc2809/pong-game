@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.screens.MainGameScreen;
+import com.mygdx.game.util.Constants;
 
 import static com.mygdx.game.util.Constants.BOTTOM_WALLS_POSITION;
 import static com.mygdx.game.util.Constants.SPEED;
@@ -56,6 +57,10 @@ public class Player extends Stage {
 
     public void setVelocityWithClickPoint(Vector2 clickPoint) {
         velocity = clickPoint.cpy().sub(positionToFire).nor().scl(SPEED);
+    }
+
+    public void fire(Vector2 vel) {
+        velocity = vel;
     }
 
     public boolean isFirstBallTouchGround() {
@@ -138,5 +143,9 @@ public class Player extends Stage {
 
     public void freeBall(Ball ball) {
         pool.free(ball);
+    }
+
+    public Vector2 centerPosition() {
+        return positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH / 2, Constants.BALL_WIDTH / 2));
     }
 }

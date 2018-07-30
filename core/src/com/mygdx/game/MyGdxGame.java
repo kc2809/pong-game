@@ -10,6 +10,7 @@ import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.GameOverScreen;
 import com.mygdx.game.screens.MainGameScreen;
 import com.mygdx.game.screens.MenuScreen;
+import com.mygdx.game.screens.StoreScreen;
 import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.Constants;
 
@@ -31,9 +32,10 @@ public class MyGdxGame extends Game {
 		gameOverScreen = new GameOverScreen(this, camera, viewport);
 		menuScreen = new MenuScreen(this, camera, viewport);
 		mainGameScreen = new MainGameScreen(this, camera, viewport);
-		changeMenuScreen();
+//		changeMenuScreen();
 //		changeMainGameScreen();
 //		setScreen(gameOverScreen);
+		setScreen(new StoreScreen());
 	}
 
 	private void init() {

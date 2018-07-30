@@ -31,6 +31,8 @@ import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.VectorUtil;
 import com.mygdx.game.world.WorldContactListener;
 
+import static com.mygdx.game.util.Constants.SPEED;
+
 
 public class MainGameScreen implements Screen, InputProcessor {
     MyGdxGame game;
@@ -62,6 +64,8 @@ public class MainGameScreen implements Screen, InputProcessor {
     private int powerTimes;
 
     public boolean isSoundOn;
+
+    private Vector2 touchDown;
 
     public MainGameScreen(MyGdxGame game, OrthographicCamera camera, Viewport viewport) {
         initGameState();
@@ -287,7 +291,10 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
+        Vector3 worldCoordinate = camera.unproject(new Vector3(screenX, screenY, 0));
+        Vector2 clickPint = new Vector2(worldCoordinate.x, worldCoordinate.y);
+        System.out.println("down: " + clickPint);
+        touchDown = clickPint;
         return false;
     }
 
@@ -295,14 +302,13 @@ public class MainGameScreen implements Screen, InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         System.out.println("firee");
         Vector3 worldCoordinate = camera.unproject(new Vector3(screenX, screenY, 0));
-        Vector2 clickPint = new Vector2(worldCoordinate.x, worldCoordinate.y);
+        Vector2 touchUp = new Vector2(worldCoordinate.x, worldCoordinate.y);
+        //if ball is process or touch up point >= touch down point then do nothing
+        if (fireFlag != 0 || touchUp.y >= touchDown.y) return false;
+        Vector2 velocity = touchDown.sub(touchUp).nor().scl(SPEED);
 
-
-        //
-        if (fireFlag != 0) return false;
         fireFlag = 1;
-        player.setVelocityWithClickPoint(clickPint);
-//        player.resetWhenFireEventFinish();
+        player.fire(velocity);
         trajectory.setInvisible();
         return false;
     }
@@ -310,9 +316,10 @@ public class MainGameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         Vector3 worldCoordinate = camera.unproject(new Vector3(screenX, screenY, 0));
-        Vector2 clickPint = new Vector2(worldCoordinate.x, worldCoordinate.y);
-//        trajectory.projected(player.positionToFire.cpy().add(new Vector2(0.125f, 0.125f)), clickPint);
-        trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH / 2, Constants.BALL_WIDTH / 2)), clickPint);
+        Vector2 touchDragPoint = new Vector2(worldCoordinate.x, worldCoordinate.y);
+        Vector2 velocity = touchDown.cpy().sub(touchDragPoint).nor();
+
+        trajectory.projected(player.centerPosition(), velocity);
         return false;
     }
 

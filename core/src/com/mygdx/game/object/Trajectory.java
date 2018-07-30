@@ -23,8 +23,8 @@ public class Trajectory {
         this.viewport = viewport;
     }
 
-    public void projected(Vector2 start, Vector2 end) {
-        Vector2 velocity = end.cpy().sub(start).nor();
+    public void projected(Vector2 start, Vector2 velocity) {
+//        Vector2 velocity = end.cpy().sub(start).nor();
         vertices[0] = start.x;
         vertices[1] = start.y;
         Vector2 normal = new Vector2(0, 0);

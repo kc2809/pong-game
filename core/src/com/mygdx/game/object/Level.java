@@ -41,7 +41,7 @@ public class Level extends Stage {
     int materialType = 0;
     int numberType = 0;
 
-    private static int RATIO_GENERATE_ITEM1 = 30;
+    private static int RATIO_GENERATE_ITEM1 = 50;
     private static int RATIO_GENERATE_MONEY_ITEM = 20;
 
     SquarePool squarePool;
