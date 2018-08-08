@@ -77,7 +77,9 @@ public class MyGdxGame extends Game {
 	@Override
 	public void dispose () {
 		super.dispose();
+        System.out.println("GAME DISPOSE");
 		Assets.instance.dispose();
+		System.exit(0);
 	}
 
 	public void changeMainGameScreen() {
