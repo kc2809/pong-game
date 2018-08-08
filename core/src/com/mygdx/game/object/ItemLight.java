@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.core.Assets;
+import com.mygdx.game.screens.StoreScreen;
+import com.mygdx.game.storage.MyPreference;
 
 import static com.mygdx.game.util.Constants.PPM;
 
@@ -18,12 +20,16 @@ public class ItemLight extends Actor {
     PointLight pointLight;
     BitmapFont font;
     Sprite sprite;
+    Color color;
 
     boolean isSold;
+    StoreScreen storeScreen;
 
-    public ItemLight(RayHandler handler, Color color) {
+    public ItemLight(final StoreScreen storeScreen, RayHandler handler, final Color color) {
         super();
-        isSold = false;
+        this.storeScreen = storeScreen;
+        this.color = color;
+        isSold = MyPreference.getInstance().isColorSold(color);
         font = Assets.instance.fontSmall;
         sprite = new Sprite(Assets.instance.getAsset(Assets.MONEY_ITEM));
         sprite.setSize(sprite.getWidth() / (2 * PPM), sprite.getHeight() / (2 * PPM));
@@ -34,9 +40,18 @@ public class ItemLight extends Actor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                isSold = true;
+                if (!isSold)
+                    updateLabel();
+                else
+                    storeScreen.setPointLightColor(color);
             }
         });
+    }
+
+    private void updateLabel() {
+        if (!storeScreen.checkValidMoney()) return;
+        storeScreen.updateLabel(color);
+        isSold = true;
     }
 
     @Override

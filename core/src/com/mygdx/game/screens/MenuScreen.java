@@ -24,6 +24,7 @@ import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.CommonUI;
 
 import static com.mygdx.game.core.Assets.PLAY_ICON;
+import static com.mygdx.game.core.Assets.STORE_ICON;
 import static com.mygdx.game.core.Assets.VOLUMNE_ACTIVE_ICON;
 import static com.mygdx.game.core.Assets.VOLUMNE_INACTIVE_ICON;
 import static com.mygdx.game.util.Constants.PPM;
@@ -33,6 +34,7 @@ public class MenuScreen implements Screen {
     MyGdxGame game;
     Button playBtn;
     Button volumeBtn;
+    Button storeBtn;
 
     Stage stage;
     BitmapFont font;
@@ -81,6 +83,7 @@ public class MenuScreen implements Screen {
     private void setupButton() {
         createPlayButton();
         createVolumeButton();
+        createStoreButton();
     }
 
     private void createPlayButton() {
@@ -112,6 +115,19 @@ public class MenuScreen implements Screen {
         volumeBtn.setPosition(-camera.viewportWidth / 2, -camera.viewportHeight * 3 / 8);
         volumeBtn.setChecked(MyPreference.getInstance().isSoundOn());
         stage.addActor(volumeBtn);
+    }
+
+    private void createStoreButton() {
+        storeBtn = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(STORE_ICON), null, null, new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                game.changeStoreScreen();
+            }
+        });
+        storeBtn.setSize(storeBtn.getWidth() * 2 / PPM, storeBtn.getHeight() * 2 / PPM);
+        storeBtn.setPosition(-camera.viewportWidth *18/ 40 , camera.viewportHeight *3 / 10);
+        stage.addActor(storeBtn);
     }
 
     @Override

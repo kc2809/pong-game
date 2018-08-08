@@ -1,12 +1,18 @@
 package com.mygdx.game.util;
 
+import com.badlogic.gdx.graphics.Color;
+
 public interface Constants {
     float VIEWPORT_WIDTH = 7.8f;
     float VIEWPORT_HEIGHT = 10.0f;
-    String TEXTURE_ATLAS_OBJECT = "resources730";
+//    String TEXTURE_ATLAS_OBJECT = "resources730";
+//    String TEXTURE_ATLAS_OBJECT = "resouces804.atlas";
+    String TEXTURE_ATLAS_OBJECT = "resources.atlas";
 
     String HIT_SOUND_PATH = "music/glass1.wav";
     String LEVEL_SOUND_PATH = "music/levelup.wav";
+
+    int POWER_TIMES = 3;
 
     //Pixcel per meter
     int PPM = 1000;
@@ -37,4 +43,11 @@ public interface Constants {
     float DEGREE_DECREASE = 5;
     float LOWER_LIMIT = 178;
     float UPPER_LIMIT = 190;
+
+    // ball items
+    Color[] colors = {Color.SCARLET, Color.PURPLE, Color.YELLOW
+            , Color.FIREBRICK, Color.MAGENTA, Color.ORANGE, Color.SKY,
+            Color.LIME, Color.PINK};
+
+    Color defaultColor = Color.SCARLET;
 }

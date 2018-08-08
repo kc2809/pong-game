@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.screens.MainGameScreen;
+import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.Constants;
 
 import static com.mygdx.game.util.Constants.BOTTOM_WALLS_POSITION;
@@ -39,7 +40,7 @@ public class Player extends Stage {
         this.handler = handler;
 
         pool = new BallPool(world, handler, mainGameScreen);
-        this.color = Color.PINK;
+        this.color = MyPreference.getInstance().getCurrentColor();
         distanceColor = 1;
     }
 

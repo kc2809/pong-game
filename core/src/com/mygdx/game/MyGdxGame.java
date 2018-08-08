@@ -10,6 +10,7 @@ import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.GameOverScreen;
 import com.mygdx.game.screens.MainGameScreen;
 import com.mygdx.game.screens.MenuScreen;
+import com.mygdx.game.screens.PausedScreen;
 import com.mygdx.game.screens.StoreScreen;
 import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.Constants;
@@ -21,6 +22,8 @@ public class MyGdxGame extends Game {
 	GameOverScreen gameOverScreen;
 	MenuScreen menuScreen;
 	MainGameScreen mainGameScreen;
+    StoreScreen storeScreen;
+    PausedScreen pausedScreen;
 
 	@Override
 	public void create () {
@@ -32,11 +35,17 @@ public class MyGdxGame extends Game {
 		gameOverScreen = new GameOverScreen(this, camera, viewport);
 		menuScreen = new MenuScreen(this, camera, viewport);
 		mainGameScreen = new MainGameScreen(this, camera, viewport);
-//		changeMenuScreen();
+        storeScreen = new StoreScreen(this);
+        pausedScreen = new PausedScreen(this, camera, viewport);
+		changeMenuScreen();
 //		changeMainGameScreen();
-//		setScreen(gameOverScreen);
-		setScreen(new StoreScreen());
-	}
+//        setScreen(gameOverScreen);
+//		setScreen(new StoreScreen());
+//		setScreen(pausedScreen);
+        // catch back key
+        Gdx.input.setCatchBackKey(true);
+
+    }
 
 	private void init() {
 		camera = new OrthographicCamera();
@@ -78,6 +87,11 @@ public class MyGdxGame extends Game {
 		setScreen(mainGameScreen);
 	}
 
+    public void resumeMainGameScreen() {
+        mainGameScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        setScreen(mainGameScreen);
+    }
+
 	public void changeMenuScreen() {
 		setScreen(menuScreen);
 	}
@@ -85,4 +99,19 @@ public class MyGdxGame extends Game {
 	public void changeGameOverScreen() {
 		setScreen(gameOverScreen);
 	}
+
+    public void changeStoreScreen() {
+        storeScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        setScreen(storeScreen);
+    }
+
+    public void changePausedScreen() {
+        setScreen(pausedScreen);
+    }
+
+    public void oneMoreTime() {
+        mainGameScreen.replay();
+        mainGameScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        setScreen(mainGameScreen);
+    }
 }

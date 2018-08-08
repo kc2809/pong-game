@@ -2,10 +2,12 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -33,66 +35,76 @@ public class GameOverScreen implements Screen {
 
     private void create() {
         stage = new Stage(viewport);
-//        final Skin skin = new Skin();
-//
-//        Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-//        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
-//        textFieldStyle.fontColor = Color.WHITE;
-//        textFieldStyle.font = new BitmapFont();
-//
-//        skin.add("default", style);
-//        skin.add("default", textFieldStyle);
-//        // Keep your code clean by creating widgets separate from layout.
-//        Label nameLabel = new Label("Name:", skin);
-//        TextField nameText = new TextField("", skin);
-//        Label addressLabel = new Label("Address:", skin);
-//        TextField addressText = new TextField("", skin);
-//
-//        Table table = new Table();
-//        table.setFillParent(true);
-//        table.add(nameLabel);              // Row 0, column 0.
-//        table.add(nameText).width(100);    // Row 0, column 1.
-//        table.row();                       // Move to next row.
-//        table.add(addressLabel);           // Row 1, column 0.
-//        table.add(addressText).width(100); // Row 1, column 1.
-//
-////        table.setOriginX(0);
-////        table.setOriginY(0);
-////        table.setX(200);
-////        table.setY(200);
-//        table.debug();
-//
-//        stage.addActor(table);
 
         LabelStyle style = new LabelStyle();
         style.font = Assets.instance.fontBig;
-         label = new Label("best", style);
-        label.setPosition(0, 0);
+        label = new Label("BEST", style);
+        label.setPosition(-1.5f, 2.0f);
         stage.addActor(label);
 
+        createRePlayBtn(style);
 
-        Button btn = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.PLAY_ICON), null, null, new ClickListener() {
+        createOneMoreTimeBtn(style);
+        createBtnMenu(style);
+    }
+
+    private void createOneMoreTimeBtn(LabelStyle style) {
+        Button btnReplay = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.REPLAY_ICON), null, null, new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                oneMoreTime();
+            }
+        });
+        btnReplay.setSize(btnReplay.getWidth() * 3 / PPM, btnReplay.getHeight() * 3 / PPM);
+        btnReplay.setPosition(-btnReplay.getWidth() - 1.0f, btnReplay.getHeight() - 4.0f);
+        stage.addActor(btnReplay);
+
+        Label label1 = new Label("50", style);
+        label1.setPosition(btnReplay.getX() + 2.0f, btnReplay.getY());
+        stage.addActor(label1);
+
+        Image imgGold = new Image(Assets.instance.getAsset(Assets.MONEY_ITEM));
+        imgGold.setSize(0.8f, 0.8f);
+        imgGold.setPosition(label1.getX() + 1.0f, label1.getY() + 0.05f);
+        stage.addActor(imgGold);
+    }
+
+    private void createRePlayBtn(LabelStyle style) {
+        Button btnReplay = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.PLAY_ICON), null, null, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 rePlay();
             }
         });
-        btn.setSize(btn.getWidth() / PPM, btn.getHeight() / PPM);
-        btn.setPosition(0, -1.0f);
-        stage.addActor(btn);
+        btnReplay.setSize(btnReplay.getWidth() * 3 / PPM, btnReplay.getHeight() * 3 / PPM);
+        btnReplay.setPosition(-btnReplay.getWidth() - 1.0f, btnReplay.getHeight() - 2.0f);
+        stage.addActor(btnReplay);
 
-        Button btn2 = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.PAUSE_ICON), null, null, new ClickListener() {
+        Label label1 = new Label("REPLAY", style);
+        label1.setPosition(btnReplay.getX() + 2.0f, btnReplay.getY());
+        stage.addActor(label1);
+    }
+
+    private void createBtnMenu(LabelStyle style) {
+        Button btnMenu = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.MENU_ICON), null, null, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 changeMenuScreen();
             }
         });
-        btn2.setSize(btn2.getWidth() / PPM, btn2.getHeight() / PPM);
-        btn2.setPosition(0, -3.0f);
-        stage.addActor(btn2);
+        btnMenu.setSize(btnMenu.getWidth() * 3 / PPM, btnMenu.getHeight() * 3 / PPM);
+        btnMenu.setPosition(-btnMenu.getWidth() - 1.0f, -btnMenu.getHeight() - 3.0f);
+        stage.addActor(btnMenu);
+
+        // create label
+        Label quitLabel = new Label("MENU", style);
+        quitLabel.setPosition(btnMenu.getX() + 2.0f, btnMenu.getY());
+        stage.addActor(quitLabel);
     }
+
     @Override
     public void show() {
         setHighestScore();
@@ -101,6 +113,8 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }
 
@@ -121,7 +135,6 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void hide() {
-
     }
 
     @Override
@@ -139,5 +152,9 @@ public class GameOverScreen implements Screen {
 
     private void changeMenuScreen(){
         game.changeMenuScreen();
+    }
+
+    private void oneMoreTime() {
+        game.oneMoreTime();
     }
 }

@@ -6,7 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.mygdx.game.util.Constants;
 
+import static com.mygdx.game.util.Constants.BALL_HEIGHT;
+import static com.mygdx.game.util.Constants.BALL_WIDTH;
 import static com.mygdx.game.util.Constants.PPM;
 
 abstract class ObjectBox2d extends Actor {
@@ -77,7 +80,7 @@ abstract class ObjectBox2d extends Actor {
 
     public void setPosByBodyPos() {
         if (body != null)
-            sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
+            sprite.setPosition(body.getPosition().x - BALL_WIDTH / 2, body.getPosition().y - BALL_HEIGHT / 2);
         setX(sprite.getX());
         setY(sprite.getY());
     }

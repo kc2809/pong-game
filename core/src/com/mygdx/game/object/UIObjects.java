@@ -41,7 +41,7 @@ public class UIObjects extends Actor {
         layoutScore = new GlyphLayout();
 
         moneyIcon = new Sprite(Assets.instance.getAsset(MONEY_ITEM));
-        moneyIcon.setSize(moneyIcon.getWidth() /(1.5f* PPM), moneyIcon.getHeight() / (1.5f* PPM));
+        moneyIcon.setSize(moneyIcon.getWidth() / (1.5f * PPM), moneyIcon.getHeight() / (1.5f * PPM));
         moneyText = new Text();
         scoreText = new Text();
     }
@@ -50,13 +50,13 @@ public class UIObjects extends Actor {
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
         moneyText.setPosition(getX() + Constants.VIEWPORT_WIDTH * 7 / 20, getY());
-        moneyIcon.setPosition(getX() + Constants.VIEWPORT_WIDTH * 7 / 20, getY() - (moneyIcon.getHeight() *1.35f) );
+        moneyIcon.setPosition(getX() + Constants.VIEWPORT_WIDTH * 7 / 20, getY() - (moneyIcon.getHeight() * 1.35f));
         scoreText.setPosition(getX(), getY());
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        fontMedium.draw(batch, moneyText.getText(), moneyText.x - layout.width/1.5f, moneyText.y - layout.height /1.5f);
+        fontMedium.draw(batch, moneyText.getText(), moneyText.x - layout.width / 1.5f, moneyText.y - layout.height / 1.5f);
         fontBig.draw(batch, scoreText.getText(), scoreText.x - layoutScore.width / 2, scoreText.y - layout.height / 2);
         moneyIcon.draw(batch);
     }

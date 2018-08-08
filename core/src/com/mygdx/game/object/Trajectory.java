@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.util.VectorUtil;
 
 public class Trajectory {
     final float DENTAT = 0.1f;
@@ -72,11 +71,8 @@ public class Trajectory {
         renderer.end();
     }
 
-    public void setVisible() {
-        isVisible = true;
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 
-    public void setInvisible() {
-        isVisible = false;
-    }
 }

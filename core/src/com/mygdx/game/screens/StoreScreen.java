@@ -4,23 +4,30 @@ package com.mygdx.game.screens;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.object.ItemLight;
+import com.mygdx.game.storage.MyPreference;
+import com.mygdx.game.util.Constants;
 
 
-public class StoreScreen implements Screen {
+public class StoreScreen implements Screen, InputProcessor {
     private static float WIDTH = 10.0f;
 
     OrthographicCamera camera;
@@ -28,14 +35,13 @@ public class StoreScreen implements Screen {
     World world;
     RayHandler handler;
     Stage stage;
+    Label label;
+    MyGdxGame game;
 
-    Color[] colors = {Color.CYAN, Color.PURPLE, Color.YELLOW
-            , Color.FIREBRICK, Color.MAGENTA, Color.ORANGE, Color.SKY,
-            Color.LIME, Color.WHITE};
+    PointLight pointLight;
 
-    Button btn;
-
-    public StoreScreen() {
+    public StoreScreen(MyGdxGame game) {
+        this.game = game;
         init();
     }
 
@@ -48,44 +54,55 @@ public class StoreScreen implements Screen {
         handler.setCombinedMatrix(camera);
         handler.setShadows(false);
 
+        Color color = MyPreference.getInstance().getCurrentColor();
 
-        new PointLight(handler, 1000, Color.WHITE, 4, -2.0f, camera.viewportHeight * 2 / 5);
-//        ItemLight s = new ItemLight(handler, Color.RED);
-//        s.setPosition(-0.5f,0);
-//        ItemLight s1 = new ItemLight(handler, Color.CYAN);
-//        s1.setPosition(-4.5f,0);
-//        ItemLight s2 = new ItemLight(handler, Color.YELLOW);
-//        s2.setPosition(3.0f,0);
+        pointLight = new PointLight(handler, 1000, color, 4, -2.0f, camera.viewportHeight * 2 / 5);
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.font = Assets.instance.fontMedium;
+        label = new Label(MyPreference.getInstance().getMoney() + "", style);
+        label.setPosition(camera.viewportWidth / 2 - 3.0f, camera.viewportHeight / 2 - 1.5f);
+        stage.addActor(label);
 
+        Image image = new Image(Assets.instance.getAsset(Assets.MONEY_ITEM));
+        image.setSize(2.0f, 2.0f);
+        image.setPosition(camera.viewportWidth / 2 - 2.0f, camera.viewportHeight / 2 - 2.0f);
+        stage.addActor(image);
         float x, y;
         for (int i = 0; i < 3; ++i) {
             y = camera.viewportHeight * 1 / 10 - 3.0f * i;
             for (int j = 0; j < 3; ++j) {
                 x = -4.3f + 3.7f * j;
-                ItemLight s11 = new ItemLight(handler, colors[i * 3 + j]);
+                ItemLight s11 = new ItemLight(this, handler, Constants.colors[i * 3 + j]);
                 s11.setPosition(x, y);
                 stage.addActor(s11);
             }
         }
 
-        Label.LabelStyle style = new Label.LabelStyle();
-        style.font = Assets.instance.fontMedium;
-        Label label = new Label("fuck", style);
-        label.setPosition(camera.viewportWidth/2 -3.0f,  camera.viewportHeight/2 - 1.5f);
-        stage.addActor(label);
+        createBackButton();
+    }
 
-        Image image = new Image(Assets.instance.getAsset(Assets.MONEY_ITEM));
-        image.setSize(2.0f, 2.0f);
-        image.setPosition(camera.viewportWidth/2 -2.0f,  camera.viewportHeight/2 - 2.0f);
+    private void createBackButton() {
+        Image image = new Image(Assets.instance.getAsset(Assets.BACK_ICON));
+        image.setSize(1.0f, 1.0f);
+        image.setPosition(-camera.viewportWidth / 2, camera.viewportHeight / 2 - 2.0f);
+        image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                game.changeMenuScreen();
+            }
+        });
         stage.addActor(image);
-//        stage.addActor(s);
-//        stage.addActor(s1);
-//        stage.addActor(s2);
     }
 
     public void show() {
 //        PointLight pointLight = new PointLight(handler, 1000, Color.SKY, 3, 0, 0);
-        Gdx.input.setInputProcessor(stage);
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
+
+//        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     @Override
@@ -107,6 +124,23 @@ public class StoreScreen implements Screen {
         handler.setCombinedMatrix(camera);
     }
 
+    public void updateLabel(Color color) {
+        MyPreference pre = MyPreference.getInstance();
+        pre.setMoney(pre.getMoney() - 200);
+        label.setText(pre.getMoney() + "");
+        pre.soldColor(color);
+        setPointLightColor(color);
+    }
+
+    public boolean checkValidMoney() {
+        return MyPreference.getInstance().getMoney() > 200;
+    }
+
+    public void setPointLightColor(Color color) {
+        pointLight.setColor(color);
+        MyPreference.getInstance().setCurrentColor(color);
+    }
+
     @Override
     public void pause() {
 
@@ -125,5 +159,49 @@ public class StoreScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Keys.BACK) {
+            System.out.println("back happened");
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

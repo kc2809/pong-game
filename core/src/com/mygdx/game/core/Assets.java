@@ -17,10 +17,7 @@ import com.mygdx.game.util.Constants;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.badlogic.gdx.graphics.Texture.TextureFilter.Linear;
-import static com.badlogic.gdx.graphics.Texture.TextureFilter.MipMapLinearLinear;
 import static com.badlogic.gdx.graphics.Texture.TextureFilter.Nearest;
-import static com.badlogic.gdx.graphics.Texture.TextureWrap.ClampToEdge;
 
 public class Assets implements Disposable, AssetErrorListener {
 
@@ -33,6 +30,10 @@ public class Assets implements Disposable, AssetErrorListener {
     public static String STORE_ICON = "store";
     public static String STAR_ICON = "star";
     public static String PAUSE_ICON = "pause_btn";
+    public static String EXIT_ICON = "exit_btn";
+    public static String MENU_ICON = "menu";
+    public static String REPLAY_ICON = "xoay";
+    public static String BACK_ICON = "back";
 
     public static final String TAG = Assets.class.getName();
     public static final Assets instance = new Assets();
@@ -40,10 +41,6 @@ public class Assets implements Disposable, AssetErrorListener {
     private static final float BIG_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 10.0f;
     private static final float MEDIUM_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 15.0f;
 
-
-    //    public Texture circle;
-//    public Texture square;
-//    public Texture money;
     public FileHandle effectFile;
     public FileHandle imagesDir;
     public TextureAtlas ballsAtlas;
@@ -63,7 +60,6 @@ public class Assets implements Disposable, AssetErrorListener {
         this.assetManager = assetManager;
         assetManager.setErrorListener(this);
         assetManager.load(Constants.TEXTURE_ATLAS_OBJECT, TextureAtlas.class);
-//        assetManager.load(Constants.TEXTURE_ATLAS_NUMBER, TextureAtlas.class);
         assetManager.finishLoading();
         Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames() + " - " + assetManager.getAssetNames().size);
         assetManager.getAssetNames();
@@ -103,6 +99,10 @@ public class Assets implements Disposable, AssetErrorListener {
         putAtlasRegionToMap(atlas, STAR_ICON);
         putAtlasRegionToMap(atlas, STORE_ICON);
         putAtlasRegionToMap(atlas, PAUSE_ICON);
+        putAtlasRegionToMap(atlas, EXIT_ICON);
+        putAtlasRegionToMap(atlas, REPLAY_ICON);
+        putAtlasRegionToMap(atlas, MENU_ICON);
+        putAtlasRegionToMap(atlas, BACK_ICON);
     }
 
     @Override
@@ -116,12 +116,13 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.dispose();
         fontSmall.dispose();
         fontBig.dispose();
+        fontMedium.dispose();
+        titleFont.dispose();
     }
 
     private BitmapFont createFont(float fraction) {
         BitmapFont font;
 
-//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("CaviarDreams.ttf"));
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSerif-Bold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 

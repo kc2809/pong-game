@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.MainGameScreen;
@@ -48,6 +49,8 @@ public class Level extends Stage {
     MoneyItemPool moneyItemPool;
     Item1Pool item1Pool;
 
+    float limitY;
+
     public Level(MainGameScreen screen, Viewport viewport, World world) {
         super(viewport);
         squarePool = new SquarePool(world, screen);
@@ -62,6 +65,7 @@ public class Level extends Stage {
         uiObjects.setPosition(0, this.getViewport().getWorldHeight() / 2);
         addActor(uiObjects);
         createPauseButton();
+        limitY = getCamera().viewportHeight;
     }
 
     public void reset() {
@@ -70,21 +74,17 @@ public class Level extends Stage {
                 actor.addAction(Actions.removeActor());
         }
         uiObjects.setScoreText(0);
-//        uiObjects.setMoneyText(0);
-//        ratioToGenerateItem1 = 30;
+        limitY = getCamera().viewportHeight;
     }
 
 
     public void oneMoreTime() {
+        float y = -getCamera().viewportHeight / 5.0f;
         for (Actor actor : getActors()) {
-            if (actor.getY() < 0) {
+            if (actor.getY() < y) {
                 actor.addAction(Actions.removeActor());
             }
         }
-    }
-
-    public int getCurrentLevel() {
-        return screen.currentLevel;
     }
 
     public void increaseScore() {
@@ -115,11 +115,13 @@ public class Level extends Stage {
     }
 
     private void addActionToAllSquare() {
+        Array<Actor> actors = this.getActors();
         int i = 0;
         if (isLevelFinish()) {
             generateNextStep();
         }
-        for (Actor actor : this.getActors()) {
+        limitY = getYLastSquare() - 1.1f;
+        for (Actor actor : actors) {
             if (actor instanceof Square || actor instanceof Item1 || actor instanceof MoneyItem) {
                 if (i++ == 0) {
                     Action moveToAction = Actions.moveTo(actor.getX(), actor.getY() - SQUARE_HEIGHT - 0.1f, 0.3f);
@@ -129,6 +131,17 @@ public class Level extends Stage {
                 }
             }
         }
+    }
+
+    private float getYLastSquare() {
+        Array<Actor> actors = this.getActors();
+        float minY = getCamera().viewportHeight / 2;
+        for (Actor actor : actors) {
+            if (actor instanceof Square && actor.getY() < minY) {
+                minY = actor.getY();
+            }
+        }
+        return minY;
     }
 
     private Runnable getRunable() {
@@ -142,12 +155,18 @@ public class Level extends Stage {
     }
 
     public boolean checkGameOver() {
-        for (Actor actor : this.getActors()) {
-            if (actor instanceof Square)
-                if (actor.getY() < -getCamera().viewportHeight * BOTTOM_WALLS_POSITION + 0.4f)
-                    return true;
-        }
+//        for (Actor actor : this.getActors()) {
+//            if (actor instanceof Square)
+//                if (actor.getY() < limitYToGameOver())
+//                    return true;
+//        }
+        if (limitY < limitYToGameOver())
+            return true;
         return false;
+    }
+
+    private float limitYToGameOver() {
+        return -getCamera().viewportHeight * BOTTOM_WALLS_POSITION + 1.0f;
     }
 
     public void generateNextStep() {
@@ -206,7 +225,9 @@ public class Level extends Stage {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-
+//                System.out.println("wtffffffff");
+//                screen.paused = !screen.paused;
+                screen.pauseScreen();
             }
         });
         pauseBtn.setSize(1,1);

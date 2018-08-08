@@ -70,7 +70,7 @@ public class Ball extends ObjectBox2d  implements Poolable{
 
     @Override
     void initComponent() {
-        pointLight = new PointLight(handler, 7, Color.PURPLE, 1, getX(), getY());
+        pointLight = new PointLight(handler, 20, Color.PURPLE, 1, getX(), getY());
         pointLight.setActive(false);
     }
 
@@ -100,7 +100,7 @@ public class Ball extends ObjectBox2d  implements Poolable{
                 body.setLinearVelocity(body.getLinearVelocity().nor().add(new Vector2(0.1f, 0.1f)).scl(SPEED * 2.0f));
             }
 
-        if (pointLight != null) pointLight.setPosition(getX() + BALL_WIDTH / 2, getY() + BALL_WIDTH / 2);
+        if (pointLight != null) pointLight.setPosition(getX() + BALL_WIDTH / 2.0f, getY() + BALL_WIDTH / 2.0f);
     }
 
     @Override
