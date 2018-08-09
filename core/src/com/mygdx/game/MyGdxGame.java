@@ -30,13 +30,7 @@ public class MyGdxGame extends Game {
 		init();
 		Assets.instance.init(new AssetManager());
 		MyPreference.getInstance();
-//		setScreen(new MainGameScreen());
-//		setScreen(menuScreen);
-		gameOverScreen = new GameOverScreen(this, camera, viewport);
-		menuScreen = new MenuScreen(this, camera, viewport);
-		mainGameScreen = new MainGameScreen(this, camera, viewport);
-        storeScreen = new StoreScreen(this);
-        pausedScreen = new PausedScreen(this, camera, viewport);
+		initScreen();
 		changeMenuScreen();
 //		changeMainGameScreen();
 //        setScreen(gameOverScreen);
@@ -44,8 +38,15 @@ public class MyGdxGame extends Game {
 //		setScreen(pausedScreen);
         // catch back key
         Gdx.input.setCatchBackKey(true);
-
     }
+
+	private void initScreen() {
+		gameOverScreen = new GameOverScreen(this, camera, viewport);
+		menuScreen = new MenuScreen(this, camera, viewport);
+		mainGameScreen = new MainGameScreen(this, camera, viewport);
+		storeScreen = new StoreScreen(this);
+		pausedScreen = new PausedScreen(this, camera, viewport);
+	}
 
 	private void init() {
 		camera = new OrthographicCamera();

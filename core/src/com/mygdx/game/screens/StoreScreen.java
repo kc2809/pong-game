@@ -95,13 +95,14 @@ public class StoreScreen implements Screen, InputProcessor {
         stage.addActor(image);
     }
 
+    @Override
     public void show() {
 //        PointLight pointLight = new PointLight(handler, 1000, Color.SKY, 3, 0, 0);
+        setMoneyLabel();
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage);
         multiplexer.addProcessor(this);
 
-//        Gdx.input.setInputProcessor(stage);
         Gdx.input.setInputProcessor(multiplexer);
     }
 
@@ -130,6 +131,10 @@ public class StoreScreen implements Screen, InputProcessor {
         label.setText(pre.getMoney() + "");
         pre.soldColor(color);
         setPointLightColor(color);
+    }
+
+    private void setMoneyLabel(){
+        label.setText(MyPreference.getInstance().getMoney() + "");
     }
 
     public boolean checkValidMoney() {

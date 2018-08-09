@@ -44,10 +44,14 @@ public interface Constants {
     float LOWER_LIMIT = 178;
     float UPPER_LIMIT = 190;
 
+    // money to replay
+    int MONEY_FOR_REPLAY = 20;
+
+
     // ball items
-    Color[] colors = {Color.SCARLET, Color.PURPLE, Color.YELLOW
-            , Color.FIREBRICK, Color.MAGENTA, Color.ORANGE, Color.SKY,
-            Color.LIME, Color.PINK};
+    Color[] colors = {Color.SCARLET, Color.LIME, Color.PURPLE, Color.YELLOW
+            , Color.GOLD, Color.MAGENTA, Color.ORANGE, Color.SKY
+            , Color.PINK};
 
     Color defaultColor = Color.SCARLET;
 }

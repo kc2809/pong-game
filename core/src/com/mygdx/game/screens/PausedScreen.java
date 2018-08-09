@@ -52,20 +52,20 @@ public class PausedScreen implements Screen {
         stage.addActor(label);
 
         //create quit label
-        Button btnQuit = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.EXIT_ICON), null, null, new ClickListener() {
+        Button btnMenu = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.MENU_ICON), null, null, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                quit();
+                changeMenu();
             }
         });
-        btnQuit.setSize(btnQuit.getWidth() * 3 / PPM, btnQuit.getHeight() * 3 / PPM);
-        btnQuit.setPosition(-btnQuit.getWidth() - 1.0f, -btnQuit.getHeight());
-        stage.addActor(btnQuit);
+        btnMenu.setSize(btnMenu.getWidth() * 3 / PPM, btnMenu.getHeight() * 3 / PPM);
+        btnMenu.setPosition(-btnMenu.getWidth() - 1.0f, -btnMenu.getHeight());
+        stage.addActor(btnMenu);
 
         // create label
-        Label quitLabel = new Label("QUIT", style);
-        quitLabel.setPosition(btnQuit.getX() + 2.0f, btnQuit.getY());
+        Label quitLabel = new Label("MENU", style);
+        quitLabel.setPosition(btnMenu.getX() + 2.0f, btnMenu.getY());
         stage.addActor(quitLabel);
     }
 
@@ -73,8 +73,8 @@ public class PausedScreen implements Screen {
         game.resumeMainGameScreen();
     }
 
-    private void quit() {
-        Gdx.app.exit();
+    private void changeMenu() {
+        game.changeMenuScreen();
     }
 
     @Override

@@ -165,8 +165,12 @@ public class Level extends Stage {
         return false;
     }
 
+    /**
+     * limit value to gameover
+     * @return
+     */
     private float limitYToGameOver() {
-        return -getCamera().viewportHeight * BOTTOM_WALLS_POSITION + 1.0f;
+        return -getCamera().viewportHeight * BOTTOM_WALLS_POSITION + 0.8f;
     }
 
     public void generateNextStep() {

@@ -16,6 +16,7 @@ import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.CommonUI;
+import com.mygdx.game.util.Constants;
 
 import static com.mygdx.game.util.Constants.PPM;
 
@@ -26,6 +27,9 @@ public class GameOverScreen implements Screen {
     OrthographicCamera camera;
     Viewport viewport;
     Label label;
+
+    Label labelMoney;
+
     public GameOverScreen(MyGdxGame game, OrthographicCamera camera, Viewport viewPort) {
         this.game = game;
         this.camera = camera;
@@ -39,13 +43,14 @@ public class GameOverScreen implements Screen {
         LabelStyle style = new LabelStyle();
         style.font = Assets.instance.fontBig;
         label = new Label("BEST", style);
-        label.setPosition(-1.5f, 2.0f);
+        label.setPosition(-1.5f, camera.viewportHeight / 2 - 2.0f);
         stage.addActor(label);
 
         createRePlayBtn(style);
 
         createOneMoreTimeBtn(style);
         createBtnMenu(style);
+        createCurrentMoney(style);
     }
 
     private void createOneMoreTimeBtn(LabelStyle style) {
@@ -57,10 +62,10 @@ public class GameOverScreen implements Screen {
             }
         });
         btnReplay.setSize(btnReplay.getWidth() * 3 / PPM, btnReplay.getHeight() * 3 / PPM);
-        btnReplay.setPosition(-btnReplay.getWidth() - 1.0f, btnReplay.getHeight() - 4.0f);
+        btnReplay.setPosition(-btnReplay.getWidth() - 1.0f, btnReplay.getHeight() - 3.0f);
         stage.addActor(btnReplay);
 
-        Label label1 = new Label("50", style);
+        Label label1 = new Label(Constants.MONEY_FOR_REPLAY + "", style);
         label1.setPosition(btnReplay.getX() + 2.0f, btnReplay.getY());
         stage.addActor(label1);
 
@@ -79,7 +84,7 @@ public class GameOverScreen implements Screen {
             }
         });
         btnReplay.setSize(btnReplay.getWidth() * 3 / PPM, btnReplay.getHeight() * 3 / PPM);
-        btnReplay.setPosition(-btnReplay.getWidth() - 1.0f, btnReplay.getHeight() - 2.0f);
+        btnReplay.setPosition(-btnReplay.getWidth() - 1.0f, btnReplay.getHeight() - 1.0f);
         stage.addActor(btnReplay);
 
         Label label1 = new Label("REPLAY", style);
@@ -96,7 +101,7 @@ public class GameOverScreen implements Screen {
             }
         });
         btnMenu.setSize(btnMenu.getWidth() * 3 / PPM, btnMenu.getHeight() * 3 / PPM);
-        btnMenu.setPosition(-btnMenu.getWidth() - 1.0f, -btnMenu.getHeight() - 3.0f);
+        btnMenu.setPosition(-btnMenu.getWidth() - 1.0f, -btnMenu.getHeight() - 2.0f);
         stage.addActor(btnMenu);
 
         // create label
@@ -105,9 +110,25 @@ public class GameOverScreen implements Screen {
         stage.addActor(quitLabel);
     }
 
+    private void createCurrentMoney(LabelStyle style) {
+        Image image = new Image(Assets.instance.getAsset(Assets.MONEY_ITEM));
+        image.setSize(image.getWidth() / PPM, image.getHeight() / PPM);
+        image.setPosition(1.0f, camera.viewportHeight / 2 - 1.0f);
+        stage.addActor(image);
+
+        labelMoney = new Label("", style);
+        labelMoney.setPosition(image.getX() + 1.0f, image.getY() + 0.5f);
+        stage.addActor(labelMoney);
+    }
+
+    private void setCurrentMoney() {
+        labelMoney.setText(MyPreference.getInstance().getMoney() + "");
+    }
+
     @Override
     public void show() {
         setHighestScore();
+        setCurrentMoney();
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -147,7 +168,11 @@ public class GameOverScreen implements Screen {
     }
 
     private void rePlay(){
-        game.changeMainGameScreen();
+            game.changeMainGameScreen();
+    }
+
+    private boolean validOneMoreTime() {
+        return MyPreference.getInstance().getMoney() >= Constants.MONEY_FOR_REPLAY;
     }
 
     private void changeMenuScreen(){
@@ -155,6 +180,7 @@ public class GameOverScreen implements Screen {
     }
 
     private void oneMoreTime() {
-        game.oneMoreTime();
+        if (validOneMoreTime())
+            game.oneMoreTime();
     }
 }
