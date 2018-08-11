@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.screens.MainGameScreen;
+import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.CommonUI;
 import com.mygdx.game.util.MathUtils;
 
@@ -79,12 +80,14 @@ public class Level extends Stage {
 
 
     public void oneMoreTime() {
-        float y = -getCamera().viewportHeight / 5.0f;
+//        float y = -getCamera().viewportHeight / 2.0f;
+        float y = 0;
         for (Actor actor : getActors()) {
             if (actor.getY() < y) {
                 actor.addAction(Actions.removeActor());
             }
         }
+        uiObjects.setMoneyText(MyPreference.getInstance().getMoney());
     }
 
     public void increaseScore() {
@@ -95,9 +98,6 @@ public class Level extends Stage {
         if (numberType++ == 5) {
             numberType = 0;
             materialType++;
-//            if(ratioToGenerateItem1 >15){
-//                ratioToGenerateItem1--;
-//            }
             if (materialType == 5) {
                 materialType = 0;
             }
@@ -155,14 +155,7 @@ public class Level extends Stage {
     }
 
     public boolean checkGameOver() {
-//        for (Actor actor : this.getActors()) {
-//            if (actor instanceof Square)
-//                if (actor.getY() < limitYToGameOver())
-//                    return true;
-//        }
-        if (limitY < limitYToGameOver())
-            return true;
-        return false;
+        return limitY < limitYToGameOver();
     }
 
     /**

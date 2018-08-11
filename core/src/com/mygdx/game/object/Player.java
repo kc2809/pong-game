@@ -140,6 +140,7 @@ public class Player extends Stage {
         for (int i = 1; i < this.getActors().size; ++i) {
             this.getActors().get(i).addAction(Actions.removeActor());
         }
+        setDistance(1);
     }
 
     public void freeBall(Ball ball) {

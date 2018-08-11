@@ -73,8 +73,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         initGameState();
 //        debugRenderer = new Box2DDebugRenderer();
         this.game = game;
-//        camera = new OrthographicCamera();
-//        viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
         this.camera = camera;
         this.viewport = viewport;
 
@@ -108,6 +106,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
         setColorPlayer();
+        money = MyPreference.getInstance().getMoney();
     }
 
     private void initObject() {

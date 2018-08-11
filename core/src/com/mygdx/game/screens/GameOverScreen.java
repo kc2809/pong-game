@@ -180,7 +180,11 @@ public class GameOverScreen implements Screen {
     }
 
     private void oneMoreTime() {
-        if (validOneMoreTime())
+        if (validOneMoreTime()){
+            // minus values to play once more time
+            MyPreference pre =  MyPreference.getInstance();
+            pre.setMoney(pre.getMoney() - Constants.MONEY_FOR_REPLAY);
             game.oneMoreTime();
+        }
     }
 }
