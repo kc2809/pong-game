@@ -56,10 +56,6 @@ public class Player extends Stage {
         return velocity;
     }
 
-    public void setVelocityWithClickPoint(Vector2 clickPoint) {
-        velocity = clickPoint.cpy().sub(positionToFire).nor().scl(SPEED);
-    }
-
     public void fire(Vector2 vel) {
         velocity = vel;
     }
@@ -70,12 +66,11 @@ public class Player extends Stage {
 
     //Actor is ball
     public boolean eventBallTouchGround(Ball actor) {
+        System.out.println("INSIDE PLAYER");
         if (!isFirstBallTouchGround()) {
             //           actor.addAction(Actions.moveTo(positionToFire.x, positionToFire.y, 0.2f));
             Action moveToAction = Actions.moveTo(positionToFire.x, positionToFire.y, 0.3f);
             actor.addAction(Actions.sequence(moveToAction, Actions.run(getNextStep())));
-//            actor.addAction(moveToAction);
-            //     nextStep();
             return true;
         } else {
             positionToFire = new Vector2(actor.getSprite().getX(), actor.getSprite().getY());
@@ -116,6 +111,7 @@ public class Player extends Stage {
         ball.setPosition(this.positionToFire.x, this.positionToFire.y);
 //        this.addActor((new Ball(this.world, handler)).init(this.positionToFire.x, this.positionToFire.y));
         ball.setPointLightColor(color, distanceColor);
+        ball.isProgress = false;
         this.addActor(ball);
         ball.active();
     }

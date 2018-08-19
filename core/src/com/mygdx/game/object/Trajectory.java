@@ -26,8 +26,8 @@ public class Trajectory {
 //        Vector2 velocity = end.cpy().sub(start).nor();
         vertices[0] = start.x;
         vertices[1] = start.y;
-        Vector2 normal = new Vector2(0, 0);
-        boolean isReflect = false;
+//        Vector2 normal = new Vector2(0, 0);
+//        boolean isReflect = false;
         for (int i = 2; i < count; i += 2) {
             vertices[i] = vertices[i - 2] + velocity.x * DENTAT;
             vertices[i + 1] = vertices[i - 1] + velocity.y * DENTAT;
@@ -62,7 +62,6 @@ public class Trajectory {
         renderer.setProjectionMatrix(viewport.getCamera().combined);
         renderer.setColor(Color.WHITE);
         renderer.begin(ShapeType.Line);
-//        renderer.polyline(vertices);
 
         for (int i = 0; i < vertices.length; i += 4) {
             renderer.line(vertices[i], vertices[i + 1], vertices[i + 2], vertices[i + 3]);

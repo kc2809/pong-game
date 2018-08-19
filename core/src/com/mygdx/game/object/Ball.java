@@ -108,7 +108,7 @@ public class Ball extends ObjectBox2d  implements Poolable{
         super.setPosition(x, y);
     }
 
-    public void fire(float x, float y) {
+    public void changeVelocity(float x, float y) {
         if (body != null)
             body.setLinearVelocity(x, y);
         pointLight.setActive(true);

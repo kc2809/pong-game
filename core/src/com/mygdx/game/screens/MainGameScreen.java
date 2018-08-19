@@ -46,6 +46,8 @@ public class MainGameScreen implements Screen, InputProcessor {
     public int power;
     public boolean paused;
     long timeAtFire;
+
+    //Trajectory
     Trajectory trajectory;
     //
     private WorldContactListener contactListener;
@@ -136,8 +138,10 @@ public class MainGameScreen implements Screen, InputProcessor {
         effectManager = new EffectManager();
         level.addActor(effectManager);
 
+//        arrow = new Arrow();
         playerCount = new PlayerCount(this);
         level.addActor(playerCount);
+//        level.addActor(arrow);
     }
 
     public void setEffectAtPosition(Vector2 position, Color color) {
@@ -194,15 +198,10 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         trajectory.draw();
 
-
-//        Box2dManager.getInstance().destroyBody(world);
         Box2dManager.getInstance().inActiveBodies(world);
         Box2dManager.getInstance().activeBodies(world);
 
-//        uiObject.draw();
-
         frameRate.render();
-
         handler.updateAndRender();
 
     }
@@ -227,7 +226,6 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     }
 
-
     public int getRemainBall() {
         return player.getActors().size - count;
     }
@@ -236,13 +234,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     public void resize(int width, int height) {
         viewport.update(width, height);
         camera.position.set(0, 0, 0);
-//        walls.setWallPositionByCamera(camera);
-//        // set init position again.
-//        player.setInitPositon();
-//        trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH / 2, Constants.BALL_HEIGHT / 2)), VectorUtil.VECTOR2_ZERO);
-//
         frameRate.resize(width, height);
-
         handler.setCombinedMatrix(camera);
     }
 
@@ -301,6 +293,10 @@ public class MainGameScreen implements Screen, InputProcessor {
         return false;
     }
 
+    private boolean isValidVelocity(Vector2 velocity) {
+        return velocity.angle() > 7 && velocity.angle() < 173;
+    }
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 worldCoordinate = camera.unproject(new Vector3(screenX, screenY, 0));
@@ -326,10 +322,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         return false;
     }
 
-    private boolean isValidVelocity(Vector2 velocity) {
-        return velocity.angle() > 7 && velocity.angle() < 173;
-    }
-
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (fireFlag != 0) return false;
@@ -338,6 +330,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         Vector2 velocity = touchDown.cpy().sub(touchDragPoint).nor();
         trajectory.setVisible(isValidVelocity(velocity));
         trajectory.projected(player.centerPosition(), velocity);
+        playerCount.rotateArrow(velocity.angle());
         return false;
     }
 
@@ -353,10 +346,6 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     public Player getPlayer() {
         return player;
-    }
-
-    public void increaseScore(){
-//        level.increaseScore();
     }
 
     public void increaseMoeny(){
@@ -394,13 +383,16 @@ public class MainGameScreen implements Screen, InputProcessor {
     public void reset(){
         walls.setWallPositionByCamera(camera);
         // set init position again.
-        player.setInitPositon();
+//        player.setInitPositon();
         trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH / 2, Constants.BALL_HEIGHT / 2)), VectorUtil.VECTOR2_ZERO);
         level.reset();
         player.reset();
         playerCount.setPositionToDraw();
+        playerCount.setVisible(true);
+//        arrow.setPositionByPlayer(player.positionToFire);
         initGameState();
         level.generateNextStep();
+        ballBeAddedNextRow = 0;
     }
 
     public void pauseScreen() {

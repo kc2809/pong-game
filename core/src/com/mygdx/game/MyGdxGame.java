@@ -25,6 +25,12 @@ public class MyGdxGame extends Game {
     StoreScreen storeScreen;
     PausedScreen pausedScreen;
 
+	AdmodCallBack callback;
+
+	public void setAdmobCallBack(AdmodCallBack callback) {
+		this.callback = callback;
+	}
+
 	@Override
 	public void create () {
 		init();
@@ -117,4 +123,12 @@ public class MyGdxGame extends Game {
         mainGameScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         setScreen(mainGameScreen);
     }
+
+	public void callAdmod() {
+		if (callback != null) callback.callAdmobBanner();
+	}
+
+	public interface AdmodCallBack {
+		void callAdmobBanner();
+	}
 }

@@ -15,7 +15,7 @@ public class Object2D extends Actor {
     public Object2D() {
     }
 
-    public void initTexture(TextureRegion region) {
+    protected void initTexture(TextureRegion region) {
         sprite = new Sprite(region);
         sprite.setSize(sprite.getWidth() * 2 / PPM, sprite.getHeight() * 2 / PPM);
     }

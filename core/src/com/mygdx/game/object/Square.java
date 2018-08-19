@@ -94,7 +94,6 @@ public class Square extends ObjectBox2d implements Poolable {
 
     @Override
     public boolean remove() {
-        screen.increaseScore();
         screen.level.freeSquare(this);
         return super.remove();
     }

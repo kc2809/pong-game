@@ -7,7 +7,8 @@ public interface Constants {
     float VIEWPORT_HEIGHT = 10.0f;
 //    String TEXTURE_ATLAS_OBJECT = "resources730";
 //    String TEXTURE_ATLAS_OBJECT = "resouces804.atlas";
-    String TEXTURE_ATLAS_OBJECT = "resources.atlas";
+//    String TEXTURE_ATLAS_OBJECT = "resources.atlas";
+    String TEXTURE_ATLAS_OBJECT = "resources819.atlas";
 
     String HIT_SOUND_PATH = "music/glass1.wav";
     String LEVEL_SOUND_PATH = "music/levelup.wav";
@@ -49,9 +50,9 @@ public interface Constants {
 
 
     // ball items
-    Color[] colors = {Color.SCARLET, Color.LIME, Color.PURPLE, Color.YELLOW
-            , Color.GOLD, Color.MAGENTA, Color.ORANGE, Color.SKY
+    Color[] colors = {Color.BLUE, Color.LIME , Color.SCARLET, Color.YELLOW, Color.PURPLE
+            , Color.GOLD, Color.ORANGE, Color.SKY
             , Color.PINK};
 
-    Color defaultColor = Color.SCARLET;
+    Color defaultColor = Color.BLUE;
 }

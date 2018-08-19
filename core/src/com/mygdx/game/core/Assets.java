@@ -34,12 +34,14 @@ public class Assets implements Disposable, AssetErrorListener {
     public static String MENU_ICON = "menu";
     public static String REPLAY_ICON = "xoay";
     public static String BACK_ICON = "back";
+    public static String ARROW_ICON = "white_arrow";
 
     public static final String TAG = Assets.class.getName();
     public static final Assets instance = new Assets();
     private static final float SMALL_FONT_SCREEN_WIDTH_FRACTION = 1.0f / 25.f;
     private static final float BIG_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 10.0f;
     private static final float MEDIUM_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 15.0f;
+    private static final float TITLE_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 8.0f;
 
     public FileHandle effectFile;
     public FileHandle imagesDir;
@@ -85,7 +87,7 @@ public class Assets implements Disposable, AssetErrorListener {
         fontSmall = createFont(SMALL_FONT_SCREEN_WIDTH_FRACTION);
         fontBig = createFont(BIG_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
         fontMedium = createFont(MEDIUM_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
-        titleFont = createFont(1.0f/10.0f);
+        titleFont = createFont(TITLE_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
     }
 
     //Add resources to map
@@ -103,6 +105,7 @@ public class Assets implements Disposable, AssetErrorListener {
         putAtlasRegionToMap(atlas, REPLAY_ICON);
         putAtlasRegionToMap(atlas, MENU_ICON);
         putAtlasRegionToMap(atlas, BACK_ICON);
+        putAtlasRegionToMap(atlas, ARROW_ICON);
     }
 
     @Override

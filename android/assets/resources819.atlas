@@ -1,0 +1,110 @@
+
+resources819.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ball
+  rotate: false
+  xy: 1595, 1604
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+money_item
+  rotate: false
+  xy: 2, 2
+  size: 1000, 1000
+  orig: 1000, 1000
+  offset: 0, 0
+  index: -1
+pause_btn
+  rotate: false
+  xy: 1506, 376
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+play_btn
+  rotate: false
+  xy: 1004, 376
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+square
+  rotate: false
+  xy: 2, 1004
+  size: 1000, 1000
+  orig: 1000, 1000
+  offset: 0, 0
+  index: -1
+star
+  rotate: false
+  xy: 1518, 890
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+store
+  rotate: false
+  xy: 1004, 878
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+white_arrow
+  rotate: false
+  xy: 1004, 1392
+  size: 589, 612
+  orig: 589, 612
+  offset: 0, 0
+  index: -1
+
+resources8192.png
+size: 2048,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+back
+  rotate: false
+  xy: 504, 504
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+exit_btn
+  rotate: false
+  xy: 1006, 2
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+menu
+  rotate: false
+  xy: 2, 2
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+sound_active
+  rotate: false
+  xy: 1006, 504
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+sound_inactive
+  rotate: false
+  xy: 2, 504
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+xoay
+  rotate: false
+  xy: 504, 2
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1

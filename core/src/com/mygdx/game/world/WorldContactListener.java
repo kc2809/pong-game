@@ -11,9 +11,6 @@ import com.mygdx.game.object.Item1;
 import com.mygdx.game.object.MoneyItem;
 import com.mygdx.game.object.Square;
 import com.mygdx.game.screens.MainGameScreen;
-import com.mygdx.game.sound.SoundManager;
-
-import java.awt.Color;
 
 import static com.mygdx.game.util.Constants.DEGREE_DECREASE;
 import static com.mygdx.game.util.Constants.LOWER_LIMIT;
@@ -51,12 +48,18 @@ public class WorldContactListener implements ContactListener {
 
         if (item1Contact(fixA, fixB) || moneyItemContact(fixA, fixB)) return;
 
-        squareContact(fixA, fixB);
+        if (squareContact(fixA, fixB)) {
+            Ball ball = getObjectByFixture(fixA, fixB, Ball.class);
+            if(ball.isProgress) {
+
+            }
+        }
 
         // Ball contact
         Ball ball = getObjectByFixture(fixA, fixB, Ball.class);
 
         if (checkIsIntanceOfString(fixA, fixB, "botWall")) {
+            System.out.println("EVENT BALL TOUCH GROUND");
             ball.stop();
             return;
         }
@@ -75,7 +78,7 @@ public class WorldContactListener implements ContactListener {
             }
         }
         // reflect when collision with walls and square happened
-        ball.fire(r.x, r.y);
+        ball.changeVelocity(r.x, r.y);
     }
 
     @Override

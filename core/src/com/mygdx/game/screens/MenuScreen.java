@@ -67,7 +67,7 @@ public class MenuScreen implements Screen {
         handler.setCombinedMatrix(camera);
         handler.setShadows(false);
 
-        pointLight = new PointLight(handler, 1000, Color.SKY, 6, 0, 0);
+        pointLight = new PointLight(handler, 1000, Color.BLUE, 7, 0, 0);
         setupLabel();
         setupButton();
     }
@@ -76,7 +76,7 @@ public class MenuScreen implements Screen {
         layout.setText(font, TITLE);
         LabelStyle labelStyle = new LabelStyle(font, Color.WHITE);
         label = new Label(TITLE, labelStyle);
-        label.setPosition(-layout.width / 2, camera.viewportHeight / 2 - 1.0f);
+        label.setPosition(-layout.width / 2, camera.viewportHeight / 3);
         stage.addActor(label);
     }
 
@@ -91,6 +91,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                game.callAdmod();
                 game.changeMainGameScreen();
             }
         });
@@ -126,7 +127,7 @@ public class MenuScreen implements Screen {
             }
         });
         storeBtn.setSize(storeBtn.getWidth() * 2 / PPM, storeBtn.getHeight() * 2 / PPM);
-        storeBtn.setPosition(-camera.viewportWidth *18/ 40 , camera.viewportHeight *3 / 10);
+        storeBtn.setPosition(-camera.viewportWidth *18/ 40 , camera.viewportHeight *2 / 10);
         stage.addActor(storeBtn);
     }
 

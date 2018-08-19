@@ -41,16 +41,19 @@ public class GameOverScreen implements Screen {
         stage = new Stage(viewport);
 
         LabelStyle style = new LabelStyle();
-        style.font = Assets.instance.fontBig;
+        style.font = Assets.instance.titleFont;
         label = new Label("BEST", style);
-        label.setPosition(-1.5f, camera.viewportHeight / 2 - 2.0f);
+        label.setPosition(-2.1f, camera.viewportHeight / 2 - 3.3f);
         stage.addActor(label);
 
-        createRePlayBtn(style);
 
-        createOneMoreTimeBtn(style);
-        createBtnMenu(style);
-        createCurrentMoney(style);
+
+        LabelStyle styleBtn = new LabelStyle();
+        styleBtn.font = Assets.instance.fontBig;
+        createRePlayBtn(styleBtn);
+        createOneMoreTimeBtn(styleBtn);
+        createBtnMenu(styleBtn);
+        createCurrentMoney(styleBtn);
     }
 
     private void createOneMoreTimeBtn(LabelStyle style) {
