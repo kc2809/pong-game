@@ -66,6 +66,7 @@ public class Player extends Stage {
 
     //Actor is ball
     public boolean eventBallTouchGround(Ball actor) {
+        System.out.println("EVENT HAPPEND IT'S COUNT");
         if (!isFirstBallTouchGround()) {
             //           actor.addAction(Actions.moveTo(positionToFire.x, positionToFire.y, 0.2f));
             Action moveToAction = Actions.moveTo(positionToFire.x, positionToFire.y, 0.3f);
@@ -88,7 +89,7 @@ public class Player extends Stage {
     }
 
     private void nextStep() {
-        if (++countOnFire == this.getActors().size) {
+        if (++countOnFire >= this.getActors().size) {
             countOnFire = 0;
             mainGameScreen.nextStep();
         }
@@ -130,7 +131,16 @@ public class Player extends Stage {
     }
 
     public void reset() {
+        countOnFire = 0;
+
+        for(Actor actor: getActors()){
+            Ball ball = (Ball) actor;
+            ball.isProgress = false;
+            ball.body.setLinearVelocity(new Vector2(0,0));
+        }
         setInitPositon();
+
+
         if (this.getActors().size < 2) return;
         for (int i = 1; i < this.getActors().size; ++i) {
             this.getActors().get(i).addAction(Actions.removeActor());
