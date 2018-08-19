@@ -189,5 +189,6 @@ public class GameOverScreen implements Screen {
             pre.setMoney(pre.getMoney() - Constants.MONEY_FOR_REPLAY);
             game.oneMoreTime();
         }
+//        game.oneMoreTime();
     }
 }

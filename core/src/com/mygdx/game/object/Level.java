@@ -121,6 +121,10 @@ public class Level extends Stage {
             generateNextStep();
         }
         limitY = getYLastSquare() - 1.1f;
+        if(checkGameOver()) {
+            screen.gameOver();
+            return;
+        }
         for (Actor actor : actors) {
             if (actor instanceof Square || actor instanceof Item1 || actor instanceof MoneyItem) {
                 if (i++ == 0) {

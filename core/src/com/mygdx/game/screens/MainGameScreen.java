@@ -100,6 +100,14 @@ public class MainGameScreen implements Screen, InputProcessor {
         power = 1;
     }
 
+    public void onceMoreTime() {
+        paused = false;
+        fireFlag = 0;
+        count = 0;
+        playerCount.setPositionToDraw();
+        playerCount.setVisible(true);
+    }
+
     @Override
     public void show() {
         paused = false;
@@ -174,9 +182,9 @@ public class MainGameScreen implements Screen, InputProcessor {
         //enable player count
         playerCount.setPositionToDraw();
         playerCount.setVisible(true);
-        if(level.checkGameOver()){
-            gameOver();
-        }
+//        if(level.checkGameOver()){
+//            gameOver();
+//        }
     }
 
     @Override
@@ -372,7 +380,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     }
 
 
-    private void gameOver() {
+    public void gameOver() {
         MyPreference.getInstance().setMoney(money);
         if (score > MyPreference.getInstance().getHighestScore()) {
             MyPreference.getInstance().setHighestScore(score);
@@ -401,6 +409,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     }
 
     public void replay() {
+        onceMoreTime();
         level.oneMoreTime();
     }
 }

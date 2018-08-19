@@ -59,7 +59,6 @@ public class WorldContactListener implements ContactListener {
         Ball ball = getObjectByFixture(fixA, fixB, Ball.class);
 
         if (checkIsIntanceOfString(fixA, fixB, "botWall")) {
-            System.out.println("EVENT BALL TOUCH GROUND");
             ball.stop();
             return;
         }
