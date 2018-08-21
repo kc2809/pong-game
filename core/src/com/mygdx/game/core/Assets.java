@@ -126,7 +126,8 @@ public class Assets implements Disposable, AssetErrorListener {
     private BitmapFont createFont(float fraction) {
         BitmapFont font;
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSerif-Bold.ttf"));
+//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSerif-Bold.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("dancing.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         parameter.size = (int) (fraction * Gdx.graphics.getWidth());

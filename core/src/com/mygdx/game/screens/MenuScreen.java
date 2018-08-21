@@ -22,6 +22,7 @@ import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.CommonUI;
+import com.mygdx.game.util.Constants;
 
 import static com.mygdx.game.core.Assets.PLAY_ICON;
 import static com.mygdx.game.core.Assets.STORE_ICON;
@@ -146,7 +147,8 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         world.step(1f / 60f, 6, 2);
         camera.update();
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+//        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(Constants.backgroundColor.r,  Constants.backgroundColor.g, Constants.backgroundColor.b, Constants.backgroundColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();

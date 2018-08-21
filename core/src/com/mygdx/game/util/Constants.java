@@ -55,4 +55,6 @@ public interface Constants {
             , Color.PINK};
 
     Color defaultColor = Color.BLUE;
+
+    Color backgroundColor = Color.valueOf("#202020");
 }

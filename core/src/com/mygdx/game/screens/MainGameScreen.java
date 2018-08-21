@@ -70,6 +70,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     //    Box2DDebugRenderer debugRenderer;
     Viewport viewport;
     InputMultiplexer multiplexer;
+    Color backgroundColor;
 
     public MainGameScreen(MyGdxGame game, OrthographicCamera camera, Viewport viewport) {
         initGameState();
@@ -86,6 +87,9 @@ public class MainGameScreen implements Screen, InputProcessor {
         initObject();
 
         ballBeAddedNextRow = 0;
+
+//        backgroundColor = Color.valueOf("#202020");
+        backgroundColor = Constants.backgroundColor;
     }
 
     private void initGameState() {
@@ -192,7 +196,8 @@ public class MainGameScreen implements Screen, InputProcessor {
         if (paused) return;
         world.step(1f / 60f, 6, 2);
         camera.update();
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+//        Gdx.gl.glClearColor( Color.DARK_GRAY.r,  Color.DARK_GRAY.g, Color.DARK_GRAY.b, Color.DARK_GRAY.a);
+        Gdx.gl.glClearColor( backgroundColor.r,  backgroundColor.g, backgroundColor.b, backgroundColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //        debugRenderer.render(world, camera.combined);
 
