@@ -8,7 +8,8 @@ public interface Constants {
 //    String TEXTURE_ATLAS_OBJECT = "resources730";
 //    String TEXTURE_ATLAS_OBJECT = "resouces804.atlas";
 //    String TEXTURE_ATLAS_OBJECT = "resources.atlas";
-    String TEXTURE_ATLAS_OBJECT = "resources819.atlas";
+//    String TEXTURE_ATLAS_OBJECT = "resources819.atlas";
+    String TEXTURE_ATLAS_OBJECT = "resources821.atlas";
 
     String HIT_SOUND_PATH = "music/glass1.wav";
     String LEVEL_SOUND_PATH = "music/levelup.wav";

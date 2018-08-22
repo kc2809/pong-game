@@ -58,7 +58,7 @@ public class StoreScreen implements Screen, InputProcessor {
 
         pointLight = new PointLight(handler, 1000, color, 4, -2.0f, camera.viewportHeight * 2 / 5);
         Label.LabelStyle style = new Label.LabelStyle();
-        style.font = Assets.instance.fontMedium;
+        style.font = Assets.instance.fontBig;
         label = new Label(MyPreference.getInstance().getMoney() + "", style);
         label.setPosition(camera.viewportWidth / 2 - 3.0f, camera.viewportHeight / 2 - 1.5f);
         stage.addActor(label);
@@ -110,7 +110,8 @@ public class StoreScreen implements Screen, InputProcessor {
     public void render(float delta) {
         world.step(1f / 60f, 6, 2);
         camera.update();
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+//        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(Constants.backgroundColor.r,  Constants.backgroundColor.g, Constants.backgroundColor.b, Constants.backgroundColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.draw();

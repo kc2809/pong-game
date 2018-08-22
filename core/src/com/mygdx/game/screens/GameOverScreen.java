@@ -2,12 +2,15 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -26,9 +29,12 @@ public class GameOverScreen implements Screen {
 
     OrthographicCamera camera;
     Viewport viewport;
-    Label label;
+    Label labelBestScore;
+    Label labelScore;
 
     Label labelMoney;
+
+    int score;
 
     public GameOverScreen(MyGdxGame game, OrthographicCamera camera, Viewport viewPort) {
         this.game = game;
@@ -42,18 +48,46 @@ public class GameOverScreen implements Screen {
 
         LabelStyle style = new LabelStyle();
         style.font = Assets.instance.titleFont;
-        label = new Label("BEST", style);
-        label.setPosition(-2.1f, camera.viewportHeight / 2 - 3.3f);
-        stage.addActor(label);
-
-
 
         LabelStyle styleBtn = new LabelStyle();
         styleBtn.font = Assets.instance.fontBig;
-        createRePlayBtn(styleBtn);
+        // BEST label
+        labelBestScore = new Label("BEST", style);
+        labelBestScore.setPosition(-1.5f, 1.0f);
+        stage.addActor(labelBestScore);
+
+        //
+        LabelStyle styleBig = new LabelStyle();
+        styleBig.font = Assets.instance.bigbigFont;
+        labelScore = new Label("80", styleBig);
+        labelScore.setPosition(-labelScore.getWidth() / 2, 2.0f);
+        stage.addActor(labelScore);
+
+        //
         createOneMoreTimeBtn(styleBtn);
-        createBtnMenu(styleBtn);
         createCurrentMoney(styleBtn);
+
+        //Replay button
+        createBox(0, -0.5f, styleBtn, "REPLAY", Color.valueOf("#ed1662"), new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                rePlay();
+            }
+        });
+
+        // main menu button
+        createBox(0, -2.3f, styleBtn, "MAIN MENU", Color.valueOf("#01b29a"), new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                changeMenuScreen();
+            }
+        });
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     private void createOneMoreTimeBtn(LabelStyle style) {
@@ -65,7 +99,7 @@ public class GameOverScreen implements Screen {
             }
         });
         btnReplay.setSize(btnReplay.getWidth() * 3 / PPM, btnReplay.getHeight() * 3 / PPM);
-        btnReplay.setPosition(-btnReplay.getWidth() - 1.0f, btnReplay.getHeight() - 3.0f);
+        btnReplay.setPosition(-btnReplay.getWidth() - 1.0f, btnReplay.getHeight() - 6.0f);
         stage.addActor(btnReplay);
 
         Label label1 = new Label(Constants.MONEY_FOR_REPLAY + "", style);
@@ -76,41 +110,6 @@ public class GameOverScreen implements Screen {
         imgGold.setSize(0.8f, 0.8f);
         imgGold.setPosition(label1.getX() + 1.0f, label1.getY() + 0.05f);
         stage.addActor(imgGold);
-    }
-
-    private void createRePlayBtn(LabelStyle style) {
-        Button btnReplay = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.PLAY_ICON), null, null, new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                rePlay();
-            }
-        });
-        btnReplay.setSize(btnReplay.getWidth() * 3 / PPM, btnReplay.getHeight() * 3 / PPM);
-        btnReplay.setPosition(-btnReplay.getWidth() - 1.0f, btnReplay.getHeight() - 1.0f);
-        stage.addActor(btnReplay);
-
-        Label label1 = new Label("REPLAY", style);
-        label1.setPosition(btnReplay.getX() + 2.0f, btnReplay.getY());
-        stage.addActor(label1);
-    }
-
-    private void createBtnMenu(LabelStyle style) {
-        Button btnMenu = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.MENU_ICON), null, null, new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                changeMenuScreen();
-            }
-        });
-        btnMenu.setSize(btnMenu.getWidth() * 3 / PPM, btnMenu.getHeight() * 3 / PPM);
-        btnMenu.setPosition(-btnMenu.getWidth() - 1.0f, -btnMenu.getHeight() - 2.0f);
-        stage.addActor(btnMenu);
-
-        // create label
-        Label quitLabel = new Label("MENU", style);
-        quitLabel.setPosition(btnMenu.getX() + 2.0f, btnMenu.getY());
-        stage.addActor(quitLabel);
     }
 
     private void createCurrentMoney(LabelStyle style) {
@@ -124,6 +123,22 @@ public class GameOverScreen implements Screen {
         stage.addActor(labelMoney);
     }
 
+    private void createBox(float x, float y, LabelStyle style, String title, Color color, ClickListener listener) {
+        ImageButton box = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.BOX), null, null, null);
+        box.setSize(box.getWidth() * 10 / PPM, box.getHeight() * 10 / PPM);
+        box.setPosition(x - box.getWidth() / 2, y);
+        box.getImage().setColor(color);
+
+        Label label = new Label(title, style);
+        label.setPosition(-label.getWidth() / 2, y);
+
+        Group group = new Group();
+        group.addActor(box);
+        group.addActor(label);
+        group.addListener(listener);
+        stage.addActor(group);
+    }
+
     private void setCurrentMoney() {
         labelMoney.setText(MyPreference.getInstance().getMoney() + "");
     }
@@ -132,6 +147,7 @@ public class GameOverScreen implements Screen {
     public void show() {
         setHighestScore();
         setCurrentMoney();
+        setLabelScore();
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -164,11 +180,15 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
-
     }
 
     private void setHighestScore() {
-        label.setText("Best: " + MyPreference.getInstance().getHighestScore());
+        labelBestScore.setText("Best: " + MyPreference.getInstance().getHighestScore());
+    }
+
+    private void setLabelScore() {
+        labelScore.setText(score + "");
+        labelScore.setX(-labelScore.getWidth() / 2);
     }
 
     private void rePlay(){

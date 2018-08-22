@@ -390,6 +390,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         if (score > MyPreference.getInstance().getHighestScore()) {
             MyPreference.getInstance().setHighestScore(score);
         }
+        game.setScore(this.score);
         game.changeGameOverScreen();
     }
 

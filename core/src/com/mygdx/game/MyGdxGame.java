@@ -37,9 +37,9 @@ public class MyGdxGame extends Game {
 		Assets.instance.init(new AssetManager());
 		MyPreference.getInstance();
 		initScreen();
-		changeMenuScreen();
+//		changeMenuScreen();
 //		changeMainGameScreen();
-//        setScreen(gameOverScreen);
+        setScreen(gameOverScreen);
 //		setScreen(new StoreScreen());
 //		setScreen(pausedScreen);
         // catch back key
@@ -123,6 +123,10 @@ public class MyGdxGame extends Game {
         mainGameScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         setScreen(mainGameScreen);
     }
+
+    public void setScore(int score){
+		gameOverScreen.setScore(score);
+	}
 
 	public void callAdmod() {
 		if (callback != null) callback.callAdmobBanner();

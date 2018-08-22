@@ -1,7 +1,6 @@
 package com.mygdx.game.util;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -19,13 +18,13 @@ public class CommonUI {
         return instance;
     }
 
-    public Button createImageButton(TextureRegion up, TextureRegion down, TextureRegion checked, ClickListener listener) {
+    public ImageButton createImageButton(TextureRegion up, TextureRegion down, TextureRegion checked, ClickListener listener) {
         Drawable drawableUp = up != null ? new TextureRegionDrawable(up) : null;
         Drawable drawableDown = down != null ? new TextureRegionDrawable(down) : null;
         Drawable drawableChecked = checked != null ? new TextureRegionDrawable(checked) : null;
 
-        Button imageBtn = new ImageButton(drawableUp, drawableDown, drawableChecked);
-        imageBtn.addListener(listener);
+        ImageButton imageBtn = new ImageButton(drawableUp, drawableDown, drawableChecked);
+        if (listener != null) imageBtn.addListener(listener);
         return imageBtn;
     }
 }
