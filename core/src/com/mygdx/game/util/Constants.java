@@ -5,11 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 public interface Constants {
     float VIEWPORT_WIDTH = 7.8f;
     float VIEWPORT_HEIGHT = 10.0f;
-//    String TEXTURE_ATLAS_OBJECT = "resources730";
-//    String TEXTURE_ATLAS_OBJECT = "resouces804.atlas";
-//    String TEXTURE_ATLAS_OBJECT = "resources.atlas";
-//    String TEXTURE_ATLAS_OBJECT = "resources819.atlas";
-    String TEXTURE_ATLAS_OBJECT = "resources821.atlas";
+    String TEXTURE_ATLAS_OBJECT = "resources268.atlas";
 
     String HIT_SOUND_PATH = "music/glass1.wav";
     String LEVEL_SOUND_PATH = "music/levelup.wav";

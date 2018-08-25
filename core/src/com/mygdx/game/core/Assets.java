@@ -36,6 +36,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public static String BACK_ICON = "back";
     public static String ARROW_ICON = "white_arrow";
     public static String BOX = "textbox";
+    public static String VIDEO_REWARDED_ICON = "videorewarded";
 
     public static final String TAG = Assets.class.getName();
     public static final Assets instance = new Assets();
@@ -47,7 +48,6 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public FileHandle effectFile;
     public FileHandle imagesDir;
-    public TextureAtlas ballsAtlas;
     public BitmapFont fontSmall;
     public BitmapFont fontBig;
     public BitmapFont fontMedium;
@@ -86,8 +86,7 @@ public class Assets implements Disposable, AssetErrorListener {
         effectFile = Gdx.files.internal("square5.party");
         imagesDir = Gdx.files.internal("");
 
-        ballsAtlas = new TextureAtlas(Gdx.files.internal("circleeffect.atlas"));
-
+        // setup font
         fontSmall = createFont(SMALL_FONT_SCREEN_WIDTH_FRACTION);
         fontBig = createFont(BIG_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
         fontMedium = createFont(MEDIUM_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
@@ -114,6 +113,7 @@ public class Assets implements Disposable, AssetErrorListener {
         putAtlasRegionToMap(atlas, BACK_ICON);
         putAtlasRegionToMap(atlas, ARROW_ICON);
         putAtlasRegionToMap(atlas, BOX);
+        putAtlasRegionToMap(atlas, VIDEO_REWARDED_ICON);
     }
 
     @Override
@@ -134,7 +134,6 @@ public class Assets implements Disposable, AssetErrorListener {
     private BitmapFont createFont(float fraction) {
         BitmapFont font;
 
-//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSerif-Bold.ttf"));
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("dancing.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 

@@ -39,8 +39,8 @@ public class MyGdxGame extends Game {
 		initScreen();
 //		changeMenuScreen();
 //		changeMainGameScreen();
-        setScreen(gameOverScreen);
-//		setScreen(new StoreScreen());
+//        setScreen(gameOverScreen);
+		setScreen(storeScreen);
 //		setScreen(pausedScreen);
         // catch back key
         Gdx.input.setCatchBackKey(true);
@@ -145,5 +145,6 @@ public class MyGdxGame extends Game {
 	public void rewardUser() {
 		MyPreference.getInstance().setMoney(MyPreference.getInstance().getMoney() + 20);
 		gameOverScreen.setCurrentMoney();
+		storeScreen.setMoneyLabel();
 	}
 }

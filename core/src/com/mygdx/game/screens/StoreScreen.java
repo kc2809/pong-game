@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -24,7 +25,10 @@ import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.core.Assets;
 import com.mygdx.game.object.ItemLight;
 import com.mygdx.game.storage.MyPreference;
+import com.mygdx.game.util.CommonUI;
 import com.mygdx.game.util.Constants;
+
+import static com.mygdx.game.util.Constants.PPM;
 
 
 public class StoreScreen implements Screen, InputProcessor {
@@ -79,6 +83,22 @@ public class StoreScreen implements Screen, InputProcessor {
         }
 
         createBackButton();
+        createAdmobutton();
+    }
+
+    private void createAdmobutton(){
+        Button btnAdmob = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.VIDEO_REWARDED_ICON), null,
+                null, new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        System.out.println("cai lz j vay");
+                        game.callVideoAd();
+                    }
+                });
+        btnAdmob.setSize(btnAdmob.getWidth() * 4.0f / PPM, btnAdmob.getHeight() * 4.0f / PPM);
+        btnAdmob.setPosition(0.0f, camera.viewportHeight *2/8);
+        stage.addActor(btnAdmob);
     }
 
     private void createBackButton() {
@@ -134,7 +154,7 @@ public class StoreScreen implements Screen, InputProcessor {
         setPointLightColor(color);
     }
 
-    private void setMoneyLabel(){
+    public void setMoneyLabel(){
         label.setText(MyPreference.getInstance().getMoney() + "");
     }
 

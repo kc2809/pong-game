@@ -97,7 +97,7 @@ public class GameOverScreen implements Screen {
     }
 
     private void createAdmobBtn() {
-        Button btnAdmob = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.PLAY_ICON), null,
+        Button btnAdmob = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.VIDEO_REWARDED_ICON), null,
                 null, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -106,8 +106,10 @@ public class GameOverScreen implements Screen {
                 game.callVideoAd();
             }
         });
-        btnAdmob.setSize(btnAdmob.getWidth() / PPM, btnAdmob.getHeight() / PPM);
-        btnAdmob.setPosition(0, 4.0f);
+        btnAdmob.setSize(btnAdmob.getWidth() * 3.0f / PPM, btnAdmob.getHeight() * 3.0f / PPM);
+        btnAdmob.setPosition(-3.0f, camera.viewportHeight *2/8);
+        btnAdmob.setTransform(true);
+        btnAdmob.setRotation(40);
         stage.addActor(btnAdmob);
     }
 

@@ -1,86 +1,93 @@
 
-resources819.png
+resources268.png
 size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 ball
   rotate: false
-  xy: 1595, 1604
+  xy: 1018, 46
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
 money_item
   rotate: false
-  xy: 2, 2
-  size: 1000, 1000
-  orig: 1000, 1000
-  offset: 0, 0
-  index: -1
-pause_btn
-  rotate: false
-  xy: 1506, 376
-  size: 500, 500
-  orig: 500, 500
+  xy: 1018, 448
+  size: 960, 960
+  orig: 960, 960
   offset: 0, 0
   index: -1
 play_btn
   rotate: false
-  xy: 1004, 376
+  xy: 516, 14
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 square
   rotate: false
-  xy: 2, 1004
+  xy: 2, 516
   size: 1000, 1000
   orig: 1000, 1000
   offset: 0, 0
   index: -1
-star
-  rotate: false
-  xy: 1518, 890
-  size: 500, 500
-  orig: 500, 500
-  offset: 0, 0
-  index: -1
 store
   rotate: false
-  xy: 1004, 878
+  xy: 2, 2
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
+textbox
+  rotate: false
+  xy: 1420, 284
+  size: 499, 162
+  orig: 499, 162
+  offset: 0, 0
+  index: -1
+videorewarded
+  rotate: false
+  xy: 2, 1518
+  size: 1150, 504
+  orig: 1150, 504
+  offset: 0, 0
+  index: -1
 white_arrow
   rotate: false
-  xy: 1004, 1392
+  xy: 1154, 1410
   size: 589, 612
   orig: 589, 612
   offset: 0, 0
   index: -1
 
-resources8192.png
+resources2682.png
 size: 2048,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 back
   rotate: false
-  xy: 504, 504
+  xy: 1006, 504
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 exit_btn
   rotate: false
-  xy: 1006, 2
+  xy: 1508, 2
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 menu
+  rotate: false
+  xy: 504, 2
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+pause_btn
   rotate: false
   xy: 2, 2
   size: 500, 500
@@ -89,12 +96,19 @@ menu
   index: -1
 sound_active
   rotate: false
-  xy: 1006, 504
+  xy: 1508, 504
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 sound_inactive
+  rotate: false
+  xy: 504, 504
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+star
   rotate: false
   xy: 2, 504
   size: 500, 500
@@ -103,7 +117,7 @@ sound_inactive
   index: -1
 xoay
   rotate: false
-  xy: 504, 2
+  xy: 1006, 2
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
