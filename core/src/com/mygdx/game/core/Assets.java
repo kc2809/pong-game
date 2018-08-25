@@ -53,6 +53,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public BitmapFont fontMedium;
     public BitmapFont titleFont;
     public BitmapFont bigbigFont;
+    public BitmapFont tutorialFont;
     private AssetManager assetManager;
 
     public Map<String, AtlasRegion> resources;
@@ -92,6 +93,8 @@ public class Assets implements Disposable, AssetErrorListener {
         fontMedium = createFont(MEDIUM_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
         titleFont = createFont(TITLE_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
         bigbigFont = createFont(BIG_BIG_FONT);
+        tutorialFont = createFont(MEDIUM_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE);
+        tutorialFont.setColor(Color.LIGHT_GRAY);
     }
 
     //Add resources to map

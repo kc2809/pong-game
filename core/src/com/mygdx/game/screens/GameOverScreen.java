@@ -68,30 +68,52 @@ public class GameOverScreen implements Screen {
         createCurrentMoney(styleBtn);
 
         //Replay button
-        createBox(0, -0.5f, styleBtn, "REPLAY", Color.valueOf("#ed1662"), new ClickListener() {
+        Group replayButton = CommonUI.getInstance().createBox(0, -0.5f, styleBtn, "REPLAY", Constants.customRed,
+                new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 rePlay();
             }
         });
+        stage.addActor(replayButton);
 
         // main menu button
-        createBox(0, -2.3f, styleBtn, "MAIN MENU", Color.valueOf("#01b29a"), new ClickListener() {
+        Group mainMenuButton = CommonUI.getInstance().createBox(0, -2.3f, styleBtn, "MAIN MENU", Constants.customBlue
+                , new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 changeMenuScreen();
             }
         });
+        stage.addActor(mainMenuButton);
+
+        createAdmobBtn();
     }
 
     public void setScore(int score) {
         this.score = score;
     }
 
+    private void createAdmobBtn() {
+        Button btnAdmob = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.PLAY_ICON), null,
+                null, new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                System.out.println("cai lz j vay");
+                game.callVideoAd();
+            }
+        });
+        btnAdmob.setSize(btnAdmob.getWidth() / PPM, btnAdmob.getHeight() / PPM);
+        btnAdmob.setPosition(0, 4.0f);
+        stage.addActor(btnAdmob);
+    }
+
     private void createOneMoreTimeBtn(LabelStyle style) {
-        Button btnReplay = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.REPLAY_ICON), null, null, new ClickListener() {
+        Button btnReplay = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.REPLAY_ICON),
+                null, null, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -123,23 +145,7 @@ public class GameOverScreen implements Screen {
         stage.addActor(labelMoney);
     }
 
-    private void createBox(float x, float y, LabelStyle style, String title, Color color, ClickListener listener) {
-        ImageButton box = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(Assets.BOX), null, null, null);
-        box.setSize(box.getWidth() * 10 / PPM, box.getHeight() * 10 / PPM);
-        box.setPosition(x - box.getWidth() / 2, y);
-        box.getImage().setColor(color);
-
-        Label label = new Label(title, style);
-        label.setPosition(-label.getWidth() / 2, y);
-
-        Group group = new Group();
-        group.addActor(box);
-        group.addActor(label);
-        group.addListener(listener);
-        stage.addActor(group);
-    }
-
-    private void setCurrentMoney() {
+    public void setCurrentMoney() {
         labelMoney.setText(MyPreference.getInstance().getMoney() + "");
     }
 
@@ -154,7 +160,8 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
 //        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClearColor(Constants.backgroundColor.r,  Constants.backgroundColor.g, Constants.backgroundColor.b, Constants.backgroundColor.a);
+        Gdx.gl.glClearColor(Constants.backgroundColor.r, Constants.backgroundColor.g, Constants.backgroundColor.b,
+                Constants.backgroundColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }
@@ -191,22 +198,22 @@ public class GameOverScreen implements Screen {
         labelScore.setX(-labelScore.getWidth() / 2);
     }
 
-    private void rePlay(){
-            game.changeMainGameScreen();
+    private void rePlay() {
+        game.changeMainGameScreen();
     }
 
     private boolean validOneMoreTime() {
         return MyPreference.getInstance().getMoney() >= Constants.MONEY_FOR_REPLAY;
     }
 
-    private void changeMenuScreen(){
+    private void changeMenuScreen() {
         game.changeMenuScreen();
     }
 
     private void oneMoreTime() {
-        if (validOneMoreTime()){
+        if (validOneMoreTime()) {
             // minus values to play once more time
-            MyPreference pre =  MyPreference.getInstance();
+            MyPreference pre = MyPreference.getInstance();
             pre.setMoney(pre.getMoney() - Constants.MONEY_FOR_REPLAY);
             game.oneMoreTime();
         }

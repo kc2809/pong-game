@@ -132,7 +132,18 @@ public class MyGdxGame extends Game {
 		if (callback != null) callback.callAdmobBanner();
 	}
 
+	public void callVideoAd() {
+		if (callback != null) callback.callVideo();
+	}
+
 	public interface AdmodCallBack {
 		void callAdmobBanner();
+
+		void callVideo();
+	}
+
+	public void rewardUser() {
+		MyPreference.getInstance().setMoney(MyPreference.getInstance().getMoney() + 20);
+		gameOverScreen.setCurrentMoney();
 	}
 }

@@ -74,6 +74,10 @@ public class UIObjects extends Actor {
         setScoreText(++screen.score);
     }
 
+    public void updateCurrentMoney(){
+        setMoneyText(screen.money);
+    }
+
     public void setMoneyText(int money) {
         moneyText.setText(money);
         layout.setText(fontBig, moneyText.getText());

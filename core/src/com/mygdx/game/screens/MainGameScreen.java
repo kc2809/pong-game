@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.box2d.Box2dManager;
@@ -23,6 +24,7 @@ import com.mygdx.game.object.Ball;
 import com.mygdx.game.object.Level;
 import com.mygdx.game.object.Player;
 import com.mygdx.game.object.PlayerCount;
+import com.mygdx.game.object.PointingHandTutorial;
 import com.mygdx.game.object.Trajectory;
 import com.mygdx.game.object.Walls;
 import com.mygdx.game.sound.SoundManager;
@@ -54,6 +56,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     private EffectManager effectManager;
     int fireFlag;
     PlayerCount playerCount;
+    PointingHandTutorial pointingHand;
 
     //UIObject
     public int score;
@@ -73,7 +76,6 @@ public class MainGameScreen implements Screen, InputProcessor {
     Color backgroundColor;
 
     public MainGameScreen(MyGdxGame game, OrthographicCamera camera, Viewport viewport) {
-        initGameState();
 //        debugRenderer = new Box2DDebugRenderer();
         this.game = game;
         this.camera = camera;
@@ -90,6 +92,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
 //        backgroundColor = Color.valueOf("#202020");
         backgroundColor = Constants.backgroundColor;
+        initGameState();
     }
 
     private void initGameState() {
@@ -102,6 +105,13 @@ public class MainGameScreen implements Screen, InputProcessor {
         money = MyPreference.getInstance().getMoney();
         isSoundOn = MyPreference.getInstance().isSoundOn();
         power = 1;
+
+        createPointHandAtFirstTime();
+    }
+
+    private void createPointHandAtFirstTime() {
+        level.addActor(pointingHand);
+        pointingHand.addSlideAction();
     }
 
     public void onceMoreTime() {
@@ -154,6 +164,8 @@ public class MainGameScreen implements Screen, InputProcessor {
         playerCount = new PlayerCount(this);
         level.addActor(playerCount);
 //        level.addActor(arrow);
+
+        pointingHand = new PointingHandTutorial();
     }
 
     public void setEffectAtPosition(Vector2 position, Color color) {
@@ -176,7 +188,8 @@ public class MainGameScreen implements Screen, InputProcessor {
         ballBeAddedNextRow = 0;
 
         //show trajectory again
-        trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH/2, Constants.BALL_HEIGHT/2)), VectorUtil.VECTOR2_ZERO);
+        trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH / 2,
+                Constants.BALL_HEIGHT / 2)), VectorUtil.VECTOR2_ZERO);
         trajectory.setVisible(true);
         System.out.println(" after NEXT ROWWWWW: " + player.getActors().size);
 
@@ -197,7 +210,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         world.step(1f / 60f, 6, 2);
         camera.update();
 //        Gdx.gl.glClearColor( Color.DARK_GRAY.r,  Color.DARK_GRAY.g, Color.DARK_GRAY.b, Color.DARK_GRAY.a);
-        Gdx.gl.glClearColor( backgroundColor.r,  backgroundColor.g, backgroundColor.b, backgroundColor.a);
+        Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //        debugRenderer.render(world, camera.combined);
 
@@ -288,7 +301,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         }
         if (keycode == Keys.B) {
 //            player.addActor(new Ball(world));
-
         }
 
         if (keycode == Keys.C) {
@@ -323,6 +335,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (fireFlag != 0) return false;
         System.out.println("firee");
+        removePointHandAfterFireFirstTime();
         Vector3 worldCoordinate = camera.unproject(new Vector3(screenX, screenY, 0));
         Vector2 touchUp = new Vector2(worldCoordinate.x, worldCoordinate.y);
         //if ball is process or touch up point >= touch down point then do nothing
@@ -357,11 +370,16 @@ public class MainGameScreen implements Screen, InputProcessor {
         return false;
     }
 
+    private void removePointHandAfterFireFirstTime() {
+        if (score != 0) return;
+        pointingHand.addAction(Actions.removeActor());
+    }
+
     public Player getPlayer() {
         return player;
     }
 
-    public void increaseMoeny(){
+    public void increaseMoeny() {
         level.increaseMoney();
     }
 
@@ -394,11 +412,12 @@ public class MainGameScreen implements Screen, InputProcessor {
         game.changeGameOverScreen();
     }
 
-    public void reset(){
+    public void reset() {
         walls.setWallPositionByCamera(camera);
         // set init position again.
 //        player.setInitPositon();
-        trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH / 2, Constants.BALL_HEIGHT / 2)), VectorUtil.VECTOR2_ZERO);
+        trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH / 2,
+                Constants.BALL_HEIGHT / 2)), VectorUtil.VECTOR2_ZERO);
         level.reset();
         player.reset();
         playerCount.setPositionToDraw();

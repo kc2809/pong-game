@@ -56,6 +56,8 @@ public interface Constants {
             , Color.PINK};
 
     Color defaultColor = Color.BLUE;
+    Color customRed= Color.valueOf("ed1662");
+    Color customBlue = Color.valueOf("01b29a");
 
     Color backgroundColor = Color.valueOf("#202020");
 }

@@ -76,6 +76,7 @@ public class Level extends Stage {
         }
         uiObjects.setScoreText(0);
         limitY = getCamera().viewportHeight;
+        uiObjects.updateCurrentMoney();
     }
 
 

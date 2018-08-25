@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.ads.AdListener;
@@ -14,13 +15,19 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.mygdx.game.MyGdxGame.AdmodCallBack;
 
-public class AndroidLauncher extends AndroidApplication implements AdmodCallBack {
+public class AndroidLauncher extends AndroidApplication implements AdmodCallBack, RewardedVideoAdListener {
 
 	protected AdView adView;
 	protected InterstitialAd interstitialAd;
 
+	protected RewardedVideoAd rewardedVideoAd;
+	protected MyGdxGame game;
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,16 +55,26 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 		adParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 
 		RelativeLayout layout = new RelativeLayout(this);
-		MyGdxGame game = new MyGdxGame();
+		game = new MyGdxGame();
 		game.setAdmobCallBack(this);
 		View gameView = initializeForView(game, config);
 
 		layout.addView(gameView);
 		layout.addView(adView, adParams);
 
+		//setup video admob
+		rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+		rewardedVideoAd.setRewardedVideoAdListener(this);
+
+		loadVideoAdmob();
 
 		//hook it all up
 		setContentView(layout);
+	}
+
+	private void loadVideoAdmob(){
+		rewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
+				new AdRequest.Builder().build());
 	}
 
 	@Override
@@ -67,6 +84,18 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 			public void run() {
 				if (interstitialAd.isLoaded()) {
 					interstitialAd.show();
+				}
+			}
+		});
+	}
+
+	@Override
+	public void callVideo() {
+		this.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (rewardedVideoAd.isLoaded()) {
+					rewardedVideoAd.show();
 				}
 			}
 		});
@@ -101,5 +130,52 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 				.addTestDevice("99001229731084")
 				.build();
 		adView.loadAd(adRequest);
+	}
+
+	@Override
+	public void onRewardedVideoAdLoaded() {
+		Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
+
+	}
+
+	@Override
+	public void onRewardedVideoAdOpened() {
+		Toast.makeText(this, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onRewardedVideoStarted() {
+		Toast.makeText(this, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onRewardedVideoAdClosed() {
+		Toast.makeText(this, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
+		loadVideoAdmob();
+	}
+
+	@Override
+	public void onRewarded(RewardItem rewardItem) {
+		Toast.makeText(this, "onRewarded! currency: " , Toast.LENGTH_LONG).show();
+		System.out.println("THUONG TIEN NE MAY");
+		game.rewardUser();
+		// Reward the user.
+	}
+
+	@Override
+	public void onRewardedVideoAdLeftApplication() {
+		Toast.makeText(this, "onRewardedVideoAdLeftApplication",
+				Toast.LENGTH_SHORT).show();
+		System.out.println("LEFT");
+	}
+
+	@Override
+	public void onRewardedVideoAdFailedToLoad(int i) {
+		Toast.makeText(this, "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onRewardedVideoCompleted() {
+		Toast.makeText(this, "onRewardedVideoCompleted", Toast.LENGTH_SHORT).show();
 	}
 }
