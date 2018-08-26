@@ -16,98 +16,101 @@ import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.Constants;
 
 public class MyGdxGame extends Game {
-	Viewport viewport;
-	OrthographicCamera camera;
+    Viewport viewport;
+    OrthographicCamera camera;
 
-	GameOverScreen gameOverScreen;
-	MenuScreen menuScreen;
-	MainGameScreen mainGameScreen;
+    GameOverScreen gameOverScreen;
+    MenuScreen menuScreen;
+    MainGameScreen mainGameScreen;
     StoreScreen storeScreen;
     PausedScreen pausedScreen;
 
-	AdmodCallBack callback;
+    AdmodCallBack callback;
 
-	public void setAdmobCallBack(AdmodCallBack callback) {
-		this.callback = callback;
-	}
+    int numberToCallAdmobbanner = 0;
 
-	@Override
-	public void create () {
-		init();
-		Assets.instance.init(new AssetManager());
-		MyPreference.getInstance();
-		initScreen();
-//		changeMenuScreen();
+    public void setAdmobCallBack(AdmodCallBack callback) {
+        this.callback = callback;
+    }
+
+    @Override
+    public void create() {
+        init();
+        Assets.instance.init(new AssetManager());
+        MyPreference.getInstance();
+        initScreen();
+        changeMenuScreen();
 //		changeMainGameScreen();
 //        setScreen(gameOverScreen);
-		setScreen(storeScreen);
+//		setScreen(storeScreen);
 //		setScreen(pausedScreen);
         // catch back key
         Gdx.input.setCatchBackKey(true);
     }
 
-	private void initScreen() {
-		gameOverScreen = new GameOverScreen(this, camera, viewport);
-		menuScreen = new MenuScreen(this, camera, viewport);
-		mainGameScreen = new MainGameScreen(this, camera, viewport);
-		storeScreen = new StoreScreen(this);
-		pausedScreen = new PausedScreen(this, camera, viewport);
-	}
+    private void initScreen() {
+        gameOverScreen = new GameOverScreen(this, camera, viewport);
+        menuScreen = new MenuScreen(this, camera, viewport);
+        mainGameScreen = new MainGameScreen(this, camera, viewport);
+        storeScreen = new StoreScreen(this);
+        pausedScreen = new PausedScreen(this, camera, viewport);
+    }
 
-	private void init() {
-		camera = new OrthographicCamera();
-		viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH, 50, camera);
-	}
+    private void init() {
+        camera = new OrthographicCamera();
+        viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Constants.VIEWPORT_WIDTH,
+				50, camera);
+    }
 
-	@Override
-	public void render () {
-		super.render();
-	}
+    @Override
+    public void render() {
+        super.render();
+    }
 
-	@Override
-	public void resize(int width, int height) {
-		super.resize(width, height);
-		viewport.update(width, height);
-		camera.position.set(0, 0, 0);
-	}
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        viewport.update(width, height);
+        camera.position.set(0, 0, 0);
+    }
 
-	@Override
-	public void pause() {
-		super.pause();
-	}
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
-	@Override
-	public void resume() {
-		super.resume();
-	}
+    @Override
+    public void resume() {
+        super.resume();
+    }
 
-	@Override
-	public void dispose () {
-		super.dispose();
+    @Override
+    public void dispose() {
+        super.dispose();
         System.out.println("GAME DISPOSE");
-		Assets.instance.dispose();
-		System.exit(0);
-	}
+        Assets.instance.dispose();
+        System.exit(0);
+    }
 
-	public void changeMainGameScreen() {
+    public void changeMainGameScreen() {
 //		MainGameScreen mainGameScreen = new MainGameScreen(this);
-		mainGameScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		mainGameScreen.reset();
-		setScreen(mainGameScreen);
-	}
+        mainGameScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        mainGameScreen.reset();
+        setScreen(mainGameScreen);
+    }
 
     public void resumeMainGameScreen() {
         mainGameScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         setScreen(mainGameScreen);
     }
 
-	public void changeMenuScreen() {
-		setScreen(menuScreen);
-	}
+    public void changeMenuScreen() {
+        setScreen(menuScreen);
+    }
 
-	public void changeGameOverScreen() {
-		setScreen(gameOverScreen);
-	}
+    public void changeGameOverScreen() {
+        setScreen(gameOverScreen);
+    }
 
     public void changeStoreScreen() {
         storeScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -124,27 +127,31 @@ public class MyGdxGame extends Game {
         setScreen(mainGameScreen);
     }
 
-    public void setScore(int score){
-		gameOverScreen.setScore(score);
-	}
+    public void setScore(int score) {
+        gameOverScreen.setScore(score);
+    }
 
-	public void callAdmod() {
-		if (callback != null) callback.callAdmobBanner();
-	}
+    public void callAdmod() {
+        if (callback != null) {
+            if (++numberToCallAdmobbanner % 3 == 0)
+                callback.callAdmobBanner();
+        }
+    }
 
-	public void callVideoAd() {
-		if (callback != null) callback.callVideo();
-	}
+    public void callVideoAd() {
+        if (callback != null) callback.callVideo();
+    }
 
-	public interface AdmodCallBack {
-		void callAdmobBanner();
+    public void rewardUser() {
+        MyPreference.getInstance().setMoney(MyPreference.getInstance().getMoney() + 20);
+        gameOverScreen.setCurrentMoney();
+        storeScreen.setMoneyLabel();
+    }
 
-		void callVideo();
-	}
+    public interface AdmodCallBack {
+        void callAdmobBanner();
 
-	public void rewardUser() {
-		MyPreference.getInstance().setMoney(MyPreference.getInstance().getMoney() + 20);
-		gameOverScreen.setCurrentMoney();
-		storeScreen.setMoneyLabel();
-	}
+        void callVideo();
+    }
+
 }

@@ -135,47 +135,39 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 	@Override
 	public void onRewardedVideoAdLoaded() {
 		Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
-
 	}
 
 	@Override
 	public void onRewardedVideoAdOpened() {
-		Toast.makeText(this, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onRewardedVideoStarted() {
-		Toast.makeText(this, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onRewardedVideoAdClosed() {
-		Toast.makeText(this, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
 		loadVideoAdmob();
 	}
 
 	@Override
 	public void onRewarded(RewardItem rewardItem) {
-		Toast.makeText(this, "onRewarded! currency: " , Toast.LENGTH_LONG).show();
-		System.out.println("THUONG TIEN NE MAY");
+//		Toast.makeText(this, "onRewarded! currency: " , Toast.LENGTH_LONG).show();
+//		System.out.println("THUONG TIEN NE MAY");
 		game.rewardUser();
 		// Reward the user.
 	}
 
 	@Override
 	public void onRewardedVideoAdLeftApplication() {
-		Toast.makeText(this, "onRewardedVideoAdLeftApplication",
-				Toast.LENGTH_SHORT).show();
-		System.out.println("LEFT");
 	}
 
 	@Override
 	public void onRewardedVideoAdFailedToLoad(int i) {
-		Toast.makeText(this, "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
+		loadVideoAdmob();
 	}
 
 	@Override
 	public void onRewardedVideoCompleted() {
-		Toast.makeText(this, "onRewardedVideoCompleted", Toast.LENGTH_SHORT).show();
 	}
 }
