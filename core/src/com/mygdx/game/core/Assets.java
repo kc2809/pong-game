@@ -37,6 +37,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public static String ARROW_ICON = "white_arrow";
     public static String BOX = "textbox";
     public static String VIDEO_REWARDED_ICON = "videorewarded";
+    public static String HAND_ICON = "pointinghand2";
 
     public static final String TAG = Assets.class.getName();
     public static final Assets instance = new Assets();
@@ -114,6 +115,7 @@ public class Assets implements Disposable, AssetErrorListener {
         putAtlasRegionToMap(atlas, ARROW_ICON);
         putAtlasRegionToMap(atlas, BOX);
         putAtlasRegionToMap(atlas, VIDEO_REWARDED_ICON);
+        putAtlasRegionToMap(atlas, HAND_ICON);
     }
 
     @Override

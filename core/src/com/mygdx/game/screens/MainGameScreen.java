@@ -90,7 +90,6 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         ballBeAddedNextRow = 0;
 
-//        backgroundColor = Color.valueOf("#202020");
         backgroundColor = Constants.backgroundColor;
         initGameState();
     }
@@ -101,7 +100,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         count = 0;
         currentLevel = 1;
         score = 0;
-//        money = 0;
         money = MyPreference.getInstance().getMoney();
         isSoundOn = MyPreference.getInstance().isSoundOn();
         power = 1;
@@ -110,7 +108,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     }
 
     private void createPointHandAtFirstTime() {
-        level.addActor(pointingHand);
+        pointingHand.reset();
         pointingHand.addSlideAction();
     }
 
@@ -166,6 +164,8 @@ public class MainGameScreen implements Screen, InputProcessor {
 //        level.addActor(arrow);
 
         pointingHand = new PointingHandTutorial();
+        level.addActor(pointingHand);
+
     }
 
     public void setEffectAtPosition(Vector2 position, Color color) {
@@ -209,7 +209,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         if (paused) return;
         world.step(1f / 60f, 6, 2);
         camera.update();
-//        Gdx.gl.glClearColor( Color.DARK_GRAY.r,  Color.DARK_GRAY.g, Color.DARK_GRAY.b, Color.DARK_GRAY.a);
         Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //        debugRenderer.render(world, camera.combined);
@@ -372,7 +371,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     private void removePointHandAfterFireFirstTime() {
         if (score != 0) return;
-        pointingHand.addAction(Actions.removeActor());
+        pointingHand.reset();
     }
 
     public Player getPlayer() {

@@ -17,8 +17,8 @@ public class PointingHandTutorial extends Actor {
     private BitmapFont font;
 
     public PointingHandTutorial() {
-        hand = new Sprite(Assets.instance.getAsset(Assets.BALL));
-        hand.setSize(hand.getWidth() / PPM, hand.getHeight() / PPM);
+        hand = new Sprite(Assets.instance.getAsset(Assets.HAND_ICON));
+        hand.setSize(hand.getWidth() * 2 / PPM, hand.getHeight() * 2 / PPM);
 
         font = Assets.instance.tutorialFont;
         this.setPosition(hand.getWidth() / 2, 0);
@@ -38,8 +38,9 @@ public class PointingHandTutorial extends Actor {
     }
 
     public void addSlideAction() {
-        Action slideDown = Actions.moveTo(0, -2.0f, 1.0f);
-        Action slideUp = Actions.moveTo(0, 0, 0.2f);
+        this.setVisible(true);
+        Action slideDown = Actions.moveTo(-hand.getWidth() / 2, -2.0f, 1.0f);
+        Action slideUp = Actions.moveTo(-hand.getWidth() / 2, 0, 0.2f);
         Action standBy = Actions.moveBy(0, 0, 0.4f);
         RepeatAction action = new RepeatAction();
         action.setAction( Actions.sequence(slideDown, slideUp, standBy));
@@ -47,9 +48,9 @@ public class PointingHandTutorial extends Actor {
         this.addAction(action);
     }
 
-    @Override
-    public boolean remove() {
+    public void reset(){
+        this.setVisible(false);
         this.clearActions();
-        return super.remove();
+        this.setPosition(-hand.getWidth() / 2, 0);
     }
 }

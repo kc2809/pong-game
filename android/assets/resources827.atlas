@@ -1,5 +1,5 @@
 
-resources268.png
+resources827.png
 size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
@@ -18,7 +18,7 @@ money_item
   orig: 960, 960
   offset: 0, 0
   index: -1
-play_btn
+pointinghand2
   rotate: false
   xy: 516, 14
   size: 500, 500
@@ -61,63 +61,70 @@ white_arrow
   offset: 0, 0
   index: -1
 
-resources2682.png
-size: 2048,1024
+resources8272.png
+size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 back
   rotate: false
-  xy: 1006, 504
+  xy: 1006, 1508
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 exit_btn
   rotate: false
-  xy: 1508, 2
+  xy: 1006, 1006
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 menu
   rotate: false
-  xy: 504, 2
+  xy: 504, 1006
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 pause_btn
   rotate: false
-  xy: 2, 2
+  xy: 504, 1508
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+play_btn
+  rotate: false
+  xy: 2, 1508
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 sound_active
   rotate: false
-  xy: 1508, 504
+  xy: 504, 504
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 sound_inactive
   rotate: false
-  xy: 504, 504
+  xy: 2, 504
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 star
   rotate: false
-  xy: 2, 504
+  xy: 2, 1006
   size: 500, 500
   orig: 500, 500
   offset: 0, 0
   index: -1
 xoay
   rotate: false
-  xy: 1006, 2
+  xy: 2, 2
   size: 500, 500
   orig: 500, 500
   offset: 0, 0

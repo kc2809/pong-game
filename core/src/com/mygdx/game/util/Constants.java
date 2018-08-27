@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 public interface Constants {
     float VIEWPORT_WIDTH = 7.8f;
     float VIEWPORT_HEIGHT = 10.0f;
-    String TEXTURE_ATLAS_OBJECT = "resources268.atlas";
+    String TEXTURE_ATLAS_OBJECT = "resources827.atlas";
 
     String HIT_SOUND_PATH = "music/glass1.wav";
     String LEVEL_SOUND_PATH = "music/levelup.wav";
@@ -33,7 +33,7 @@ public interface Constants {
     int RATIO_TO_DUPLICATE_VALUE = 50;
 
     // speed of player
-    float SPEED = 17.0f;
+    float SPEED = 15.0f;
 //    float SPEED = 200.0f;
 
     // value of degree will be decrease if refection vector is PERPENDICULAR or between (LOWER_LIMIT, UPPER_LIMIT)
