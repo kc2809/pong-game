@@ -38,9 +38,9 @@ public interface Constants {
 
     // value of degree will be decrease if refection vector is PERPENDICULAR or between (LOWER_LIMIT, UPPER_LIMIT)
     // with RIGHT WALL.
-    float DEGREE_DECREASE = 5;
+    float DEGREE_DECREASE = 3;
     float LOWER_LIMIT = 178;
-    float UPPER_LIMIT = 190;
+    float UPPER_LIMIT = 184;
 
     // money to replay
     int MONEY_FOR_REPLAY = 20;

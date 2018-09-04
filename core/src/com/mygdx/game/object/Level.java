@@ -31,21 +31,15 @@ import static com.mygdx.game.util.Constants.VIEWPORT_WIDTH;
 
 public class Level extends Stage {
     private static final int MAX_SQUARE_PER_ROW = 7;
+    private static int RATIO_GENERATE_ITEM1 = 30;
+    private static int RATIO_GENERATE_MONEY_ITEM = 20;
     World world;
-
     MainGameScreen screen;
-
     Random random = new Random();
-
     UIObjects uiObjects;
     Button pauseBtn;
-
     int materialType = 0;
     int numberType = 0;
-
-    private static int RATIO_GENERATE_ITEM1 = 50;
-    private static int RATIO_GENERATE_MONEY_ITEM = 20;
-
     SquarePool squarePool;
     MoneyItemPool moneyItemPool;
     Item1Pool item1Pool;
@@ -122,7 +116,7 @@ public class Level extends Stage {
             generateNextStep();
         }
         limitY = getYLastSquare() - 1.1f;
-        if(checkGameOver()) {
+        if (checkGameOver()) {
             screen.gameOver();
             return;
         }
@@ -165,14 +159,14 @@ public class Level extends Stage {
 
     /**
      * limit value to gameover
+     *
      * @return
      */
     private float limitYToGameOver() {
-        return -getCamera().viewportHeight * BOTTOM_WALLS_POSITION + 0.8f;
+        return -getCamera().viewportHeight * BOTTOM_WALLS_POSITION + 0.4f;
     }
 
     public void generateNextStep() {
-        boolean item1Exits = false;
         int value = random.nextInt(64);
         //one value means one row
         // value from [0, 512]
@@ -181,19 +175,18 @@ public class Level extends Stage {
         float y = getPositionForGenerate();
 //        Color color = MaterialColor.getMaterialColors(random.nextInt(5));
         Color color = MaterialColor.getMaterialColors(materialType);
-        int squareValue = MathUtils.instance.ratio(RATIO_TO_DUPLICATE_VALUE) ? screen.currentLevel * 2 : screen.currentLevel;
+        int squareValue = MathUtils.instance.ratio(RATIO_TO_DUPLICATE_VALUE) ? screen.currentLevel * 2 :
+                screen.currentLevel;
         for (int i = 0; i < MAX_SQUARE_PER_ROW; ++i) {
             float x = -VIEWPORT_WIDTH / 2 + SPACE_BETWEEN_SQUARE + SQUARE_WIDTH * i + SPACE_BETWEEN_SQUARE * i;
             if ((value & mask) != 0)
-                // add square if it is 1
+                // add square if it is bit 1
                 this.addActor(createNewSquare(x, y, squareValue, color));
             else
-                // 5% generate Item1
-                if (MathUtils.instance.ratio(RATIO_GENERATE_ITEM1)) {
-                    if (!item1Exits) {
-                        this.addActor(createNewItem1(x, y));
-                        item1Exits = true;
-                    }
+                // generate Item1 or money by bit 0 and ratio
+                // 30% generate Item1
+                if (MathUtils.instance.ratio(RATIO_GENERATE_ITEM1) && screen.isValidGenerateBall()) {
+                    this.addActor(createNewItem1(x, y));
                 } else if (MathUtils.instance.ratio(RATIO_GENERATE_MONEY_ITEM))
                     this.addActor(createNewMoneyItem(x, y));
             value = value >> 1;
@@ -223,21 +216,23 @@ public class Level extends Stage {
     }
 
     private void createPauseButton() {
-        pauseBtn = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(PAUSE_ICON), null, null, new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
+        pauseBtn = CommonUI.getInstance().createImageButton(Assets.instance.getAsset(PAUSE_ICON), null, null,
+                new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
 //                System.out.println("wtffffffff");
 //                screen.paused = !screen.paused;
-                screen.pauseScreen();
-            }
-        });
-        pauseBtn.setSize(1,1);
-        pauseBtn.setPosition(-VIEWPORT_WIDTH/2 + 0.1f,getCamera().viewportHeight/2 - pauseBtn.getHeight());
+                        screen.pauseScreen();
+                    }
+                });
+        pauseBtn.setSize(1, 1);
+        pauseBtn.setPosition(-VIEWPORT_WIDTH / 2 + 0.1f, getCamera().viewportHeight / 2 - pauseBtn.getHeight());
         addActor(pauseBtn);
     }
+
     private float getPositionForGenerate() {
-        return getCamera().viewportHeight * 5 / 12 - 1.5f;
+        return getCamera().viewportHeight * 5 / 12 - 2.0f;
     }
 
     public void increaseMoney() {

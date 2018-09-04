@@ -40,8 +40,8 @@ public class PointingHandTutorial extends Actor {
     public void addSlideAction() {
         this.setVisible(true);
         Action slideDown = Actions.moveTo(-hand.getWidth() / 2, -2.0f, 1.0f);
-        Action slideUp = Actions.moveTo(-hand.getWidth() / 2, 0, 0.2f);
-        Action standBy = Actions.moveBy(0, 0, 0.4f);
+        Action slideUp = Actions.moveTo(-hand.getWidth() / 2, 0, 0.1f);
+        Action standBy = Actions.moveBy(0, 0, 0.8f);
         RepeatAction action = new RepeatAction();
         action.setAction( Actions.sequence(slideDown, slideUp, standBy));
         action.setCount(RepeatAction.FOREVER);

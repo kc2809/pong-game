@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.box2d.Box2dManager;
@@ -37,43 +36,39 @@ import static com.mygdx.game.util.Constants.SPEED;
 
 
 public class MainGameScreen implements Screen, InputProcessor {
-    MyGdxGame game;
     public int ballBeAddedNextRow;
-    World world;
     public int currentLevel;
-    OrthographicCamera camera;
-    Walls walls;
     public Level level;
-    Player player;
     public int power;
     public boolean paused;
-    long timeAtFire;
-
-    //Trajectory
-    Trajectory trajectory;
-    //
-    private WorldContactListener contactListener;
-    private EffectManager effectManager;
-    int fireFlag;
-    PlayerCount playerCount;
-    PointingHandTutorial pointingHand;
-
     //UIObject
     public int score;
     public int money;
+    public boolean isSoundOn;
+    MyGdxGame game;
+    World world;
+    OrthographicCamera camera;
+    Walls walls;
+    Player player;
+    long timeAtFire;
+    //Trajectory
+    Trajectory trajectory;
+    int fireFlag;
+    PlayerCount playerCount;
+    PointingHandTutorial pointingHand;
     int count;
     //light effect
     RayHandler handler;
     FrameRate frameRate;
-    private int powerTimes;
-
-    public boolean isSoundOn;
-
-    private Vector2 touchDown;
     //    Box2DDebugRenderer debugRenderer;
     Viewport viewport;
     InputMultiplexer multiplexer;
     Color backgroundColor;
+    //
+    private WorldContactListener contactListener;
+    private EffectManager effectManager;
+    private int powerTimes;
+    private Vector2 touchDown;
 
     public MainGameScreen(MyGdxGame game, OrthographicCamera camera, Viewport viewport) {
 //        debugRenderer = new Box2DDebugRenderer();
@@ -249,6 +244,11 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         frameRate.update();
 
+    }
+
+    // It use to generate ball if currentBall < currentValue * 2
+    public boolean isValidGenerateBall() {
+        return player.getActors().size <= currentLevel * 2;
     }
 
     public int getRemainBall() {

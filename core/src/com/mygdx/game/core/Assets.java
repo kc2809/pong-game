@@ -45,7 +45,7 @@ public class Assets implements Disposable, AssetErrorListener {
     private static final float BIG_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 10.0f;
     private static final float MEDIUM_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 15.0f;
     private static final float TITLE_FONT_SCREEN_WIDTH_FRACTION_FOR_SCORE = 1.0f / 8.0f;
-    private static final float BIG_BIG_FONT = 1.0f / 4.0f;
+    private static final float BIG_BIG_FONT = 1.0f / 5.0f;
 
     public FileHandle effectFile;
     public FileHandle imagesDir;
