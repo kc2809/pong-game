@@ -66,7 +66,6 @@ public class Player extends Stage {
 
     //Actor is ball
     public boolean eventBallTouchGround(Ball actor) {
-        System.out.println("EVENT HAPPEND IT'S COUNT");
         if (!isFirstBallTouchGround()) {
             //           actor.addAction(Actions.moveTo(positionToFire.x, positionToFire.y, 0.2f));
             Action moveToAction = Actions.moveTo(positionToFire.x, positionToFire.y, 0.3f);

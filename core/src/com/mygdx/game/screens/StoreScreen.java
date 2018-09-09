@@ -92,7 +92,6 @@ public class StoreScreen implements Screen, InputProcessor {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        System.out.println("cai lz j vay");
                         game.callVideoAd();
                     }
                 });
@@ -190,7 +189,6 @@ public class StoreScreen implements Screen, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Keys.BACK) {
-            System.out.println("back happened");
             return true;
         }
         return false;

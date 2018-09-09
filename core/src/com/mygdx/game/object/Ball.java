@@ -96,7 +96,6 @@ public class Ball extends ObjectBox2d  implements Poolable{
         super.act(delta);
         if (body != null && !world.isLocked())
             if (body.getLinearVelocity().len() > 0 && body.getLinearVelocity().len() < 5) {
-                System.out.println("BOM SPEED VOOOOOOOOO");
                 body.setLinearVelocity(body.getLinearVelocity().nor().add(new Vector2(0.1f, 0.1f)).scl(SPEED * 2.0f));
             }
 

@@ -169,7 +169,6 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     public void nextStep() {
         currentLevel++;
-        System.out.println("NEXT ROWWWWW: " + player.getActors().size);
         setPowerPlayer();
         level.moveOneRow();
     }
@@ -186,7 +185,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         trajectory.projected(player.positionToFire.cpy().add(new Vector2(Constants.BALL_WIDTH / 2,
                 Constants.BALL_HEIGHT / 2)), VectorUtil.VECTOR2_ZERO);
         trajectory.setVisible(true);
-        System.out.println(" after NEXT ROWWWWW: " + player.getActors().size);
 
         //enable fire flag
         fireFlag = 0;
@@ -295,7 +293,6 @@ public class MainGameScreen implements Screen, InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         if (keycode == Keys.A) {
-            System.out.println("cac");
             player.getActors().get(0).remove();
         }
         if (keycode == Keys.B) {
@@ -325,7 +322,6 @@ public class MainGameScreen implements Screen, InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 worldCoordinate = camera.unproject(new Vector3(screenX, screenY, 0));
         Vector2 clickPint = new Vector2(worldCoordinate.x, worldCoordinate.y);
-        System.out.println("down: " + clickPint);
         touchDown = clickPint;
         return false;
     }
@@ -333,7 +329,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (fireFlag != 0) return false;
-        System.out.println("firee");
+//        System.out.println("firee");
         removePointHandAfterFireFirstTime();
         Vector3 worldCoordinate = camera.unproject(new Vector3(screenX, screenY, 0));
         Vector2 touchUp = new Vector2(worldCoordinate.x, worldCoordinate.y);

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.util.Constants;
 
 public class Trajectory {
     final float DENTAT = 0.1f;
@@ -58,14 +59,21 @@ public class Trajectory {
     }
 
     public void draw() {
-        if (!isVisible) return;
         renderer.setProjectionMatrix(viewport.getCamera().combined);
         renderer.setColor(Color.WHITE);
         renderer.begin(ShapeType.Line);
-
-        for (int i = 0; i < vertices.length; i += 4) {
-            renderer.line(vertices[i], vertices[i + 1], vertices[i + 2], vertices[i + 3]);
+        if (isVisible) {
+            for (int i = 0; i < vertices.length; i += 4) {
+                renderer.line(vertices[i], vertices[i + 1], vertices[i + 2], vertices[i + 3]);
+            }
         }
+        //draw two line at top and bottom
+        renderer.setColor(Color.ORANGE);
+        renderer.line(-viewport.getCamera().viewportWidth / 2, viewport.getCamera().viewportHeight * 5.0f / 12,
+                viewport.getCamera().viewportWidth / 2, viewport.getCamera().viewportHeight * 5.0f / 12);
+
+        renderer.line(-viewport.getCamera().viewportWidth / 2, -viewport.getCamera().viewportHeight * Constants.BOTTOM_WALLS_POSITION,
+                viewport.getCamera().viewportWidth / 2, -viewport.getCamera().viewportHeight * Constants.BOTTOM_WALLS_POSITION);
 
         renderer.end();
     }

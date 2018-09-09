@@ -102,7 +102,6 @@ public class GameOverScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("cai lz j vay");
                 game.callVideoAd();
             }
         });

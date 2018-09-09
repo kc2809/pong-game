@@ -71,7 +71,7 @@ public class WorldContactListener implements ContactListener {
         if (checkIsIntanceOfString(fixA, fixB, "rightWall")) {
             float angle = r.angle();
             if (angle > LOWER_LIMIT && angle < UPPER_LIMIT) {
-                System.out.println("Decrease " + DEGREE_DECREASE + " degrees");
+//                System.out.println("Decrease " + DEGREE_DECREASE + " degrees");
                 float newAngle = angle + DEGREE_DECREASE;
                 r = new Vector2(r.x, (float) (r.len() * Math.sin(Math.toRadians(newAngle))));
             }

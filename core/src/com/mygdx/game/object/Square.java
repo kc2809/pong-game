@@ -73,7 +73,6 @@ public class Square extends ObjectBox2d implements Poolable {
         body.createFixture(fixtureDef);
         body.setUserData(this);
         shape.dispose();
-        reset();
     }
 
     public Square active() {

@@ -50,8 +50,8 @@ public class UIObjects extends Actor {
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
         moneyText.setPosition(getX() + Constants.VIEWPORT_WIDTH * 7 / 20, getY());
-        moneyIcon.setPosition(getX() + Constants.VIEWPORT_WIDTH * 7 / 20, getY() - (moneyIcon.getHeight() * 1.35f));
-        scoreText.setPosition(getX(), getY());
+        moneyIcon.setPosition(getX() + Constants.VIEWPORT_WIDTH * 7 / 20, getY() - (moneyIcon.getHeight() * 1.5f));
+        scoreText.setPosition(getX(), getY()+ 0.2f);
     }
 
     @Override
