@@ -10,12 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.*;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
@@ -70,6 +65,7 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 
 		//hook it all up
 		setContentView(layout);
+		adView.setVisibility(View.INVISIBLE);
 	}
 
 	private void loadVideoAdmob(){
@@ -101,6 +97,32 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 		});
 	}
 
+	@Override
+	public void setAdViewVisibility(final boolean visible) {
+		this.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (!visible) {
+					adView.setVisibility(View.GONE);
+					return;
+				}
+				adView.setVisibility(View.VISIBLE);
+			}
+		});
+
+
+	}
+
+	@Override
+	public void showToastMessage(final String s) {
+		this.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+			}
+		});
+	}
+
 	private void setupInterestAd() {
 		interstitialAd = new InterstitialAd(this);
 		interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
@@ -125,11 +147,13 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 			public void onAdLoaded() {
 				Log.i("WTF", "is this shit");
 			}
+
+			@Override
+			public void onAdFailedToLoad(int i) {
+				adView.loadAd(new AdRequest.Builder().addTestDevice("99001229731084").build());
+			}
 		});
-		AdRequest adRequest = new AdRequest.Builder()
-				.addTestDevice("99001229731084")
-				.build();
-		adView.loadAd(adRequest);
+		adView.loadAd(new AdRequest.Builder().addTestDevice("99001229731084").build());
 	}
 
 	@Override
@@ -152,10 +176,7 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 
 	@Override
 	public void onRewarded(RewardItem rewardItem) {
-//		Toast.makeText(this, "onRewarded! currency: " , Toast.LENGTH_LONG).show();
-//		System.out.println("THUONG TIEN NE MAY");
 		game.rewardUser();
-		// Reward the user.
 	}
 
 	@Override

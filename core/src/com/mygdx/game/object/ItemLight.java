@@ -49,7 +49,10 @@ public class ItemLight extends Actor {
     }
 
     private void updateLabel() {
-        if (!storeScreen.checkValidMoney()) return;
+        if (!storeScreen.checkValidMoney()) {
+            storeScreen.showToastWarningMess();
+            return;
+        }
         storeScreen.updateLabel(color);
         isSold = true;
     }

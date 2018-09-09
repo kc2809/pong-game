@@ -208,6 +208,7 @@ public class GameOverScreen implements Screen {
     }
 
     private void changeMenuScreen() {
+        game.setAdViewVisibility(false);
         game.changeMenuScreen();
     }
 

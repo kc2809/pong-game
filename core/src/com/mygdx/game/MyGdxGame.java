@@ -7,11 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.core.Assets;
-import com.mygdx.game.screens.GameOverScreen;
-import com.mygdx.game.screens.MainGameScreen;
-import com.mygdx.game.screens.MenuScreen;
-import com.mygdx.game.screens.PausedScreen;
-import com.mygdx.game.screens.StoreScreen;
+import com.mygdx.game.screens.*;
 import com.mygdx.game.storage.MyPreference;
 import com.mygdx.game.util.Constants;
 
@@ -142,16 +138,28 @@ public class MyGdxGame extends Game {
         if (callback != null) callback.callVideo();
     }
 
+    public void setAdViewVisibility(boolean visible) {
+        if (callback != null) callback.setAdViewVisibility(visible);
+    }
+
     public void rewardUser() {
         MyPreference.getInstance().setMoney(MyPreference.getInstance().getMoney() + 20);
         gameOverScreen.setCurrentMoney();
         storeScreen.setMoneyLabel();
     }
 
+    public void showToastMessage(String s){
+        callback.showToastMessage(s);
+    }
+
     public interface AdmodCallBack {
         void callAdmobBanner();
 
         void callVideo();
+
+        void setAdViewVisibility(final boolean visible);
+
+        void showToastMessage(String s);
     }
 
 }

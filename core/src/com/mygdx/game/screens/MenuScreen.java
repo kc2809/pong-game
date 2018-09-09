@@ -31,7 +31,7 @@ import static com.mygdx.game.core.Assets.VOLUMNE_INACTIVE_ICON;
 import static com.mygdx.game.util.Constants.PPM;
 
 public class MenuScreen implements Screen {
-    private static String TITLE = "OK BALL";
+    private static String TITLE = "Z-BALL";
     MyGdxGame game;
     Button playBtn;
     Button volumeBtn;
@@ -92,6 +92,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                game.setAdViewVisibility(true);
                 game.callAdmod();
                 game.changeMainGameScreen();
             }

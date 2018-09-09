@@ -62,6 +62,7 @@ public class PausedScreen implements Screen {
     }
 
     private void changeMenu() {
+        game.setAdViewVisibility(false);
         game.changeMenuScreen();
     }
 

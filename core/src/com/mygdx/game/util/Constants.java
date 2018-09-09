@@ -56,4 +56,7 @@ public interface Constants {
     Color customBlue = Color.valueOf("01b29a");
 
     Color backgroundColor = Color.valueOf("#202020");
+
+    // Message
+    String WARNING_VALUE_MESSAGES = "Money is not enough to buy this power";
 }

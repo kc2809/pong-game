@@ -166,6 +166,10 @@ public class StoreScreen implements Screen, InputProcessor {
         MyPreference.getInstance().setCurrentColor(color);
     }
 
+    public void showToastWarningMess(){
+        game.showToastMessage(Constants.WARNING_VALUE_MESSAGES);
+    }
+
     @Override
     public void pause() {
 
