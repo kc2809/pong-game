@@ -59,7 +59,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     int count;
     //light effect
     RayHandler handler;
-    FrameRate frameRate;
+//    FrameRate frameRate;
     //    Box2DDebugRenderer debugRenderer;
     Viewport viewport;
     InputMultiplexer multiplexer;
@@ -128,7 +128,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     private void initObject() {
         world = new World(new Vector2(0, 0), true);
-        frameRate = new FrameRate();
+//        frameRate = new FrameRate();
 
         handler = new RayHandler(world);
         handler.setCombinedMatrix(camera);
@@ -219,7 +219,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         Box2dManager.getInstance().inActiveBodies(world);
         Box2dManager.getInstance().activeBodies(world);
 
-        frameRate.render();
+//        frameRate.render();
         handler.updateAndRender();
 
     }
@@ -240,13 +240,13 @@ public class MainGameScreen implements Screen, InputProcessor {
             }
         }
 
-        frameRate.update();
+//        frameRate.update();
 
     }
 
     // It use to generate ball if currentBall < currentValue * 2
     public boolean isValidGenerateBall() {
-        return player.getActors().size <= currentLevel * 2;
+        return player.getActors().size <= (int) (currentLevel * 1.5f);
     }
 
     public int getRemainBall() {
@@ -257,7 +257,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     public void resize(int width, int height) {
         viewport.update(width, height);
         camera.position.set(0, 0, 0);
-        frameRate.resize(width, height);
+//        frameRate.resize(width, height);
         handler.setCombinedMatrix(camera);
     }
 
@@ -281,7 +281,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         level.dispose();
         player.dispose();
 
-        frameRate.dispose();
+//        frameRate.dispose();
         handler.dispose();
     }
 

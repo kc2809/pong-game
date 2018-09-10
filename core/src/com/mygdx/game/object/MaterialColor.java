@@ -14,7 +14,7 @@ public class MaterialColor {
 
 
     public static Color[][] materialColors = {
-            {Color.YELLOW, Color.GOLD, Color.GOLDENROD, Color.ORANGE},
+            {Color.TAN, Color.GOLD, Color.GOLDENROD, Color.ORANGE},
             {Color.ROYAL, Color.CYAN, Color.SKY},
             {Color.PINK, Color.CORAL},
             {Color.BROWN, Color.MAROON, Color.VIOLET, Color.PURPLE, Color.MAGENTA},

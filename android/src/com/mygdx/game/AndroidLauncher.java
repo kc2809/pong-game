@@ -18,6 +18,11 @@ import com.mygdx.game.MyGdxGame.AdmodCallBack;
 
 public class AndroidLauncher extends AndroidApplication implements AdmodCallBack, RewardedVideoAdListener {
 
+	private static String AD_ID_BANNER = "ca-app-pub-8525901164712789~1503028792";
+	private static String AD_UNIT_BANNER = "ca-app-pub-8525901164712789/5349611710";
+	private static String AD_UNIT_INTERSTITIAL = "ca-app-pub-8525901164712789/1379519062";
+	private static String AD_UNIT_VIDEO = "ca-app-pub-8525901164712789/2248256915";
+
 	protected AdView adView;
 	protected InterstitialAd interstitialAd;
 
@@ -36,8 +41,7 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 		getWindow().clearFlags(LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
 
-//		MobileAds.initialize(this,
-//				"ca-app-pub-3940256099942544~3347511713");
+		MobileAds.initialize(this, AD_ID_BANNER);
 
 		//setup adview
 		setUpBanner();
@@ -69,8 +73,8 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 	}
 
 	private void loadVideoAdmob(){
-		rewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
-				new AdRequest.Builder().build());
+//		rewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+		rewardedVideoAd.loadAd(AD_UNIT_VIDEO, new AdRequest.Builder().build());
 	}
 
 	@Override
@@ -125,7 +129,8 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 
 	private void setupInterestAd() {
 		interstitialAd = new InterstitialAd(this);
-		interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+//		interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+		interstitialAd.setAdUnitId(AD_UNIT_INTERSTITIAL);
 		interstitialAd.loadAd(new AdRequest.Builder()
 				.addTestDevice("99001229731084").build());
 		interstitialAd.setAdListener(new AdListener() {
@@ -141,7 +146,8 @@ public class AndroidLauncher extends AndroidApplication implements AdmodCallBack
 	private void setUpBanner() {
 		adView = new AdView(this);
 		adView.setAdSize(AdSize.BANNER);
-		adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111"); // secret key here
+//		adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111"); // secret key here
+		adView.setAdUnitId(AD_UNIT_BANNER); // secret key here
 		adView.setAdListener(new AdListener() {
 			@Override
 			public void onAdLoaded() {
