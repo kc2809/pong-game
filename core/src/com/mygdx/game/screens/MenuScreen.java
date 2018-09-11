@@ -31,7 +31,7 @@ import static com.mygdx.game.core.Assets.VOLUMNE_INACTIVE_ICON;
 import static com.mygdx.game.util.Constants.PPM;
 
 public class MenuScreen implements Screen {
-    private static String TITLE = "Lighting-Ball";
+    private static String TITLE = "Light-Ball";
     MyGdxGame game;
     Button playBtn;
     Button volumeBtn;

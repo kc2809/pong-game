@@ -167,7 +167,7 @@ public class Level extends Stage {
     }
 
     public void generateNextStep() {
-        int value = random.nextInt(64);
+        int value = random.nextInt();
         //one value means one row
         // value from [0, 512]
         // generate 8 square based on binary value of it.
